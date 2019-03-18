@@ -139,6 +139,14 @@ print(cf)</code></pre>
 ## 4     5        100  78.352617</code></pre>
 <pre class="python"><code>print(npv)</code></pre>
 <pre><code>## 432.9476670630819</code></pre>
+<pre class="python"><code>fig = plt.figure(figsize=(11,8))
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.plot(cf[&quot;Year&quot;], cf[&quot;pv&quot;])
+ax1.set_xlabel(&#39;Years&#39;) # Notice the use of set_ to begin methods
+ax1.set_ylabel(&#39;PV&#39;)
+ax1.set_title(&#39;Present Value Chart&#39;)
+plt.show()</code></pre>
+<p><img src="/post/2018-03-19-tvm_py_files/figure-html/unnamed-chunk-4-1.png" width="1056" /></p>
 
     </div>
     

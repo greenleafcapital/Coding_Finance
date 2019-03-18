@@ -40,5 +40,35 @@ print(npv)
 
 ```
 
+```{python}
+
+fig = plt.figure(figsize=(11,8))
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+
+
+ax1.plot(cf["Year"], cf["pv"])
+ax1.set_xlabel('Years') # Notice the use of set_ to begin methods
+ax1.set_ylabel('PV')
+ax1.set_title('Present Value Chart')
+plt.show()
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
