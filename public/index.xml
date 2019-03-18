@@ -6,21 +6,10 @@
     <description>Recent content on Long Short Strategies</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 27 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Time Value of Money in Python</title>
-      <link>/post/2018-03-19-tvm_py/</link>
-      <pubDate>Thu, 27 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018-03-19-tvm_py/</guid>
-      <description>In this article we will perform the same time value of money calculations using Python. First let us import the necessary modules/libraries.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltCreating a pandas dataframe.
-# Setting interest rate to 5%r = 0.05cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5], &amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]})cf[&amp;quot;pv&amp;quot;] = cf[&amp;#39;cash_flow&amp;#39;] / (1.0 + r)**cf[&amp;#39;Year&amp;#39;]npv = cf[&amp;quot;pv&amp;quot;].sum()print(cf)## Year cash_flow pv## 0 1 100 95.</description>
-    </item>
     
     <item>
       <title>Code</title>
@@ -58,6 +47,17 @@ If you would like to learn, then a fake money account is more appropriate for le
       <guid>/showcase/</guid>
       <description>Header 2 Backup two-step verification breach, anonymous terminal traffic worm virus reboot fsociety dat file. Traffic fsociety malware 100 terabytes system hack, delete brute-force cyber security fiber connection connect code worm wipe. Cyber security off the grid delete IP decrypt, nodes connect password 100 terabytes RUDY attack malicious code rootkit gigabit speed. Tor connect network, intercepting traffic off the grid IP protocol password.
  Backup DDoS attack rootkit nodes disconnect website.</description>
+    </item>
+    
+    <item>
+      <title>Time Value of Money in Python</title>
+      <link>/post/2018-03-19-tvm_py/</link>
+      <pubDate>Mon, 19 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-19-tvm_py/</guid>
+      <description>In this article we will perform the same time value of money calculations using Python. First let us import the necessary modules/libraries.
+import pandas as pdimport numpy as npimport matplotlib.pyplot as pltCreating a pandas dataframe.
+# Setting interest rate to 5%r = 0.05cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5], &amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]})cf[&amp;quot;pv&amp;quot;] = cf[&amp;#39;cash_flow&amp;#39;] / (1.0 + r)**cf[&amp;#39;Year&amp;#39;]npv = cf[&amp;quot;pv&amp;quot;].sum()print(cf)## Year cash_flow pv## 0 1 100 95.</description>
     </item>
     
     <item>

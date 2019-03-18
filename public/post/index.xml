@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Long Short Strategies</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 27 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Mar 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Time Value of Money in Python</title>
       <link>/post/2018-03-19-tvm_py/</link>
-      <pubDate>Thu, 27 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 19 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-19-tvm_py/</guid>
       <description>In this article we will perform the same time value of money calculations using Python. First let us import the necessary modules/libraries.
