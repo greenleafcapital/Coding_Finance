@@ -1,0 +1,29 @@
+---
+title: "Bond Market"
+author: 'Team Green'
+date: '2018-07-26'
+slug: bond
+description: "How have bonds done lately?"
+cover: "int charts-1.png"
+categories: []
+tags:
+  - market
+---
+
+```{r lib, echo=FALSE,warning=FALSE,message=FALSE,include=FALSE}
+
+library(tidyquant)
+library(ggthemes)
+library(dygraphs)
+
+```
+
+
+
+Year 2018 has not been a good one for the bond investors. Since the summer of 2017, interest rates have been rising. 
+
+The long term interest rates had been trending lower since 1980s. In the chart above rates reached a high of 8% and since then they kept making lower lows. Currently the ten year rates are near the an important key level at 3%. From here the future path interest will decide which way the trend moves. Do we break out of the 3% resistance level? or do we fade back lower? It will be interesting to see.
+
+Below are the bond performance for different maturities. Even though the rates were trending lower, there were a few years when bonds suffered negative returns. Similarly it is possible that even if interest rates trend higher, we could get some years where bonds give positive returns.
+
+

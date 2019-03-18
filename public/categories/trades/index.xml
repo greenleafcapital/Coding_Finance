@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Trades on Long Short Strategies</title>
+    <link>/categories/trades/</link>
+    <description>Recent content in Trades on Long Short Strategies</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 19 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/trades/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Gold Trade update</title>
+      <link>/post/gold-trade-update/</link>
+      <pubDate>Fri, 19 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/gold-trade-update/</guid>
+      <description>On October 19, 2018 our Gold ETF options expired out of the money and as a result we lost our premium which was our maximum loss on the trade.
+We entered the trade on August 6, 2018 and chose October as our expiration month. When we entered the trade, GLD was trading around $114 and today is it around $116.
+Even though the price of GLD is above its price on August 6th, it is not high enough to be profitable.</description>
+    </item>
+    
+    <item>
+      <title>Facebook disappoints! Stock down 20%</title>
+      <link>/post/facebook-idea/</link>
+      <pubDate>Thu, 26 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/facebook-idea/</guid>
+      <description>Yesterday Facebook reported their earnings after market hours and investors were not pleased. They sent the stock down almost 25% at one point. Right now the stock is down about 20%. We wanted to check if this was the worst performance for Facebook stock since the IPO
+This is the worst one day performance for Facebook since its IPO. After its IPO Facebook stock was under heavy pressure and it continued to slide down for several days.</description>
+    </item>
+    
+  </channel>
+</rss>

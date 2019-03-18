@@ -1,0 +1,97 @@
+---
+title: "Basic Financial Calculations"
+author: 
+date: '2018-07-26'
+slug: bond
+description: "Performing basic calculations in R"
+cover: 
+categories: 'Financial Calculations'
+tags:
+  - basic
+---
+
+In this article we will perform basic financial calculations in R.
+
+## Calculating the Net Present Value (NPV)
+
+Financial problems such as valuing an asset can be solved by calculating its net present value. The underlying principle in the calculation is that a dollar today is worth more than a dollar a year from now. This principle was well known to our ancestors thousands of year ago.
+
+> A bird in hand is worth two in the bush.
+>
+> --- Aesops Fables
+
+So a stream of cash flows that we will receive in the future have to be discounted to calculate the net present value. We will see some methods to discout this cash flow in the following sections.
+
+First we begin by loading all the libraries.
+
+```{r load-lib1,warning=FALSE,message=FALSE}
+# We will be using the folowing libraries for this chapter
+
+library(tidyquant) # For financial data
+library(pander) # to create pretty tables
+
+options(digits = 3, scipen = 100)
+
+
+```
+
+Let us take the following example. If we receive \$100 per year for the next five years what is the net present value if the current interest rates are 5%. Let us set up our cash flow table.
+
+
+
+```{r pv-equal-pv, warning=FALSE,message=FALSE}
+
+# Creating a variable r for interest rates and the cash flow table
+
+r <- 0.05  
+
+# cf is the table for our data
+
+cf <- tribble(~Year,~cash_flow,
+              1,100,
+              2,100,
+              3,100,
+              4,100,
+              5,100)
+cf %>%
+  pander(style = "grid", caption = "Cash flow Table")
+
+```
+
+To calculate the  NPV we will use the following formula:
+
+$NPV = CF_1/(1+r)^1 + CF_2/(1+r)^2 + CF_3/(1+r)^3 + CF_4/(1+r)^4 + CF_5/(1+r)^5$
+
+We can generalize this formula as follows:
+
+$PV = CF/(1+r)^N$
+
+```{r cf-pv-calc, warning=FALSE,message=FALSE}
+
+r <- 0.05  
+
+cf <- tribble(~Year,~cash_flow,
+              1,100,
+              2,100,
+              3,100,
+              4,100,
+              5,100)
+
+# Calculating the Net present value for each year
+
+cf %>%
+  mutate(pv = cash_flow/(1 + r)^Year) %>%
+  pander()
+
+# Calculating the total Net present value
+
+npv <- cf %>%
+  mutate(pv = cash_flow/(1 + r)^Year) %>%
+  select(pv) %>%
+  sum()
+
+
+```
+
+
+

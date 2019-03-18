@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Market on Long Short Strategies</title>
+    <link>/categories/market/</link>
+    <description>Recent content in Market on Long Short Strategies</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 27 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/market/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>S&amp;P 500 Analysis December 2018</title>
+      <link>/post/2018-12-27-sp500_analysis/</link>
+      <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-12-27-sp500_analysis/</guid>
+      <description>In the last post we discussed the recent sell off in the US equity markets. In this post we will dig deeper and see how individual components of the market performed this year.
+First we will begin by looking at the components that make up the S&amp;amp;P 500 index and the returns for 2018.
+S&amp;amp;P 500 Components{&#34;x&#34;:{&#34;filter&#34;:&#34;none&#34;,&#34;caption&#34;:&#34;S&amp;amp;P 500 Components Data&#34;,&#34;data&#34;:[[&#34;Microsoft Corporation&#34;,&#34;Apple Inc.&#34;,&#34;Amazon.com Inc.&#34;,&#34;Berkshire Hathaway Inc.</description>
+    </item>
+    
+    <item>
+      <title>Red October</title>
+      <link>/post/2018-10-25-sp500_analysis/</link>
+      <pubDate>Thu, 25 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-10-25-sp500_analysis/</guid>
+      <description>For the third quarter of 2018 S&amp;amp;P 500 rallied almost 8.5% and was up almost 10% for 2018. But all that has changed since the beginning of Q4 2018 in October. We will begin by looking at the yearly performance of S&amp;amp;P 500 so far.
+As we can see that October saw a severe fall in stock market price. We lost almost 10% and wiped off all the gains for the year.</description>
+    </item>
+    
+    <item>
+      <title>S&amp;P 500 Analysis</title>
+      <link>/post/2018-08-17-sp500_analysis/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-08-17-sp500_analysis/</guid>
+      <description>How has S&amp;amp;P 500 performed so far in 2018. We can start by looking at the S&amp;amp;P 500 chart below.
+We can see from the chart that the S&amp;amp;P 500 is up about 6.5% since January. The price action in this chart has been sideways. We are stuck in a range 250 and 285. After big gains in 2017 the market seems to be consolidating at these new all time highs.</description>
+    </item>
+    
+    <item>
+      <title>Turkey Currency Crisis</title>
+      <link>/post/turkey-currency/</link>
+      <pubDate>Mon, 13 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/turkey-currency/</guid>
+      <description>Turkey Currency crisisThe emerging markets are spiraled into chaos and crisis and leading the way is Turkey. The country has been tackling one crisis after another. In 2016 the there was an attempt of military coup which was put down by the people of Turkey. Since then the current president of Turkey Erdogan has consolidated his hold at the top. He has purged many opponents and the recent elections has emboldened his hold at the top.</description>
+    </item>
+    
+    <item>
+      <title>TLT trade - Iron Condor</title>
+      <link>/post/2018-08-08-tlt-iron-condors/</link>
+      <pubDate>Wed, 08 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-08-08-tlt-iron-condors/</guid>
+      <description>Today we executed a trade to sell both call and put verticals on the underlying TLT etf (Long US government bonds etf). For the trade to make money, both legs of the trade need to expire worthless. First lets start by looking at the historical returns and volatility of Long Bonds since summer of 2016.
+Interest rates made their lows in the summer of 2016 and since then rates have been moving higher.</description>
+    </item>
+    
+    <item>
+      <title>Interest Rates and Bear Markets</title>
+      <link>/post/int_rates/</link>
+      <pubDate>Thu, 26 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/int_rates/</guid>
+      <description>How do interest rates affect Market Valuations?It has been said many times that it is impossible to predict a bear market. Many on Wall Street spend enormous amount of time and money on this very activity. Although it may be difficult to predict the bear market one can evaluate the conditions that could lead to a bear market. What do I mean by that?
+Lets imagine a bridge that carries thousands of vehicles across from one end to another.</description>
+    </item>
+    
+  </channel>
+</rss>
