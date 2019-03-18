@@ -78,4 +78,137 @@ npv &lt;- cf %&gt;%
 
 npv</code></pre>
 <pre><code>## [1] 433</code></pre>
+<div id="calculating-net-present-value-of-uneven-cash-flows" class="section level3">
+<h3>Calculating net present value of uneven cash flows</h3>
+<p>We can use the same method to calculate the net present value of uneven cash flows as shown below.</p>
+<pre class="r"><code># We create a table of cash flows
+
+cf &lt;- tribble(~Year,~cf,
+              1,100,
+              2,200,
+              3,300,
+              4,400,
+              5,500)
+datatable(cf)</code></pre>
+<div id="htmlwidget-3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"filter":"none","data":[["1","2","3","4","5"],[1,2,3,4,5],[100,200,300,400,500]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Year<\/th>\n      <th>cf<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>npv &lt;- cf %&gt;%
+  mutate(pv = cf/(1+r)^Year) %&gt;%
+  select(pv) %&gt;% 
+  sum()
+
+print(npv)</code></pre>
+<pre><code>## [1] 1257</code></pre>
+</div>
+<div id="calculating-the-pv-with-negative-cash-flow" class="section level3">
+<h3>Calculating the PV with negative cash flow</h3>
+<p>In many cases we will have an initial cash flow that is negative. Think of this as buying a bond, where we buy a bond for $250 and it pays an interest of $100 each year. We can solve the present value of such a bond as below.</p>
+<pre class="r"><code>r &lt;- 0.05
+cf &lt;- tribble(~Year,~cf,
+              0,-250,
+              1,100,
+              2,100,
+              3,100,
+              4,100,
+              5,250)
+
+
+datatable(cf)</code></pre>
+<div id="htmlwidget-4" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],[0,1,2,3,4,5],[-250,100,100,100,100,250]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Year<\/th>\n      <th>cf<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>npv &lt;- cf %&gt;%
+  mutate(pv = cf/(1+r)^Year) %&gt;%
+  select(pv) %&gt;%
+  sum()</code></pre>
+<p>The present value of this bond is 300.48.</p>
+</div>
+<div id="calculating-the-present-value-of-a-finite-annuity" class="section level3">
+<h3>Calculating the present value of a finite annuity</h3>
+<p>In some cases we have to calculate the present value of stream of equal payments. Many times a lottery winner is given the option to get the money in equal payments or a lump sum. Let us suppose you win a $50000 lottery and you are given two options</p>
+<ol style="list-style-type: decimal">
+<li>Receive five equal payments of $10000</li>
+<li>Lump sum $45000.</li>
+</ol>
+<p>Let us suppose the bank pays 5% interest rate on the deposit.</p>
+<p>At first glance it may appear that five equal payments of $10000 is better than $45000. After all $50000 is more than $45000.
+To solve this problem we can calculate the net present value of those payments as below.</p>
+<pre class="r"><code>pmt &lt;- 10000                #payments
+n &lt;- 5                      # Years 
+r &lt;- 0.05                   # interest rates
+
+cf &lt;- tibble(period = 1:5,
+             pmt = pmt)
+
+npv &lt;- cf %&gt;%
+  mutate(pv = pmt/(1+r)^period) %&gt;%
+  select(pv) %&gt;%
+  sum()</code></pre>
+<p>The net present value of five equal payments is 43294.767. This payment is less that $45000 offered today. Therefore is better to take the lump sum payment of $45000 and deposit it in the bank than five equal payments of $10000.</p>
+</div>
+<div id="calculating-the-present-value-infinite-annuity" class="section level3">
+<h3>Calculating the present value infinite annuity</h3>
+<p>Sometimes one can buy an infinite payment stream. Bank of England issued such bonds that paid interest forever. How can we calculate the net present value of such bonds. Let us suppose we are given an offer to buy a bond that pays $1000 per year in interest forever. If the current interest rate is 5%, how much should we pay for this bond? We can do the calculation as below.</p>
+<pre class="r"><code>cf &lt;- 1000 # Interest paid each year
+r &lt;- 0.05 # Interest rate 5%
+
+value &lt;- cf/r</code></pre>
+<p>The value of this bond is 20000</p>
+</div>
+<div id="calculating-present-value-of-finite-growing-annuity" class="section level3">
+<h3>Calculating present value of finite growing annuity</h3>
+<p>There are cases when when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tennants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.</p>
+<pre class="r"><code>payment &lt;- 1000
+growth &lt;- 0.03 # Growth rate of payments
+n &lt;- 5 # years
+rate &lt;- 0.06 # Interest rate
+
+# Creating the tibble
+
+cf &lt;- tibble(period = 1:5,
+             cf = 1000)
+
+ # making the cash flow grow at 3% per year
+
+cf &lt;- cf %&gt;%
+  mutate(cf = payment*(1+growth)^(period - 1)) 
+
+cf &lt;- cf %&gt;%
+  mutate(pv = cf/(1+rate)^period)
+
+datatable(cf, caption = &quot;Growing Annuity payments&quot;)</code></pre>
+<div id="htmlwidget-5" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5">{"x":{"filter":"none","caption":"<caption>Growing Annuity payments<\/caption>","data":[["1","2","3","4","5"],[1,2,3,4,5],[1000,1030,1060.9,1092.727,1125.50881],[943.396226415094,916.696333214667,890.752097368969,865.542132349092,841.04565690525]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>period<\/th>\n      <th>cf<\/th>\n      <th>pv<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>npv &lt;- cf %&gt;%
+  select(pv) %&gt;%
+  sum()</code></pre>
+<p>The present value of this payment stream is 4457.</p>
+<hr />
+</div>
+<div id="calculating-present-value-of-infinite-growing-annuity" class="section level3">
+<h3>Calculating present value of infinite growing annuity</h3>
+<p>In case of infinite payment stream that grows at a certain rate, we simply subtract the growth rate from the current interest rate as shown below.</p>
+<p>Suppose you get paid $100 per year forever, and this payment grows at 3% each year. What is the net present value of this payment stream.</p>
+<pre class="r"><code>payment &lt;- 100
+growth &lt;- 0.03
+rate &lt;- 0.06
+
+annuity &lt;- payment/(rate - growth)</code></pre>
+<p>Here the present value of annuity is 3333.333, for $100 payment that grows at 3% forever.</p>
+</div>
+</div>
+<div id="calculating-future-vaue-fv" class="section level2">
+<h2>Calculating Future Vaue (FV)</h2>
+<p>We can use the above formula to calculate the calculate the Future value of a stream of payments. For example if we are promised $100 per year for 5 years at 5% interest rate, what is the future value of such a payment.</p>
+<pre class="r"><code># Lets create our table
+
+r &lt;- 0.05
+
+cf &lt;- tibble(year = 1:5,
+             cf = 100)
+
+fv &lt;- cf %&gt;%
+  mutate(fv = cf * (1 + r) ^ year) %&gt;%
+  select(fv) %&gt;%
+  sum()</code></pre>
+<p>The future value of our cash flow is 580.19.</p>
 </div>

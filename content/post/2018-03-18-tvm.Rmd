@@ -86,3 +86,182 @@ npv <- cf %>%
 npv
 
 ```
+
+
+### Calculating net present value of uneven cash flows
+
+We can use the same method to calculate the net present value of uneven cash flows as shown below.
+
+```{r pv-unequal-pv, warning=FALSE,message=FALSE}
+
+# We create a table of cash flows
+
+cf <- tribble(~Year,~cf,
+              1,100,
+              2,200,
+              3,300,
+              4,400,
+              5,500)
+datatable(cf)
+
+npv <- cf %>%
+  mutate(pv = cf/(1+r)^Year) %>%
+  select(pv) %>% 
+  sum()
+
+print(npv)
+
+```
+
+
+### Calculating the PV with negative cash flow
+
+In many cases we will have an initial cash flow that is negative. Think of this as buying a bond, where we buy a bond for \$250 and it pays an interest of \$100 each year. We can solve the present value of such a bond as below.
+
+```{r pv-neg-cf, warning=FALSE,message=FALSE}
+
+r <- 0.05
+cf <- tribble(~Year,~cf,
+              0,-250,
+              1,100,
+              2,100,
+              3,100,
+              4,100,
+              5,250)
+
+
+datatable(cf)
+              
+npv <- cf %>%
+  mutate(pv = cf/(1+r)^Year) %>%
+  select(pv) %>%
+  sum()
+
+
+```
+
+The present value of this bond is `r round(npv, 2)`.
+
+### Calculating the present value of a finite annuity
+
+In some cases we have to calculate the present value of stream of equal payments. Many times a lottery winner is given the option to get the money in equal payments or a lump sum. Let us suppose you win a \$50000 lottery and you are given two options 
+
+1. Receive five equal payments of \$10000 
+2. Lump sum \$45000. 
+
+Let us suppose the bank pays 5% interest rate on the deposit.
+
+At first glance it may appear that five equal payments of \$10000 is better than \$45000. After all \$50000 is more than \$45000.
+To solve this problem we can calculate the net present value of those payments as below. 
+
+```{r finite-annuity, warning=FALSE,message=FALSE}
+
+pmt <- 10000                #payments
+n <- 5                      # Years 
+r <- 0.05                   # interest rates
+
+cf <- tibble(period = 1:5,
+             pmt = pmt)
+
+npv <- cf %>%
+  mutate(pv = pmt/(1+r)^period) %>%
+  select(pv) %>%
+  sum()
+
+```
+
+The net present value of five equal payments is `r npv`. This payment is less that \$45000 offered today. Therefore is better to take the lump sum payment of \$45000 and deposit it in the bank than five equal payments of \$10000.
+
+### Calculating the present value infinite annuity
+
+Sometimes one can buy an infinite payment stream. Bank of England issued such bonds that paid interest forever. How can we calculate the net present value of such bonds. Let us suppose we are given an offer to buy a bond that pays \$1000 per year in interest forever. If the current interest rate is 5%, how much should we pay for this bond? We can do the calculation as below.
+
+```{r infinite-annuity, warning=FALSE,message=FALSE}
+
+cf <- 1000 # Interest paid each year
+r <- 0.05 # Interest rate 5%
+
+value <- cf/r
+
+```
+
+The value of this bond is `r value`
+
+### Calculating present value of finite growing annuity
+
+There are cases when when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tennants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.
+
+```{r grow-annuity,warning=FALSE,message=FALSE}
+
+payment <- 1000
+growth <- 0.03 # Growth rate of payments
+n <- 5 # years
+rate <- 0.06 # Interest rate
+
+# Creating the tibble
+
+cf <- tibble(period = 1:5,
+             cf = 1000)
+
+ # making the cash flow grow at 3% per year
+
+cf <- cf %>%
+  mutate(cf = payment*(1+growth)^(period - 1)) 
+
+cf <- cf %>%
+  mutate(pv = cf/(1+rate)^period)
+
+datatable(cf, caption = "Growing Annuity payments")
+
+npv <- cf %>%
+  select(pv) %>%
+  sum()
+
+```
+
+The present value of this payment stream is `r round(npv)`.
+
+******
+
+### Calculating present value of infinite growing annuity
+
+In case of infinite payment stream that grows at a certain rate, we simply subtract the growth rate from the current interest rate as shown below.
+
+Suppose you get paid \$100 per year forever, and this payment grows at 3% each year. What is the net present value of this payment stream.
+
+```{r grow-infinite-annuity,warning=FALSE,message=FALSE}
+
+payment <- 100
+growth <- 0.03
+rate <- 0.06
+
+annuity <- payment/(rate - growth)
+
+
+```
+
+Here the present value of annuity is `r annuity`, for \$100 payment that grows at 3% forever.
+
+## Calculating Future Vaue (FV)
+
+We can use the above formula to calculate the calculate the Future value of a stream of payments. For example if we are promised \$100 per year for 5 years at 5% interest rate, what is the future value of such a payment.
+
+```{r fv-calc-payment, warning=FALSE,message=FALSE}
+
+# Lets create our table
+
+r <- 0.05
+
+cf <- tibble(year = 1:5,
+             cf = 100)
+
+fv <- cf %>%
+  mutate(fv = cf * (1 + r) ^ year) %>%
+  select(fv) %>%
+  sum()
+
+```
+
+The future value of our cash flow is `r round(fv,2)`.
+
+

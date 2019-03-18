@@ -52,17 +52,9 @@ ax1.set_ylabel('PV')
 ax1.set_title('Present Value Chart')
 plt.show()
 
+print("The NPV is ", + round(npv))
 
 ```
-
-
-
-
-
-
-
-
-
 
 
 
