@@ -19,7 +19,7 @@
       <guid>/post/2018-03-19-tvm_py/</guid>
       <description>In this article we will perform the same time value of money calculations using Python. First let us import the necessary modules/libraries.
 import pandas as pdimport numpy as npimport matplotlib.pyplot as pltCreating a pandas dataframe.
-# Setting interest rate to 5%r = 0.05cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5],&amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]})print(cf)## Year cash_flow## 0 1 100## 1 2 100## 2 3 100## 3 4 100## 4 5 100</description>
+# Setting interest rate to 5%r = 0.05cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5], &amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]})cf[&amp;quot;pv&amp;quot;] = cf[&amp;#39;cash_flow&amp;#39;] / (1.0 + r)**cf[&amp;#39;Year&amp;#39;]npv = cf[&amp;quot;pv&amp;quot;].sum()print(cf)## Year cash_flow pv## 0 1 100 95.</description>
     </item>
     
     <item>

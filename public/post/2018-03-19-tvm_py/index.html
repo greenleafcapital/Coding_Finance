@@ -28,7 +28,7 @@
 <meta name="twitter:title" content="Time Value of Money in Python :: Long Short Strategies — " />
 <meta name="twitter:description" content="In this article we will perform the same time value of money calculations using Python. First let us import the necessary modules/libraries.
 import pandas as pdimport numpy as npimport matplotlib.pyplot as pltCreating a pandas dataframe.
-# Setting interest rate to 5%r = 0.05cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5],&amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]})print(cf)## Year cash_flow## 0 1 100## 1 2 100## 2 3 100## 3 4 100## 4 5 100" />
+# Setting interest rate to 5%r = 0.05cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5], &amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]})cf[&amp;quot;pv&amp;quot;] = cf[&amp;#39;cash_flow&amp;#39;] / (1.0 &#43; r)**cf[&amp;#39;Year&amp;#39;]npv = cf[&amp;quot;pv&amp;quot;].sum()print(cf)## Year cash_flow pv## 0 1 100 95." />
 <meta name="twitter:site" content="" />
 <meta name="twitter:creator" content="" />
 <meta name="twitter:image" content="/img/default.jpg">
@@ -127,15 +127,18 @@ import matplotlib.pyplot as plt</code></pre>
 <p>Creating a pandas dataframe.</p>
 <pre class="python"><code># Setting interest rate to 5%
 r = 0.05
-cf = pd.DataFrame({&#39;Year&#39;:[1,2,3,4,5],
-&quot;cash_flow&quot;:[100,100,100,100,100]})
+cf = pd.DataFrame({&#39;Year&#39;:[1,2,3,4,5], &quot;cash_flow&quot;:[100,100,100,100,100]})
+cf[&quot;pv&quot;] = cf[&#39;cash_flow&#39;] / (1.0 + r)**cf[&#39;Year&#39;]
+npv = cf[&quot;pv&quot;].sum()
 print(cf)</code></pre>
-<pre><code>##    Year  cash_flow
-## 0     1        100
-## 1     2        100
-## 2     3        100
-## 3     4        100
-## 4     5        100</code></pre>
+<pre><code>##    Year  cash_flow         pv
+## 0     1        100  95.238095
+## 1     2        100  90.702948
+## 2     3        100  86.383760
+## 3     4        100  82.270247
+## 4     5        100  78.352617</code></pre>
+<pre class="python"><code>print(npv)</code></pre>
+<pre><code>## 432.9476670630819</code></pre>
 
     </div>
     

@@ -29,18 +29,14 @@ Creating a pandas dataframe.
 
 r = 0.05
 
-cf = pd.DataFrame({'Year':[1,2,3,4,5],
-"cash_flow":[100,100,100,100,100]})
+cf = pd.DataFrame({'Year':[1,2,3,4,5], "cash_flow":[100,100,100,100,100]})
+cf["pv"] = cf['cash_flow'] / (1.0 + r)**cf['Year']
+npv = cf["pv"].sum()
+
 print(cf)
-
-```
-
-
-```{r}
-
+print(npv)
 
 
 ```
-
 
 
