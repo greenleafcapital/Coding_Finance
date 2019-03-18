@@ -1,6 +1,6 @@
 ---
-title: "Calculating PV, FV and NPV in R"
-author: "Greenleaf"
+title: "Time Value of Money in R"
+author: "DD"
 date: "2019-03-18"
 output: html_document
 description: "Basic Financial Calculations in R"

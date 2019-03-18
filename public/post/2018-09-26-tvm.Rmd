@@ -1,6 +1,6 @@
 ---
 title: "Time Value of Money in R"
-author: "Greenleaf"
+author: "DD"
 date: "2019-03-18"
 output: html_document
 description: "Basic Financial Calculations in R"
