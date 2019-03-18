@@ -40,6 +40,8 @@ print(npv)
 
 ```
 
+### Calculating the Net Present Value (NPV)
+
 ```{python}
 
 fig = plt.figure(figsize=(11,8))
@@ -57,10 +59,175 @@ print("The NPV is ", + round(npv))
 ```
 
 
+### Calculating net present value of uneven cash flows
+
+```{python}
+
+cf = pd.DataFrame({"Year":[1,2,3,4,5],
+"cf":[100,200,300,400,500]})
+
+print(cf)
+
+```
+
+```{python}
+
+r = 0.05
+
+cf["pv"] = cf["cf"] / (1 + r)**cf["Year"]
+
+npv = cf["pv"].sum()
+
+print(npv)
+
+```
+
+### Calculating the PV with negative cash flow
+
+In many cases we will have an initial cash flow that is negative. Think of this as buying a bond, where we buy a bond for \$250 and it pays an interest of $100 each year. We can solve the present value of such a bond as below.
+
+```{python}
+
+cf = pd.DataFrame({"Year":[0,1,2,3,4,5],
+"cf":[-250,100,100,100,100,250]})
+
+print(cf)
+
+```
+
+```{python}
+
+r = 0.05
+
+cf["pv"] = cf["cf"] / (1 + r)**cf["Year"]
+
+npv = cf["pv"].sum()
+
+print(npv)
 
 
+```
 
 
+### Calculating the present value of a finite annuity
+
+In some cases we have to calculate the present value of stream of equal payments. Many times a lottery winner is given the option to get the money in equal payments or a lump sum. Let us suppose you win a $50000 lottery and you are given two options
+
+1. Receive five equal payments of $10000
+2. Lump sum $45000.
+
+Let us suppose the bank pays 5% interest rate on the deposit.
+
+At first glance it may appear that five equal payments of \$10000 is better than \$45000. After all \$50000 is more than $45000. To solve this problem we can calculate the net present value of those payments as below.
+
+```{python}
+
+pmt = 10000
+n = 5
+r = 0.05
+
+cf = pd.DataFrame({'period':np.arange(1,6),
+"pmt":pmt})
+
+print(cf)
 
 
+```
+
+```{python}
+
+r = 0.05
+
+cf["pv"] = cf['pmt']/(1 + r) ** cf["period"]
+
+npv = cf["pv"].sum()
+
+print(npv)
+
+```
+
+
+The net present value of five equal payments is 43294.767. This payment is less that \$45000 offered today. Therefore it is better to take the lump sum payment of \$45000 and deposit it in the bank than five equal payments of \$10000.
+
+### Calculating the present value infinite annuity
+
+Sometimes one can buy an infinite payment stream. Bank of England issued such bonds that paid interest forever. How can we calculate the net present value of such bonds. Let us suppose we are given an offer to buy a bond that pays $1000 per year in interest forever. If the current interest rate is 5%, how much should we pay for this bond? We can do the calculation as below.
+
+```{python}
+
+cf = 1000
+r = 0.05
+
+value = cf/r
+
+print(value)
+
+```
+
+
+### Calculating present value of finite growing annuity
+
+There are cases when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tennants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.
+
+```{python}
+
+payment = 1000
+
+growth = 0.03 # Growth rate of the payments
+
+n = 5 # number of year
+
+rate = 0.06 # Interest rates
+
+cf = pd.DataFrame({"period":np.arange(1,6),
+'cf':payment})
+
+print(cf)
+
+```
+
+Next we increase the cash flows at the rate of inflation.
+
+```{python}
+
+cf["cf"] = payment * (1 + growth) ** (cf["period"] - 1)
+
+print(cf)
+
+```
+
+```{python}
+
+cf["pv"] = cf["cf"] / (1 + rate) ** cf["period"]
+print(cf)
+
+```
+
+```{python}
+
+npv = cf["pv"].sum()
+print("The NPV of growing payments is", + npv)
+
+
+```
+
+
+### Calculating present value of infinite growing annuity
+
+In case of infinite payment stream that grows at a certain rate, we simply subtract the growth rate from the current interest rate as shown below.
+
+Suppose you get paid $100 per year forever, and this payment grows at 3% each year. What is the net present value of this payment stream.
+
+
+```{python}
+
+payment = 100
+growth = 0.03
+rate = 0.06
+
+annuity = payment/(rate - growth)
+
+print("The present value of annuity is ", + annuity)
+
+```
 
