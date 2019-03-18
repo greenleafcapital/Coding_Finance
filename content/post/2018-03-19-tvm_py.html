@@ -1,0 +1,25 @@
+---
+title: "Time Value of Money in Python"
+author: "DD"
+date: "2018-09-27"
+output: html_document
+---
+
+
+
+<p>In this article we will perform the same time value of money calculations using Python. First let us import the necessary modules/libraries.</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<p>Creating a pandas dataframe.</p>
+<pre class="python"><code># Setting interest rate to 5%
+r = 0.05
+cf = pd.DataFrame({&#39;Year&#39;:[1,2,3,4,5],
+&quot;cash_flow&quot;:[100,100,100,100,100]})
+print(cf)</code></pre>
+<pre><code>##    Year  cash_flow
+## 0     1        100
+## 1     2        100
+## 2     3        100
+## 3     4        100
+## 4     5        100</code></pre>

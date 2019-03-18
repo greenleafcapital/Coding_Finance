@@ -1,7 +1,7 @@
 ---
 title: "Time Value of Money in R"
 author: "DD"
-date: "2019-03-18"
+date: "2018-03-18"
 output: html_document
 description: "Basic Financial Calculations in R"
 
@@ -51,7 +51,8 @@ cf <- tribble(~Year,~cash_flow,
               4,100,
               5,100)
 cf %>%
-  datatable()
+  datatable() %>%
+  formatRound(columns = "cash_flow",digits = 2)
 
 ```
 
@@ -72,7 +73,8 @@ cf <- tribble(~Year,~cash_flow,
 
 cf %>%
   mutate(pv = cash_flow/(1 + r)^Year) %>%
-  datatable()
+  datatable() %>%
+  formatRound(columns = "pv",digits = 2)
 
 # Calculating the total Net present value
 
