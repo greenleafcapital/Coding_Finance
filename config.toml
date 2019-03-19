@@ -1,6 +1,6 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "Long Short Strategies"
+title = "Coding Finance"
 theme = "hugo-theme-hello-friend"
 copyright = ""
 paginate = 5
@@ -20,11 +20,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     name = "About"
     url = "/about"
     weight = 2
-  [[menu.main]]
-    identifier = "portfolio"
-    name = "Portfolio"
-    url = "/portfolio"
-    weight = 2
+  
     
   [[menu.main]]
     identifier = "code"
