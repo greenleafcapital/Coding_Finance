@@ -23,6 +23,16 @@
   </url>
   
   <url>
+    <loc>/post/2018-03-23-car-payment-py/</loc>
+    <lastmod>2018-03-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/2018-03-23-car-payment/</loc>
+    <lastmod>2018-03-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/2018-03-22-billboard-py/</loc>
     <lastmod>2018-03-22T00:00:00+00:00</lastmod>
   </url>
@@ -65,7 +75,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-03-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-03-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

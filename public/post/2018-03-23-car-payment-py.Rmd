@@ -1,0 +1,189 @@
+---
+title: "Calculating car loan payments in Python"
+author: "DD"
+date: "2018-03-23"
+description: "Car loan payments in Python"
+output: html_document
+---
+
+### Calculating the car loan payments
+
+Let's say that you want to purchase a car for \$15000. You only have \$5000. A bank offers you \$10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
+
+Here is what we know
+
+- Car price \$15000
+- Loan amount \$10000
+- Interest rates 7% per year
+- Duration 5 years
+- Payments ? - We need to solve for this.
+
+Before we build our loan amortization table we need to calculate the yearly payment for our car loan. To calculate this we need the `numpy` module/package.
+
+Lets load our modules.
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+```
+
+Next we setup the variable that are known and calculate car payments.
+
+```{python}
+
+car_loan = 10000
+interest = 0.07
+years = 5
+
+car_payments = np.pmt(rate = interest, nper = years, pv = -car_loan)
+print(car_payments)
+
+```
+
+Our car loan will cost us \$2438 in yearly payments. We can build a payment schedule table and see how our loan balance will go down to zero at the end of the fifth year. First we will show you the entire code and then walk you through each step.
+
+```{python}
+
+car_loan = 10000
+interest = 0.07
+years = 5
+
+car_payments = np.pmt(rate = interest, nper = years, pv = -car_loan)
+
+loan_table = np.zeros((5,6))
+loan_table = pd.DataFrame(loan_table)
+loan_table.columns = ["Year", 'Initial_Balance', "Payments", "Interest",
+                                "Principal", "Ending_Balance"]
+
+loan_table.iloc[0,0] = 1
+loan_table.iloc[0,1] = car_loan
+loan_table.iloc[0,2] = car_payments
+loan_table.iloc[0,3] = car_loan * interest
+loan_table.iloc[0,4] = car_payments - (car_loan * interest)
+loan_table.iloc[0,5] = car_loan - (car_payments - (car_loan * interest))
+
+for i in range(1,5):
+    loan_table.iloc[i,0] = i + 1
+    loan_table.iloc[i,1] = loan_table.iloc[(i-1), 5]
+    loan_table.iloc[i,2] = car_payments
+    loan_table.iloc[i,3] = loan_table.iloc[i,1] * interest
+    loan_table.iloc[i,4] = car_payments - (loan_table.iloc[i,1] * interest)
+    loan_table.iloc[i,5] = loan_table.iloc[i,1] - (car_payments - (loan_table.iloc[i,1] * interest))
+    
+loan_table = loan_table.round(2)
+    
+
+with pd.option_context("display.max_rows",None,"display.max_columns", None):
+    print(loan_table)
+
+```
+
+As you can see our final balance at the end of year 5 is 0. Lets go through this code.
+
+First we calculate the car_payments for each year.
+```{python}
+
+
+car_loan = 10000
+interest = 0.07
+years = 5
+
+# We use the np.pmt() function to calculate the payments
+
+car_payments = np.pmt(rate = interest, nper = years, pv = -car_loan)
+
+```
+
+Next we create an empty data frame to hold our yearly values. We will fill this table using a for loop.
+
+```{python}
+
+# This creats a table of 5 rows and 6 columns filled with zeros
+loan_table = np.zeros((5,6))
+
+# Convert it to a dataframe
+loan_table = pd.DataFrame(loan_table)
+
+# We change the column names to relevant fields
+loan_table.columns = ["Year", 'Initial_Balance', "Payments", "Interest",
+                                "Principal", "Ending_Balance"]
+
+print(loan_table)
+
+```
+
+Now that we have out empty table we need to fill the table with our calculations. We need to calculate the first column manually and then we can fill the rest using a for loop using the first values. This is similar to excel, where we need to calculate the first row manually and then drang down to copy the formula to fill the remaining columns.
+
+One thing to note about Python versus R is that Python indexing starts at 0 and R starts at 1. So our column 1 and row 1 in R is column 0 and row 0 in Python. So we modify that code accordingly.
+
+```{python}
+
+# Row 0 and column 0 is our Year 1.
+# use iloc[] to loacate that
+loan_table.iloc[0,0] = 1
+
+# Initial balance it the car_loan amount
+loan_table.iloc[0,1] = car_loan
+
+# car payments are the same we calculated above
+loan_table.iloc[0,2] = car_payments
+
+# interest payment is initial balance * interest
+loan_table.iloc[0,3] = car_loan * interest
+
+# Priciple is car payment - interest
+loan_table.iloc[0,4] = car_payments - (car_loan * interest)
+
+# Ending balance is intial balance - principle
+loan_table.iloc[0,5] = car_loan - (car_payments - (car_loan * interest))
+
+```
+
+Once we have the first row filled we can now run the for loop to calculate all the other values.
+
+```{python}
+
+# Our loop will run from row 1 to 4
+for i in range(1,5):
+# First row is the year
+    loan_table.iloc[i,0] = i + 1
+    
+    # The initial balance is previous years ending balance
+    loan_table.iloc[i,1] = loan_table.iloc[(i-1), 5]
+    
+    # The payments are the car payments
+    loan_table.iloc[i,2] = car_payments
+    
+    # Interest each year is initial balance * interest rate
+    loan_table.iloc[i,3] = loan_table.iloc[i,1] * interest
+    
+    # Principle amount is payment - interest amount
+    loan_table.iloc[i,4] = car_payments - (loan_table.iloc[i,1] * interest)
+    
+    # Ending balance is initial balance - principle
+    loan_table.iloc[i,5] = loan_table.iloc[i,1] - (car_payments - (loan_table.iloc[i,1] * interest))
+
+# We want to round all the values to 2 places
+loan_table = loan_table.round(2)
+    
+
+# This command is not necessary. 
+# It is used to display the entire pandas dataframe
+with pd.option_context("display.max_rows",None,"display.max_columns", None):
+    print(loan_table)
+
+
+```
+
+And there you have it, we just built our car loan payment schedule in python. It may seem like too much typing when you compare this with excel (and it is). But the true power of programming is not in such simple calculation (for this excel may be better). But this is very helpful when you are trying run a for loop over millions of items. Python has the ability to perform millions of calculations in fraction of a second. 
+
+## Summary
+
+In this post we learned 
+
+- To calcualte the car payments using the np.pmt() function
+- To create an empty dataframe
+- To run a for loop
+- To build car loan payment

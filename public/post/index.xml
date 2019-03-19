@@ -6,10 +6,32 @@
     <description>Recent content in Posts on Long Short Strategies</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Mar 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Calculating car loan payments in Python</title>
+      <link>/post/2018-03-23-car-payment-py/</link>
+      <pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-23-car-payment-py/</guid>
+      <description>Calculating the car loan paymentsLet’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
+Here is what we know
+Car price $15000Loan amount $10000Interest rates 7% per yearDuration 5 yearsPayments ? - We need to solve for this.</description>
+    </item>
+    
+    <item>
+      <title>Calculating car loan payments in R</title>
+      <link>/post/2018-03-23-car-payment/</link>
+      <pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-23-car-payment/</guid>
+      <description>Calculating the car loan paymentsLet’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
+Here is what we know
+Car price $15000Loan amount $10000Interest rates 7% per yearDuration 5 yearsPayments ? - We need to solve for this.</description>
+    </item>
     
     <item>
       <title>Calculating potential returns in Python</title>

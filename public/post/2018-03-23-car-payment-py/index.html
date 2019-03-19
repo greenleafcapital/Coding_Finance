@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Calculating car loan payments in Python :: Long Short Strategies</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2018-03-23-car-payment-py/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Calculating car loan payments in Python :: Long Short Strategies — " />
+<meta name="twitter:description" content="Calculating the car loan paymentsLet’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
+Here is what we know
+Car price $15000Loan amount $10000Interest rates 7% per yearDuration 5 yearsPayments ? - We need to solve for this." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Calculating car loan payments in Python :: Long Short Strategies — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2018-03-23-car-payment-py/" />
+<meta property="og:site_name" content="Calculating car loan payments in Python" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2018-03-23 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">long short</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+      <li><a href="/portfolio">Portfolio</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2018-03-23-car-payment-py/">Calculating car loan payments in Python</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        3/23/2018
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <div id="calculating-the-car-loan-payments" class="section level3">
+<h3>Calculating the car loan payments</h3>
+<p>Let’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?</p>
+<p>Here is what we know</p>
+<ul>
+<li>Car price $15000</li>
+<li>Loan amount $10000</li>
+<li>Interest rates 7% per year</li>
+<li>Duration 5 years</li>
+<li>Payments ? - We need to solve for this.</li>
+</ul>
+<p>Before we build our loan amortization table we need to calculate the yearly payment for our car loan. To calculate this we need the <code>numpy</code> module/package.</p>
+<p>Lets load our modules.</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np</code></pre>
+<p>Next we setup the variable that are known and calculate car payments.</p>
+<pre class="python"><code>car_loan = 10000
+interest = 0.07
+years = 5
+car_payments = np.pmt(rate = interest, nper = years, pv = -car_loan)
+print(car_payments)</code></pre>
+<pre><code>## 2438.9069444137394</code></pre>
+<p>Our car loan will cost us $2438 in yearly payments. We can build a payment schedule table and see how our loan balance will go down to zero at the end of the fifth year. First we will show you the entire code and then walk you through each step.</p>
+<pre class="python"><code>car_loan = 10000
+interest = 0.07
+years = 5
+car_payments = np.pmt(rate = interest, nper = years, pv = -car_loan)
+loan_table = np.zeros((5,6))
+loan_table = pd.DataFrame(loan_table)
+loan_table.columns = [&quot;Year&quot;, &#39;Initial_Balance&#39;, &quot;Payments&quot;, &quot;Interest&quot;,
+                                &quot;Principal&quot;, &quot;Ending_Balance&quot;]
+loan_table.iloc[0,0] = 1
+loan_table.iloc[0,1] = car_loan
+loan_table.iloc[0,2] = car_payments
+loan_table.iloc[0,3] = car_loan * interest
+loan_table.iloc[0,4] = car_payments - (car_loan * interest)
+loan_table.iloc[0,5] = car_loan - (car_payments - (car_loan * interest))
+for i in range(1,5):
+    loan_table.iloc[i,0] = i + 1
+    loan_table.iloc[i,1] = loan_table.iloc[(i-1), 5]
+    loan_table.iloc[i,2] = car_payments
+    loan_table.iloc[i,3] = loan_table.iloc[i,1] * interest
+    loan_table.iloc[i,4] = car_payments - (loan_table.iloc[i,1] * interest)
+    loan_table.iloc[i,5] = loan_table.iloc[i,1] - (car_payments - (loan_table.iloc[i,1] * interest))
+    
+loan_table = loan_table.round(2)
+    
+with pd.option_context(&quot;display.max_rows&quot;,None,&quot;display.max_columns&quot;, None):
+    print(loan_table)</code></pre>
+<pre><code>##    Year  Initial_Balance  Payments  Interest  Principal  Ending_Balance
+## 0   1.0         10000.00   2438.91    700.00    1738.91         8261.09
+## 1   2.0          8261.09   2438.91    578.28    1860.63         6400.46
+## 2   3.0          6400.46   2438.91    448.03    1990.87         4409.59
+## 3   4.0          4409.59   2438.91    308.67    2130.24         2279.35
+## 4   5.0          2279.35   2438.91    159.55    2279.35            0.00</code></pre>
+<p>As you can see our final balance at the end of year 5 is 0. Lets go through this code.</p>
+<p>First we calculate the car_payments for each year.</p>
+<pre class="python"><code>car_loan = 10000
+interest = 0.07
+years = 5
+# We use the np.pmt() function to calculate the payments
+car_payments = np.pmt(rate = interest, nper = years, pv = -car_loan)</code></pre>
+<p>Next we create an empty data frame to hold our yearly values. We will fill this table using a for loop.</p>
+<pre class="python"><code># This creats a table of 5 rows and 6 columns filled with zeros
+loan_table = np.zeros((5,6))
+# Convert it to a dataframe
+loan_table = pd.DataFrame(loan_table)
+# We change the column names to relevant fields
+loan_table.columns = [&quot;Year&quot;, &#39;Initial_Balance&#39;, &quot;Payments&quot;, &quot;Interest&quot;,
+                                &quot;Principal&quot;, &quot;Ending_Balance&quot;]
+print(loan_table)</code></pre>
+<pre><code>##    Year  Initial_Balance       ...        Principal  Ending_Balance
+## 0   0.0              0.0       ...              0.0             0.0
+## 1   0.0              0.0       ...              0.0             0.0
+## 2   0.0              0.0       ...              0.0             0.0
+## 3   0.0              0.0       ...              0.0             0.0
+## 4   0.0              0.0       ...              0.0             0.0
+## 
+## [5 rows x 6 columns]</code></pre>
+<p>Now that we have out empty table we need to fill the table with our calculations. We need to calculate the first column manually and then we can fill the rest using a for loop using the first values. This is similar to excel, where we need to calculate the first row manually and then drang down to copy the formula to fill the remaining columns.</p>
+<p>One thing to note about Python versus R is that Python indexing starts at 0 and R starts at 1. So our column 1 and row 1 in R is column 0 and row 0 in Python. So we modify that code accordingly.</p>
+<pre class="python"><code># Row 0 and column 0 is our Year 1.
+# use iloc[] to loacate that
+loan_table.iloc[0,0] = 1
+# Initial balance it the car_loan amount
+loan_table.iloc[0,1] = car_loan
+# car payments are the same we calculated above
+loan_table.iloc[0,2] = car_payments
+# interest payment is initial balance * interest
+loan_table.iloc[0,3] = car_loan * interest
+# Priciple is car payment - interest
+loan_table.iloc[0,4] = car_payments - (car_loan * interest)
+# Ending balance is intial balance - principle
+loan_table.iloc[0,5] = car_loan - (car_payments - (car_loan * interest))</code></pre>
+<p>Once we have the first row filled we can now run the for loop to calculate all the other values.</p>
+<pre class="python"><code># Our loop will run from row 1 to 4
+for i in range(1,5):
+# First row is the year
+    loan_table.iloc[i,0] = i + 1
+    
+    # The initial balance is previous years ending balance
+    loan_table.iloc[i,1] = loan_table.iloc[(i-1), 5]
+    
+    # The payments are the car payments
+    loan_table.iloc[i,2] = car_payments
+    
+    # Interest each year is initial balance * interest rate
+    loan_table.iloc[i,3] = loan_table.iloc[i,1] * interest
+    
+    # Principle amount is payment - interest amount
+    loan_table.iloc[i,4] = car_payments - (loan_table.iloc[i,1] * interest)
+    
+    # Ending balance is initial balance - principle
+    loan_table.iloc[i,5] = loan_table.iloc[i,1] - (car_payments - (loan_table.iloc[i,1] * interest))
+# We want to round all the values to 2 places
+loan_table = loan_table.round(2)
+    
+# This command is not necessary. 
+# It is used to display the entire pandas dataframe
+with pd.option_context(&quot;display.max_rows&quot;,None,&quot;display.max_columns&quot;, None):
+    print(loan_table)</code></pre>
+<pre><code>##    Year  Initial_Balance  Payments  Interest  Principal  Ending_Balance
+## 0   1.0         10000.00   2438.91    700.00    1738.91         8261.09
+## 1   2.0          8261.09   2438.91    578.28    1860.63         6400.46
+## 2   3.0          6400.46   2438.91    448.03    1990.87         4409.59
+## 3   4.0          4409.59   2438.91    308.67    2130.24         2279.35
+## 4   5.0          2279.35   2438.91    159.55    2279.35            0.00</code></pre>
+<p>And there you have it, we just built our car loan payment schedule in python. It may seem like too much typing when you compare this with excel (and it is). But the true power of programming is not in such simple calculation (for this excel may be better). But this is very helpful when you are trying run a for loop over millions of items. Python has the ability to perform millions of calculations in fraction of a second.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>In this post we learned</p>
+<ul>
+<li>To calcualte the car payments using the np.pmt() function</li>
+<li>To create an empty dataframe</li>
+<li>To run a for loop</li>
+<li>To build car loan payment</li>
+</ul>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2018-03-23-car-payment/">Calculating car loan payments in R →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">long short</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

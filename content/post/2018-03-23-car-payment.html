@@ -1,0 +1,174 @@
+---
+title: "Calculating car loan payments in R"
+author: "DD"
+date: "2018-03-23"
+description: "Car loan payments in R"
+output: html_document
+---
+
+
+
+<div id="calculating-the-car-loan-payments" class="section level3">
+<h3>Calculating the car loan payments</h3>
+<p>Let’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?</p>
+<p>Here is what we know</p>
+<ul>
+<li>Car price $15000</li>
+<li>Loan amount $10000</li>
+<li>Interest rates 7% per year</li>
+<li>Duration 5 years</li>
+<li>Payments ? - We need to solve for this.</li>
+</ul>
+<p>Before we build our loan amortization table we need to calculate the yearly payment for our car loan. To calculate this we need the <code>FinCal</code> package. We can download this with the following command <code>install.packages("FinCal")</code>. Then we will load the packages.</p>
+<pre class="r"><code>library(tidyquant)
+library(DT)
+library(FinCal) </code></pre>
+<p>Next we setup the variable that are known and calculate car payments.</p>
+<pre class="r"><code># Set up our variables.
+
+car_loan &lt;- 10000
+interest &lt;- 0.07
+years &lt;- 5
+
+# use the pmt() function to calculate the payments
+
+car_payments &lt;- pmt(pv = -car_loan,r = interest, n = years, fv = 0)
+car_payments</code></pre>
+<pre><code>## [1] 2438.907</code></pre>
+<p>Our car loan will cost us $2438 in yearly payments. We can build a payment schedule table and see how our loan balance will go down to zero at the end of the fifth year. First we will show you the entire code and then walk you through each step.</p>
+<pre class="r"><code>car_loan &lt;- 10000
+interest &lt;- 0.07
+years &lt;- 5
+car_payments &lt;- pmt(pv = -car_loan,r = interest, n = years, fv = 0)
+
+loan_table &lt;- matrix(ncol = 6, nrow = 5)
+loan_table &lt;- as.data.frame(loan_table)
+colnames(loan_table) &lt;- paste(c(&quot;Year&quot;, &#39;Initial_Balance&#39;, &quot;Payments&quot;, &quot;Interest&quot;,
+                                &quot;Principal&quot;, &quot;Ending_Balance&quot;))
+
+
+loan_table[1,1] &lt;- 1
+loan_table[1,2] &lt;- car_loan
+loan_table[1,3] &lt;- car_payments
+loan_table[1,4] &lt;- car_loan * interest
+loan_table[1,5] &lt;- car_payments - (car_loan * interest)
+loan_table[1,6] &lt;- car_loan - (car_payments - (car_loan * interest))
+
+for(i in 2:5) {
+  
+  loan_table[i,1] &lt;- i
+  loan_table[i,2] &lt;- loan_table[(i-1), 6]
+  loan_table[i,3] &lt;- car_payments
+  loan_table[i,4] &lt;- loan_table[i,2] * interest
+  loan_table[i,5] &lt;- car_payments - (loan_table[i,2] * interest)
+  loan_table[i,6] &lt;- loan_table[i,2] - (car_payments - (loan_table[i,2] * interest))
+  
+}
+
+
+loan_table &lt;- loan_table %&gt;%
+  mutate(Ending_Balance = round(Ending_Balance,3))
+
+loan_table</code></pre>
+<pre><code>##   Year Initial_Balance Payments Interest Principal Ending_Balance
+## 1    1       10000.000 2438.907 700.0000  1738.907       8261.093
+## 2    2        8261.093 2438.907 578.2765  1860.630       6400.463
+## 3    3        6400.463 2438.907 448.0324  1990.875       4409.588
+## 4    4        4409.588 2438.907 308.6712  2130.236       2279.352
+## 5    5        2279.352 2438.907 159.5547  2279.352          0.000</code></pre>
+<p>As you can see our final balance at the end of year 5 is 0. Lets go through this code.</p>
+<p>First we calculate the car_payments for each year.</p>
+<pre class="r"><code># Caluclating the Payment
+
+car_loan &lt;- 10000
+interest &lt;- 0.07
+years &lt;- 5
+car_payments &lt;- pmt(pv = -car_loan,r = interest, n = years, fv = 0)</code></pre>
+<p>Next we create an empty data frame to hold our yearly values. We will fill this table using a for loop.</p>
+<pre class="r"><code># First create an empty matrix with 6 columns and 5 rows
+loan_table &lt;- matrix(ncol = 6, nrow = 5)
+
+# Conver the matrix to a data frame
+loan_table &lt;- as.data.frame(loan_table)
+
+# Name the columns of our table
+colnames(loan_table) &lt;- paste(c(&quot;Year&quot;, &#39;Initial_Balance&#39;, &quot;Payments&quot;, &quot;Interest&quot;,
+                                &quot;Principal&quot;, &quot;Ending_Balance&quot;))
+
+loan_table</code></pre>
+<pre><code>##   Year Initial_Balance Payments Interest Principal Ending_Balance
+## 1   NA              NA       NA       NA        NA             NA
+## 2   NA              NA       NA       NA        NA             NA
+## 3   NA              NA       NA       NA        NA             NA
+## 4   NA              NA       NA       NA        NA             NA
+## 5   NA              NA       NA       NA        NA             NA</code></pre>
+<p>Now that we have out empty table we need to fill the table with our calculations. We need to calculate the first column manually and then we can fill the rest using a for loop using the first values. This is similar to excel, where we need to calculate the first row manually and then drang down to copy the formula to fill the remaining columns.</p>
+<pre class="r"><code># Since this is the 1st year we fill this with 1
+loan_table[1,1] &lt;- 1
+
+# Our initial balance is the total loan amount of $10000
+loan_table[1,2] &lt;- car_loan
+
+# Our payments are the car payments we calculate using the pmt() function
+loan_table[1,3] &lt;- car_payments
+
+# Our interest amount it the Loan balance * Interest rate
+loan_table[1,4] &lt;- car_loan * interest
+
+# Our Principle pay back is payment - the interest amount
+loan_table[1,5] &lt;- car_payments - (car_loan * interest)
+
+# Our Ending balance is the Initial balance - priciple amount
+loan_table[1,6] &lt;- car_loan - (car_payments - (car_loan * interest))
+
+loan_table</code></pre>
+<pre><code>##   Year Initial_Balance Payments Interest Principal Ending_Balance
+## 1    1           10000 2438.907      700  1738.907       8261.093
+## 2   NA              NA       NA       NA        NA             NA
+## 3   NA              NA       NA       NA        NA             NA
+## 4   NA              NA       NA       NA        NA             NA
+## 5   NA              NA       NA       NA        NA             NA</code></pre>
+<p>Once we have the first row filled we can now run the for loop to calculate all the other values.</p>
+<pre class="r"><code># We want this to loop from year 2 to year 5
+for(i in 2:5) {
+  
+  # The year column will be our i value
+  loan_table[i,1] &lt;- i
+  
+  # Initial Balance will be ending balance of previous year
+  loan_table[i,2] &lt;- loan_table[(i-1), 6]
+  
+  # Payments are the car payments
+  loan_table[i,3] &lt;- car_payments
+  
+  # Interest is the begging balance for the year * interest rates
+  loan_table[i,4] &lt;- loan_table[i,2] * interest
+  
+  # Principle payment is car payments - interest
+  loan_table[i,5] &lt;- car_payments - (loan_table[i,2] * interest)
+  
+  # Ending balance is Initial balance - priciple
+  loan_table[i,6] &lt;- loan_table[i,2] - (car_payments - (loan_table[i,2] * interest))
+  
+}
+
+loan_table %&gt;%
+  mutate_all(.,.funs = round,2) # we are rounding off the values to 2 digits</code></pre>
+<pre><code>##   Year Initial_Balance Payments Interest Principal Ending_Balance
+## 1    1        10000.00  2438.91   700.00   1738.91        8261.09
+## 2    2         8261.09  2438.91   578.28   1860.63        6400.46
+## 3    3         6400.46  2438.91   448.03   1990.87        4409.59
+## 4    4         4409.59  2438.91   308.67   2130.24        2279.35
+## 5    5         2279.35  2438.91   159.55   2279.35           0.00</code></pre>
+<p>And there you have it, we just built our car loan payment schedule. It may seem like too much typing when you compare this with excel (and it is). But the true power of programming is not in such simple calculation (for this excel may be better). But this is very helpful when you are trying run a for loop over millions of items.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>In this post we learned</p>
+<ul>
+<li>To calcualte the car payments using the pmt() function</li>
+<li>To create an empty dataframe</li>
+<li>To run a for loop</li>
+<li>To build car loan payment</li>
+</ul>
+</div>
