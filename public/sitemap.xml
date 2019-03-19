@@ -23,6 +23,16 @@
   </url>
   
   <url>
+    <loc>/post/2018-03-20-irr-py/</loc>
+    <lastmod>2018-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/2018-03-20-irr/</loc>
+    <lastmod>2018-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/2018-03-19-tvm_py/</loc>
     <lastmod>2018-03-19T00:00:00+00:00</lastmod>
   </url>
@@ -45,7 +55,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-03-19T00:00:00+00:00</lastmod>
+    <lastmod>2018-03-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

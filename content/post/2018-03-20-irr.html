@@ -1,0 +1,67 @@
+---
+title: "How to calculate IRR in R"
+author: "DD"
+date: "2018-03-20"
+output: html_document
+description: "Calculating IRR in R"
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+
+
+<div id="calculating-irr-in-r" class="section level1">
+<h1>Calculating IRR in R</h1>
+<p>Calculation of IRR in R is easy with the package called <code>jrvFinance</code>. You can install this package with the command <code>install.packages("jrvFinance")</code>.</p>
+<p>Why do we need to calculate the IRR or Internal rate of returns?</p>
+<p>Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:</p>
+<p>Project 1 requires $800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.</p>
+<p>Project 2 required $500 million in investment today, but it will pay 150,170,178,250,300 in payements each year for the next 5 years.</p>
+<p>How would the manager decide which project to choose? To solve this problem we need to calculate the IRR of the two projects. We show the solution below.</p>
+<pre class="r"><code>library(jrvFinance) # This package has a the irr formula to solve our problem
+library(tidyquant) # general R quant package 
+library(DT) # package to display pretty Data tables
+
+project1_cf &lt;- tibble(Year = 0:5,
+             cf = c(-800,200,250,300,350,400))
+
+project2_cf &lt;- tibble(Year = 0:5,
+             cf = c(-500,150,170,178,250,300))
+
+project1_cf %&gt;%
+  DT::datatable(rownames = FALSE,caption = &quot;Project 1&quot;)</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","caption":"<caption>Project 1<\/caption>","data":[[0,1,2,3,4,5],[-800,200,250,300,350,400]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Year<\/th>\n      <th>cf<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,1]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>project2_cf  %&gt;%
+  DT::datatable(rownames = FALSE,caption = &quot;Project 2&quot;)</code></pre>
+<div id="htmlwidget-2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"filter":"none","caption":"<caption>Project 2<\/caption>","data":[[0,1,2,3,4,5],[-500,150,170,178,250,300]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Year<\/th>\n      <th>cf<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,1]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code># To calculate IRR we will use the IRR formula from the jrvFinance library
+
+irr1 &lt;- project1_cf %&gt;%
+  select(cf) %&gt;%
+  .[[1]] %&gt;%
+  irr()
+
+
+irr2 &lt;- project2_cf %&gt;%
+  select(cf) %&gt;%
+  .[[1]] %&gt;%
+  irr()
+
+irr_tbl &lt;- tibble(Name = c(&quot;Project 1&quot;, &quot;Project 2&quot;),
+                  IRR = c(irr1,irr2))
+
+irr_tbl %&gt;%
+  datatable(caption = &quot;Internal rate of returns for the two projects.&quot;)</code></pre>
+<div id="htmlwidget-3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"filter":"none","caption":"<caption>Internal rate of returns for the two projects.<\/caption>","data":[["1","2"],["Project 1","Project 2"],[0.221603097960247,0.267619869102268]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>IRR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>From the above table we can see that project 1 has an IRR of 22.1603098 and project 2 has an IRR of 26.7619869. Even though project 1 offers higher cash flows, project 1 has a lower internal rate of returns. If the managers goal is to choose the project that maximizes profitability then he/she should choose project 2.</p>
+</div>

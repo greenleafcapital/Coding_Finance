@@ -6,10 +6,34 @@
     <description>Recent content in Posts on Long Short Strategies</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 19 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Mar 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to calculate IRR in Python</title>
+      <link>/post/2018-03-20-irr-py/</link>
+      <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-20-irr-py/</guid>
+      <description>Calculating IRR in PythonCalculation of IRR in Python is easy with the numpy module.
+Why do we need to calculate the IRR or Internal rate of returns?
+Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:
+Project 1 requires $800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.</description>
+    </item>
+    
+    <item>
+      <title>How to calculate IRR in R</title>
+      <link>/post/2018-03-20-irr/</link>
+      <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-20-irr/</guid>
+      <description>Calculating IRR in RCalculation of IRR in R is easy with the package called jrvFinance. You can install this package with the command install.packages(&#34;jrvFinance&#34;).
+Why do we need to calculate the IRR or Internal rate of returns?
+Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:
+Project 1 requires $800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.</description>
+    </item>
     
     <item>
       <title>Time Value of Money in Python</title>

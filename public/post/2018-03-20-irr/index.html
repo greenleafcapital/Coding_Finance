@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>How to calculate IRR in R :: Long Short Strategies</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2018-03-20-irr/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="How to calculate IRR in R :: Long Short Strategies — " />
+<meta name="twitter:description" content="Calculating IRR in RCalculation of IRR in R is easy with the package called jrvFinance. You can install this package with the command install.packages(&#34;jrvFinance&#34;).
+Why do we need to calculate the IRR or Internal rate of returns?
+Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:
+Project 1 requires $800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to calculate IRR in R :: Long Short Strategies — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2018-03-20-irr/" />
+<meta property="og:site_name" content="How to calculate IRR in R" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2018-03-20 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">long short</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+      <li><a href="/portfolio">Portfolio</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2018-03-20-irr/">How to calculate IRR in R</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        3/20/2018
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+
+
+<div id="calculating-irr-in-r" class="section level1">
+<h1>Calculating IRR in R</h1>
+<p>Calculation of IRR in R is easy with the package called <code>jrvFinance</code>. You can install this package with the command <code>install.packages("jrvFinance")</code>.</p>
+<p>Why do we need to calculate the IRR or Internal rate of returns?</p>
+<p>Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:</p>
+<p>Project 1 requires $800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.</p>
+<p>Project 2 required $500 million in investment today, but it will pay 150,170,178,250,300 in payements each year for the next 5 years.</p>
+<p>How would the manager decide which project to choose? To solve this problem we need to calculate the IRR of the two projects. We show the solution below.</p>
+<pre class="r"><code>library(jrvFinance) # This package has a the irr formula to solve our problem
+library(tidyquant) # general R quant package 
+library(DT) # package to display pretty Data tables
+
+project1_cf &lt;- tibble(Year = 0:5,
+             cf = c(-800,200,250,300,350,400))
+
+project2_cf &lt;- tibble(Year = 0:5,
+             cf = c(-500,150,170,178,250,300))
+
+project1_cf %&gt;%
+  DT::datatable(rownames = FALSE,caption = &quot;Project 1&quot;)</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","caption":"<caption>Project 1<\/caption>","data":[[0,1,2,3,4,5],[-800,200,250,300,350,400]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Year<\/th>\n      <th>cf<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,1]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>project2_cf  %&gt;%
+  DT::datatable(rownames = FALSE,caption = &quot;Project 2&quot;)</code></pre>
+<div id="htmlwidget-2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"filter":"none","caption":"<caption>Project 2<\/caption>","data":[[0,1,2,3,4,5],[-500,150,170,178,250,300]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Year<\/th>\n      <th>cf<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,1]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code># To calculate IRR we will use the IRR formula from the jrvFinance library
+
+irr1 &lt;- project1_cf %&gt;%
+  select(cf) %&gt;%
+  .[[1]] %&gt;%
+  irr()
+
+
+irr2 &lt;- project2_cf %&gt;%
+  select(cf) %&gt;%
+  .[[1]] %&gt;%
+  irr()
+
+irr_tbl &lt;- tibble(Name = c(&quot;Project 1&quot;, &quot;Project 2&quot;),
+                  IRR = c(irr1,irr2))
+
+irr_tbl %&gt;%
+  datatable(caption = &quot;Internal rate of returns for the two projects.&quot;)</code></pre>
+<div id="htmlwidget-3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"filter":"none","caption":"<caption>Internal rate of returns for the two projects.<\/caption>","data":[["1","2"],["Project 1","Project 2"],[0.221603097960247,0.267619869102268]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>IRR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>From the above table we can see that project 1 has an IRR of 22.1603098 and project 2 has an IRR of 26.7619869. Even though project 1 offers higher cash flows, project 1 has a lower internal rate of returns. If the managers goal is to choose the project that maximizes profitability then he/she should choose project 2.</p>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+            <a class="btn next" href="/post/2018-03-20-irr-py/">← How to calculate IRR in Python</a>
+          
+          
+            <a class="btn previous" href="/post/2018-03-19-tvm_py/">Time Value of Money in Python →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">long short</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+---
+title: "How to calculate IRR in Python"
+author: "DD"
+date: "2018-03-20"
+output: html_document
+description: "Calculating IRR in Python"
+---
+
+# Calculating IRR in Python
+
+Calculation of IRR in Python is easy with the `numpy` module. 
+
+Why do we need to calculate the IRR or Internal rate of returns?
+
+Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:
+
+Project 1 requires \$800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.
+
+Project 2 required \$500 million in investment today, but it will pay 150,170,178,250,300 in payements each year for the next 5 years.
+
+How would the manager decide which project to choose? To solve this problem we need to calculate the IRR of the two projects. We show the solution below.
+
+First let us import the libraries
+
+
+```{python}
+
+import pandas as pd
+import numpy as np
+
+```
+
+```{python}
+
+project1_cf = pd.DataFrame({"Year":np.arange(0,6),
+"cf": [-800,200,250,300,350,400]})
+
+project2_cf = pd.DataFrame({"Year":np.arange(0,6),
+"cf": [-500,150,170,178,250,300]})
+
+print(project1_cf)
+print(project2_cf)
+
+
+```
+
+
+```{python}
+
+irr1 = np.irr(project1_cf["cf"])
+irr2 = np.irr(project2_cf["cf"])
+
+irr_df = pd.DataFrame({"Name":["Project1", "Project2"],
+                      "IRR":[irr1, irr2]})
+
+print(irr_df)
+                  
+```
+
+From the above table we can see that project 1 has an IRR of 22.16% and project 2 has an IRR of 26.76. Even though project 1 offers higher cash flows, project 1 has a lower internal rate of returns. If the managers goal is to choose the project that maximizes profitability then he/she should choose project 2. 
