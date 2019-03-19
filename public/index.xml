@@ -50,6 +50,26 @@ If you would like to learn, then a fake money account is more appropriate for le
     </item>
     
     <item>
+      <title>How to calculate retirement savings in Python</title>
+      <link>/post/2018-03-27-retirement-py/</link>
+      <pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-27-retirement-py/</guid>
+      <description>Retirement problemIn the previos posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
+Suppose we have an individual Jack who is currently 55 years old and intends to retire at 60 (5 years to retirement). Jack expects to live only 10 years after his retirement.</description>
+    </item>
+    
+    <item>
+      <title>How to calculate retirement savings in R</title>
+      <link>/post/2018-03-27-retirement/</link>
+      <pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-27-retirement/</guid>
+      <description>Retirement problemIn the previos posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
+Suppose we have an individual Jack who is currently 55 years old and intends to retire at 60 (5 years to retirement). Jack expects to live only 10 years after his retirement.</description>
+    </item>
+    
+    <item>
       <title>Calculating future returns in Python</title>
       <link>/post/2018-03-23-future-value-py/</link>
       <pubDate>Sun, 25 Mar 2018 00:00:00 +0000</pubDate>

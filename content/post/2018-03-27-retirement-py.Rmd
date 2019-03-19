@@ -1,0 +1,66 @@
+---
+title: "How to calculate retirement savings in Python"
+author: "DD"
+date: "2018-03-27"
+description: "Solving retirement problem in Python"
+output: html_document
+---
+
+### Retirement problem
+
+In the previos posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
+
+Suppose we have an individual Jack who is currently 55 years old and intends to retire at 60 (5 years to retirement). Jack expects to live only 10 years after his retirement. After retirement, his plan is to live in Thailand and travel around South east Asia. He has estimated that he can live comfortably on $30,000 per year for the next 10 years. Jack expects to earn 8% returns on his investments. How much should Jack save each year before retirement?
+
+What do we know about Jack.
+
+- Age 55
+- Retires in 5 years
+- Live 10 years in retirement
+- Yearly cost in retirement \$30000
+- Expected returns is 8% per year
+
+
+For solving this problem, we will divide Jack's time horizon in two parts.
+
+1. Time horizon 1 - Age 55 to 60
+2. Time Horizon 2 - Age 60 to 70
+
+First lets load the necessary library.
+
+
+```{python warning=FALSE,message=FALSE}
+
+import pandas as pd
+import numpy as np
+```
+
+
+First we assume, that Jack has already retired and will calculate the the present value of \$30000 in payments each year. These payments will be withdrawn at the beginning of each year. 
+
+```{python}
+
+interest = 0.08
+n1 = 5 #Time Horizon 1
+n2 = 10 #Time Horizon 2
+pmt_in_retirement = 30000
+
+retirment_amount = np.pv(rate = interest,nper=n2,pmt = pmt_in_retirement,when=1)#type = 1, withdrawing at the beginning period
+print(retirment_amount * -1)
+
+```
+
+So Jack will need about \$217,406 to cover his expenses in retirement.
+
+Next we will calculate the amount needed to save today to accumulate \$217406.
+
+```{python}
+
+saving = np.pmt(rate = interest, nper = n1, pv = 0, fv = retirment_amount, when=1)
+print(saving)
+
+
+```
+
+So Jack needs to save \$34313 each year to have enough money for his retirement.
+
