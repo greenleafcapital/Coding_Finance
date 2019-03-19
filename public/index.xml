@@ -50,6 +50,26 @@ If you would like to learn, then a fake money account is more appropriate for le
     </item>
     
     <item>
+      <title>Calculating potential returns in Python</title>
+      <link>/post/2018-03-22-billboard-py/</link>
+      <pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-22-billboard-py/</guid>
+      <description>Investment opportunity in advertising billboard.You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
+You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you dont want to bother with that.</description>
+    </item>
+    
+    <item>
+      <title>Calculating potential returns in R</title>
+      <link>/post/2018-03-22-billboard/</link>
+      <pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-03-22-billboard/</guid>
+      <description>Investment opportunity in advertising billboard.You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
+You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you dont want to bother with that and you hope to sell it.</description>
+    </item>
+    
+    <item>
       <title>How to calculate IRR in Python</title>
       <link>/post/2018-03-20-irr-py/</link>
       <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>

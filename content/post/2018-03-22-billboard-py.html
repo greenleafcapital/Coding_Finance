@@ -1,0 +1,68 @@
+---
+title: "Calculating potential returns in Python"
+author: "DD"
+date: "2018-03-22"
+description: "Investment opportunity in a roadside billboard"
+output: html_document
+---
+
+
+
+<div id="investment-opportunity-in-advertising-billboard." class="section level3">
+<h3>Investment opportunity in advertising billboard.</h3>
+<p>You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :</p>
+<ol style="list-style-type: decimal">
+<li>You are required to pay $70000 today</li>
+<li>The investment is for 5 years</li>
+<li>The billboard pays an annual rent of $10000</li>
+<li>Current interest rates are 5%</li>
+<li>After five years the billboard needs upgrades, but you dont want to bother with that.</li>
+<li>You are fairly confident that you could sell this investment to someone at $45000, after 5 years and let them do the upgrades.</li>
+</ol>
+<p>Is this a good deal?</p>
+<p>Here is what we know.</p>
+<ul>
+<li>Future value (FV) - $45000</li>
+<li>Yearly Payment (PMT) - $10000</li>
+<li>Period (N) - 5 years</li>
+<li>Interest rates (IR) - 5%</li>
+<li>Present value (PV) - ? We need to solve this.</li>
+</ul>
+<p>First we load our modules/libraries</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np</code></pre>
+<pre class="python"><code># First we build our cash flow table
+billboard_cashflow = pd.DataFrame({&quot;Year&quot;:np.arange(1,6),
+&quot;cf&quot;:[10000,10000,10000,10000,55000]})  # The last payment includes the $45000 sale price
+# interest rates
+ir = 0.05
+billboard_cashflow[&quot;pv&quot;] = billboard_cashflow[&quot;cf&quot;] / (1 + ir) ** billboard_cashflow[&quot;Year&quot;]
+print(billboard_cashflow)</code></pre>
+<pre><code>##    Year     cf            pv
+## 0     1  10000   9523.809524
+## 1     2  10000   9070.294785
+## 2     3  10000   8638.375985
+## 3     4  10000   8227.024748
+## 4     5  55000  43093.939156</code></pre>
+<pre class="python"><code>pv = billboard_cashflow[&quot;pv&quot;].sum()
+print(pv)</code></pre>
+<pre><code>## 78553.44419738883</code></pre>
+<p>Based on our calculations the present value of the billboard is about 78553.44. Offer to buy this invesment opportunity is $70000, so our net present value (NPV) is 8553.44. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%.</p>
+<p>You are pleased with your calculations and are about to finalise the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is $200000, but is short exactly $70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.</p>
+<pre class="python"><code>billboard_cashflow = pd.DataFrame({&quot;Year&quot;:np.arange(1,6),
+&quot;cf&quot;:[10000,10000,10000,10000,55000]})  # The last payment includes the $45000 sale price
+# interest rates
+ir = 0.075 # new Interest rate
+billboard_cashflow[&quot;pv&quot;] = billboard_cashflow[&quot;cf&quot;] / (1 + ir) ** billboard_cashflow[&quot;Year&quot;]
+print(billboard_cashflow)</code></pre>
+<pre><code>##    Year     cf            pv
+## 0     1  10000   9302.325581
+## 1     2  10000   8653.326122
+## 2     3  10000   8049.605695
+## 3     4  10000   7488.005298
+## 4     5  55000  38310.724779</code></pre>
+<pre class="python"><code>pv = billboard_cashflow[&quot;pv&quot;].sum()
+print(pv)</code></pre>
+<pre><code>## 71803.98747573976</code></pre>
+<p>At 7.5% return, the value of the billboard drops about 10% from $78500 to $71800. This is an important principle in Finance, <strong>as interest rates rise, value of risky assets drop.</strong> We will cover this topic in more details in the chapter on Fixed Income.</p>
+</div>

@@ -1,0 +1,114 @@
+---
+title: "Calculating potential returns in R"
+author: "DD"
+date: "2018-03-22"
+description: "Investment opportunity in a roadside billboard"
+output: html_document
+---
+
+## Investment opportunity in advertising billboard.
+
+You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
+
+1. You are required to pay \$70000 today
+2. The investment is for 5 years
+3. The billboard pays an annual rent of \$10000
+4. Current interest rates are 5%
+5. After five years the billboard needs upgrades, but you dont want to bother with that and you hope to sell it.
+6. You are fairly confident that you could sell this investment to someone at \$45000, after 5 years and let them do the upgrades.
+
+Is this a good deal? 
+
+Here is what we know.
+
+- Future value (FV) - \$45000
+- Yearly Payment (PMT) - \$10000
+- Period (N) - 5 years
+- Interest rates (IR) - 5%
+- Present value (PV) - ?  We need to solve for this.
+
+First we load our libraries
+
+```{r warning=FALSE,message=FALSE}
+
+library(tidyquant)
+library(DT)
+
+```
+
+
+```{r Pv-Billboard, warning=FALSE,message=FALSE}
+
+#First we build the cash flow table
+
+billoard_cashflow <- tribble(~Year,~cf,
+              1,10000, # rent received each year
+              2,10000,
+              3,10000,
+              4,10000,
+              5,55000) # This includes last year rent $10000 plus $45000 sale price
+
+ir <- 0.05 # interest rate
+
+pv <- billoard_cashflow %>%
+  mutate(pv = cf/(1 + ir)^Year)
+
+pv %>%
+  datatable(rownames = FALSE,
+            caption = "Billboard Cash Flow Table")
+  
+
+pv1 <- pv %>%
+  select(pv) %>%
+  sum()
+
+print(pv1)
+
+```
+
+
+Based on our calculations the present value of the billboard is about 78553.44. The offer to buy this invesment opportunity is \$70000, so our net present value (NPV) is `r round(pv1 - 70000,2)`. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%. 
+
+You are pleased with your calculations and are about to finalise the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is \$200000, but he is short exactly \$70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.
+
+```{r Pv-Billboard-0.08, warning=FALSE,message=FALSE}
+
+#First we build the cash flow table
+
+billoard_cashflow <- tribble(~Year,~cf,
+              1,10000, # rent received each year
+              2,10000,
+              3,10000,
+              4,10000,
+              5,55000) # This includes last year rent $10000 plus $45000 sale price
+
+ir <- 0.075 # interest rate
+
+pv <- billoard_cashflow %>%
+  mutate(pv = cf/(1 + ir)^Year)
+
+pv %>%
+  datatable(rownames = FALSE,
+            caption = "Billboard Cash Flows table")
+
+pv2 = pv %>%
+  select(pv) %>%
+  sum()
+
+print(pv2)
+
+```
+
+
+At 7.5% return, the value of the billboard drops about 10% from about \$78500 to \$71804. This is an important principle in Finance, **as interest rates rise, value of risky assets drop.** We will cover this topic in more details in other posts.
+
+## Summary
+
+In this post we learned:
+
+- To Setup our cash flow table
+- To Calculate the NPV
+- Important  relationship between interest rates and prices.
+
+
+

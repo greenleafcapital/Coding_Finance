@@ -1,0 +1,105 @@
+---
+title: "Calculating potential returns in R"
+author: "DD"
+date: "2018-03-22"
+description: "Investment opportunity in a roadside billboard"
+output: html_document
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+
+
+<div id="investment-opportunity-in-advertising-billboard." class="section level2">
+<h2>Investment opportunity in advertising billboard.</h2>
+<p>You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :</p>
+<ol style="list-style-type: decimal">
+<li>You are required to pay $70000 today</li>
+<li>The investment is for 5 years</li>
+<li>The billboard pays an annual rent of $10000</li>
+<li>Current interest rates are 5%</li>
+<li>After five years the billboard needs upgrades, but you dont want to bother with that and you hope to sell it.</li>
+<li>You are fairly confident that you could sell this investment to someone at $45000, after 5 years and let them do the upgrades.</li>
+</ol>
+<p>Is this a good deal?</p>
+<p>Here is what we know.</p>
+<ul>
+<li>Future value (FV) - $45000</li>
+<li>Yearly Payment (PMT) - $10000</li>
+<li>Period (N) - 5 years</li>
+<li>Interest rates (IR) - 5%</li>
+<li>Present value (PV) - ? We need to solve for this.</li>
+</ul>
+<p>First we load our libraries</p>
+<pre class="r"><code>library(tidyquant)
+library(DT)</code></pre>
+<pre class="r"><code>#First we build the cash flow table
+
+billoard_cashflow &lt;- tribble(~Year,~cf,
+              1,10000, # rent received each year
+              2,10000,
+              3,10000,
+              4,10000,
+              5,55000) # This includes last year rent $10000 plus $45000 sale price
+
+ir &lt;- 0.05 # interest rate
+
+pv &lt;- billoard_cashflow %&gt;%
+  mutate(pv = cf/(1 + ir)^Year)
+
+pv %&gt;%
+  datatable(rownames = FALSE,
+            caption = &quot;Billboard Cash Flow Table&quot;)</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","caption":"<caption>Billboard Cash Flow Table<\/caption>","data":[[1,2,3,4,5],[10000,10000,10000,10000,55000],[9523.80952380952,9070.2947845805,8638.37598531476,8227.02474791882,43093.9391557652]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Year<\/th>\n      <th>cf<\/th>\n      <th>pv<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>pv1 &lt;- pv %&gt;%
+  select(pv) %&gt;%
+  sum()
+
+print(pv1)</code></pre>
+<pre><code>## [1] 78553.44</code></pre>
+<p>Based on our calculations the present value of the billboard is about 78553.44. The offer to buy this invesment opportunity is $70000, so our net present value (NPV) is 8553.44. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%.</p>
+<p>You are pleased with your calculations and are about to finalise the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is $200000, but he is short exactly $70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.</p>
+<pre class="r"><code>#First we build the cash flow table
+
+billoard_cashflow &lt;- tribble(~Year,~cf,
+              1,10000, # rent received each year
+              2,10000,
+              3,10000,
+              4,10000,
+              5,55000) # This includes last year rent $10000 plus $45000 sale price
+
+ir &lt;- 0.075 # interest rate
+
+pv &lt;- billoard_cashflow %&gt;%
+  mutate(pv = cf/(1 + ir)^Year)
+
+pv %&gt;%
+  datatable(rownames = FALSE,
+            caption = &quot;Billboard Cash Flows table&quot;)</code></pre>
+<div id="htmlwidget-2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"filter":"none","caption":"<caption>Billboard Cash Flows table<\/caption>","data":[[1,2,3,4,5],[10000,10000,10000,10000,55000],[9302.32558139535,8653.32612222823,8049.60569509603,7488.00529776375,38310.7247792564]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Year<\/th>\n      <th>cf<\/th>\n      <th>pv<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>pv2 = pv %&gt;%
+  select(pv) %&gt;%
+  sum()
+
+print(pv2)</code></pre>
+<pre><code>## [1] 71803.99</code></pre>
+<p>At 7.5% return, the value of the billboard drops about 10% from about $78500 to $71804. This is an important principle in Finance, <strong>as interest rates rise, value of risky assets drop.</strong> We will cover this topic in more details in other posts.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>In this post we learned:</p>
+<ul>
+<li>To Setup our cash flow table</li>
+<li>To Calculate the NPV</li>
+<li>Important relationship between interest rates and prices.</li>
+</ul>
+</div>
