@@ -1,0 +1,467 @@
+---
+title: "Calculating future returns in R"
+author: "DD"
+date: "2018-03-25"
+description: "Calculating future returns for regular deposits and investment in Bitcoin"
+output: html_document
+---
+
+## Calculating the potential future value of Bitcoin Investment
+
+The year 2017 was a great year for cryptocurrencies and in particular for the crypto leader Bitcoin. Many people called crypotcurrencies the future of money, but so far 2018 has been lousy. The crypto currency advocates argue that the value of will increase in the future. We have seen many claims, from \$50000 to \$1000000 per bitcoin. We take no sides and the Market will decide the future. For this example we want to demonstrate how much one can make in Bitcoin, if the predictions are correct. Our focus is not on making predictions, but on learing performing future value calculations in R.
+
+Since the end 2010 Bitcoin prices have gone up from about \$0.05 to about \$6500 today. That is a 320%  increase per year. We don't believe that it will continue at that pace in the future, but let's say it grows at 1/10th of that or 35% per year (still a big leap of faith and hard to replicate). 
+
+Since this is a speculation, we will not risk too much on this and speculate only \$1000 on this idea.
+How much would a \$1000 investment(its really a speculation) in Bitcoin be after 30 years at 35% per year?
+
+First lets load our libraries as usual.
+
+```{r,message=FALSE,warning=FALSE}
+
+library(tidyquant)
+library(DT)
+
+```
+
+As usual we will first show you the entire code and then go through it one section at a time.
+
+```{r fv-value, warning=FALSE,message=FALSE}
+
+bitcoin_speculation <- 1000 # Speculating $1000 on bitcoin
+returns <- 0.35 # Assuming 35% returns
+
+# Building the table
+
+fv_table <- tibble(Year = 1:30,
+                   beg_val = 0,
+                   ret = 0,
+                   end_val = 0)
+
+fv_table <- fv_table %>%
+  mutate(beg_val = if_else(Year == 1, bitcoin_speculation,beg_val)) %>%
+  mutate(ret = if_else(Year == 1, beg_val * returns, ret)) %>%
+  mutate(end_val = if_else(Year == 1, beg_val + ret, end_val))
+
+for(i in 2:30) {
+  
+  fv_table[i,1] <- i
+  fv_table[i,2] <- fv_table[c(i-1),4]
+  fv_table[i,3] <- fv_table[i,2] * returns
+  fv_table[i,4] <- fv_table[i,2] + fv_table[i,3]
+  
+}
+
+options(digits = 2) # Rounding to 2 digits
+
+# Showing the table
+
+fv_table %>%
+  datatable(caption = "$1000 Bitcoin Investment in 30 Year at 35% per year") %>%
+  formatRound(columns = c("beg_val", "ret", "end_val"), digits = 2)
+
+  
+
+```
+
+
+So we can see that at 35% per year an investment can grow to \$8.128 million in 30 years.
+
+Now lets go through this together.
+
+First we setup our variables and create an empty table. We will use the `tibble()` function to create an empty table with 0 as values. we will then fill this in by a for loop.
+
+```{r}
+
+
+bitcoin_speculation <- 1000 # Speculating $1000 on bitcoin
+returns <- 0.35 # Assuming 35% returns
+
+# Building the empty table
+
+fv_table <- tibble(Year = 1:30,
+                   beg_val = 0,
+                   ret = 0,
+                   end_val = 0)
+head(fv_table)
+
+```
+
+
+Next we calculate the values for our first row. In this we will use the `if_else()` function. It simply states that if Year is 1 then change the value and if not then keep the value as 0.
+
+```{r}
+
+fv_table <- fv_table %>%
+  # We want the first value to be the speculation amount
+  mutate(beg_val = if_else(Year == 1, bitcoin_speculation,beg_val)) %>%
+  # First year returns are beg_value * returns
+  mutate(ret = if_else(Year == 1, beg_val * returns, ret)) %>%
+  # Ending value is beg_value + returns
+  mutate(end_val = if_else(Year == 1, beg_val + ret, end_val))
+
+
+head(fv_table)
+
+```
+
+
+Next we run the for loop with similar formulas to fill the rest of the columns.
+
+```{r}
+
+# We want the loop to run from year 2 to year 30 
+for(i in 2:30) {
+  
+  # Year value is the value of i
+  fv_table[i,1] <- i
+  #Beg_value is last years ending value
+  fv_table[i,2] <- fv_table[c(i-1),4]
+  # Returns are beg_value * returns
+  fv_table[i,3] <- fv_table[i,2] * returns
+  # Ending value is returns + beg_value
+  fv_table[i,4] <- fv_table[i,2] + fv_table[i,3]
+  
+}
+
+options(digits = 2) # Rounding to 2 digits
+
+# Showing the entire table
+
+fv_table %>%
+  datatable(caption = "$1000 Bitcoin Investment in 30 Year at 35% per year") %>%
+  formatRound(columns = c("beg_val", "ret", "end_val"), digits = 2)
+
+```
+
+
+As we can see from the table our \$1000 investment would grow to approximately \$8.13 million in 30 years. When you think of saving \$1000/year, its not that difficult. If a person saves \$3 per day for an entire year, he/she would have \$1000. But as mentioned above, growing at 35% per year for 30 years is incredibly hard. So it may never reach that price. We are curious to see how Bitcoin story unfolds.
+
+## Calculating the future value of regular annual deposits
+
+In the last example we saw the hypothetical growth of Bitcoin and how an investment grows at 35% per year. It is quite lofty to grow at 35% per year and is highest form of speculation and may not be suitable for all. So one should be careful and not bet a huge amount on such activities.
+
+So what about the regular savers. How can we calculate their future values and whether its enough for their retirement? Does it matter when you start saving? We will answer these questions in the next example.
+
+Consider an example of Tom and Jerry. They are the same age, but both have different personalities. Tom believes in securing his future and works hard towards it, Jerry believes in living in the moment and only start saving after securing a higher paying job. At the end of every month Tom strives to save 10% of his salary, Jerry always finds himself without any money left.
+
+Lets assume they are both 20 and starting their first job. They make \$3000 per month. They wish to retire in 50 years. Tom decides to save and invest for first 20 years age 20 to 40 and then no savings after that. Jerry on the other hand also decides to save and invest 10% of his salary for 20 years but from age 50 to 70. For simplicity we will assume their salary stays the same and ignore taxes. We also assume they make 7.5% on their investments, which close to the historical returns on US stock market over the long term.
+
+How will they do?
+
+What do we know.
+
+- Yearly salary \$36000 (3000 per month)
+- Yearly deposit \$3600
+- Stock Returns  7.5%
+- Both save for the same duration 20 year, but their timing is different.
+- Tom saves from age 20 to 40
+- Jerry save from age 50 to 70
+- They both will retire at age 70
+
+As usual we will show our entire code and then go through it later.
+
+
+```{r reg-deposit-Tom, warning=FALSE,message=FALSE}
+
+# Setting up the variables for Tom
+
+interest <- 0.075
+annual_deposit <- 3600
+n = 50  
+
+# Making an empty Table where we will hold the values
+
+fv_table <- tibble(Year = 1:n,
+                   beg_value = 0,
+                   deposit = 0,
+                   int = 0,
+                   end_value = 0)
+
+# Assigning the value for the first row of the table
+
+fv_table[1,2] <- 0
+fv_table[1,3] <- annual_deposit
+fv_table[1,4] <- annual_deposit * interest
+fv_table[1,5] <- fv_table[1,3] + fv_table[1,4]
+
+
+# Running a for loop to calculate the first part where Tom save $3600 per year
+for(i in 2:20) {
+  
+  fv_table[i,2] <- fv_table[c(i-1),5]
+  fv_table[i,3] <- annual_deposit
+  fv_table[i,4] <- (fv_table[i,2] + annual_deposit) * interest
+  fv_table[i,5] <- fv_table[i,2] + fv_table[i,3] + fv_table[i,4]
+  
+}
+
+# Running a for loop to calculate the second part where Tom saves nothing but 
+# his investments continue to grow at 7.5%
+
+for(i in 21:50) {
+  
+  fv_table[i,2] <- fv_table[c(i-1),5]
+  fv_table[i,3] <- 0
+  fv_table[i,4] <- (fv_table[i,2] + 0) * interest
+  fv_table[i,5] <- fv_table[i,2] + fv_table[i,3] + fv_table[i,4]
+  
+}
+
+fv_table_tom <- fv_table 
+
+
+#-------------------------------------------------------------------------------
+
+# Setting up the variable for Jerry
+
+interest <- 0.075
+annual_deposit <- 3600
+n = 50 
+
+# Empty table for jerry is from Year 30 to Year 50 when Jerry will retire
+
+fv_table <- tibble(Year = 30:n,
+                   beg_value = 0,
+                   deposit = 0,
+                   int = 0,
+                   end_value = 0)
+
+# Assigning the value  to the first row
+
+fv_table[1,2] <- 0
+fv_table[1,3] <- annual_deposit
+fv_table[1,4] <- annual_deposit * interest
+fv_table[1,5] <- fv_table[1,3] + fv_table[1,4]
+
+# Running the for loop for the rest of the years
+
+for(i in 2:21) {
+  
+  fv_table[i,2] <- fv_table[c(i-1),5]
+  fv_table[i,3] <- annual_deposit
+  fv_table[i,4] <- (fv_table[i,2] + annual_deposit) * interest
+  fv_table[i,5] <- fv_table[i,2] + fv_table[i,3] + fv_table[i,4]
+  
+}
+
+
+fv_table_jerry <- fv_table
+
+#--------------------------------------------------------------------------------------
+  
+fv_table_both <- left_join(fv_table_tom, fv_table_jerry, by = "Year")
+
+colnames(fv_table_both) <- paste(c("Year", "Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"))
+
+options(digits = 2)
+
+fv_table_both %>%
+  gather(`Tom's inital value`:`Jerry's Ending value`, key = Name, value = save, factor_key = TRUE) %>%
+  mutate(save = if_else(is.na(save), 0, save)) %>%
+  spread(Name, value = save) %>%
+  datatable(caption = "Comparing the Savings and investment growth \n for Tom
+            and Jerry", rownames = FALSE,options = list(pageLength = 10,
+                          autoWidth = TRUE,
+                          scrollX = TRUE)) %>%
+  formatRound(columns = c("Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"), digits = 2)
+
+```
+
+
+So lets construct the code one section at a time and then analyse the results. The code is divided into three sections by using the dashed lines. 
+
+- First part builds the table for Tom
+- Second Part build the table for Jerry
+- Third part combines the tables and renames the columns and then displays the results
+
+The format and the steps are similar to the bitcoin example.
+
+
+```{r}
+
+# Setting up the variables for Tom
+
+interest <- 0.075
+annual_deposit <- 3600
+n = 50  
+
+# Making an empty Table where we will hold the values
+# Since Tom starts investing from year 1 we build the table 
+# from today till he retires in 50 years
+
+fv_table <- tibble(Year = 1:n,
+                   beg_value = 0,
+                   deposit = 0,
+                   int = 0,
+                   end_value = 0)
+
+# right now the table is empty
+
+```
+
+Once we have the empty table, we can calculate the values of the first row. This part should be familiar by now.
+
+```{r}
+
+# Assigning the value for the first row of the table
+
+fv_table[1,2] <- 0
+fv_table[1,3] <- annual_deposit
+fv_table[1,4] <- annual_deposit * interest
+fv_table[1,5] <- fv_table[1,3] + fv_table[1,4]
+
+head(fv_table)
+
+```
+
+Next section is an important deviation from what we did previously. Since Tom has two life periods, first 20 years when he saves 10% each year and the next 30 years where he does not save anything, we need to run two for loop for these two periods.
+
+The first for loop calculates the future value for the first 20 years. We will calculate the first twenty years and display the values in rows 18 to 22.
+
+```{r}
+
+# Running a for loop to calculate the first part where Tom save $3600 per year
+# This loop runs from year 2 to year 20
+for(i in 2:20) {
+  
+  fv_table[i,2] <- fv_table[c(i-1),5]
+  fv_table[i,3] <- annual_deposit
+  fv_table[i,4] <- (fv_table[i,2] + annual_deposit) * interest
+  fv_table[i,5] <- fv_table[i,2] + fv_table[i,3] + fv_table[i,4]
+  
+}
+
+fv_table[c(18:22),]
+
+```
+
+As we can see for loop calculated the values from year 2 to year 20. Values after year 20 are still 0. We will calculate these values using another for loop.
+
+```{r}
+
+# Running a for loop to calculate the second part where Tom saves nothing but 
+# his investments continue to grow at 7.5%
+
+for(i in 21:50) {
+  
+  fv_table[i,2] <- fv_table[c(i-1),5]
+  
+  # He is saving 0
+  fv_table[i,3] <- 0 
+  fv_table[i,4] <- (fv_table[i,2] + 0) * interest
+  fv_table[i,5] <- fv_table[i,2] + fv_table[i,3] + fv_table[i,4]
+  
+}
+
+# Saving the table as fv_table_tom
+
+fv_table_tom <- fv_table 
+
+```
+
+Next we repeat the same steps for Jerry. Since Jerry only saves from year 30 to 50 We need to build our table for year 30 to year 50. After setting up the table we will change the value of the first row.
+
+
+```{r}
+
+interest <- 0.075
+annual_deposit <- 3600
+n = 50 
+
+# Empty table for jerry is from Year 30 to Year 50 when Jerry will retire
+
+fv_table <- tibble(Year = 30:n,
+                   beg_value = 0,
+                   deposit = 0,
+                   int = 0,
+                   end_value = 0)
+
+# Assigning the value  to the first row
+
+fv_table[1,2] <- 0
+fv_table[1,3] <- annual_deposit
+fv_table[1,4] <- annual_deposit * interest
+fv_table[1,5] <- fv_table[1,3] + fv_table[1,4]
+
+head(fv_table)
+
+```
+
+Jerry starts saving 30 years from now (age 50) so the first row show year 30.
+
+Next we need to write a for loop from year 30 to year 50.
+
+
+```{r}
+
+
+# Running the for loop for the rest of the years
+# Since we are looping from row 2 to row 21
+# notice the value is from 2:21
+
+for(i in 2:21) {
+  
+  fv_table[i,2] <- fv_table[c(i-1),5]
+  fv_table[i,3] <- annual_deposit
+  fv_table[i,4] <- (fv_table[i,2] + annual_deposit) * interest
+  fv_table[i,5] <- fv_table[i,2] + fv_table[i,3] + fv_table[i,4]
+  
+}
+
+# We save the values to table for Jerry
+
+fv_table_jerry <- fv_table
+
+head(fv_table_jerry)
+```
+
+Next we combine both tables. For that we use the `left_join()` function. Since both tables contain the column `Year` we use that for our join.
+
+```{r}
+
+# using the left_join to join the tables
+
+fv_table_both <- left_join(fv_table_tom, fv_table_jerry, by = "Year")
+
+
+# Changing the column names
+
+colnames(fv_table_both) <- paste(c("Year", "Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"))
+
+# Rounding off to two digits
+options(digits = 2)
+
+
+# You can igonre this section. 
+# There is no calculation here
+# We are just using this so our table looks pretty
+
+fv_table_both %>%
+  gather(`Tom's inital value`:`Jerry's Ending value`, key = Name, value = save, factor_key = TRUE) %>%
+  mutate(save = if_else(is.na(save), 0, save)) %>%
+  spread(Name, value = save) %>%
+  datatable(caption = "Comparing the Savings and investment growth \n for Tom
+            and Jerry", rownames = FALSE,options = list(pageLength = 10,
+                          autoWidth = TRUE,
+                          scrollX = TRUE)) %>%
+  formatRound(columns = c("Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"), digits = 2)
+
+```
+
+
+From the above table we can see that Tom ends with \$1.4 million, and Jerry ends up with \$184000 in retirement. Even though both make the same salary and save the same amount for the same duration (20 years), one ends up with 10 times as much money as the other. The key lessons to learn from this are:
+
+- The sooner one starts saving and investing, the more money they will end up with
+- Even a person making only \$3000 per month with no growth, can end up as a millionaire with steady and continuous early savings.
+
+
+## Summary
+
+In this post we learned
+
+- To calculate future values
+- To run multiple for loops
+- To join multiple tables
+- An important lesson on savings
+
