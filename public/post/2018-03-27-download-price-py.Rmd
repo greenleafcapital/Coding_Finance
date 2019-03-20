@@ -1,0 +1,104 @@
+---
+title: "How to download stock prices in Python"
+author: "DD"
+date: "2018-04-02"
+description: "Downloading stock prices in Python"
+output: html_document
+---
+
+## Getting stock prices from Yahoo Finance
+
+
+One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo's finance website. Since Yahoo was bought by Verizon, there have been several changes with their api. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.
+
+## Python module for downloading price data
+
+Python has a module called `pandas-datareader` which is used for downloading financial data from yahoo. You can install it by typing the command `pip install pandas-datareader` in your terminal/command promt (update as of 2019 this is no longer true, use the fix-yahoo-finance module).
+
+Let us load the modules/libraries
+
+```{python}
+
+import pandas as pd
+import pandas_datareader as web
+import numpy as np
+import matplotlib.pyplot as plt
+
+```
+
+We will download Apple stock's price first.
+
+```{python}
+
+aapl = web.get_data_yahoo("AAPL",
+start = "2017-01-01",
+end = "2018-03-01")
+
+```
+
+Lets look at the head of the data.
+
+```{python}
+
+print(aapl.head())
+
+```
+
+We can plot the data for Apple.
+
+```{python}
+
+aapl["Adj Close"].plot()
+plt.xlabel("Date")
+plt.ylabel("Adjusted Price")
+plt.title("Apple price data")
+plt.show()
+
+```
+
+We can also download the data for multiple stocks using the below command.
+
+```{python}
+
+tickers = ["AAPL", "MSFT", "AMZN", "K", "O"]
+
+prices = web.get_data_yahoo(tickers,
+start = "2017-01-01",
+end = "2017-01-15")
+
+```
+
+We can look at the head of the data.
+
+```{python}
+
+print(prices.head())
+
+```
+
+As we can see that all the stock prices have been merged in one table. We can also just look at the adjusted prices.
+
+```{python}
+
+prices["Adj Close"].head()
+
+```
+
+Next we can plot prices of the stocks.
+
+```{python}
+
+prices["Adj Close"].plot()
+plt.xlabel("Date")
+plt.ylabel("Adjusted Price")
+plt.title("All stocks price data")
+plt.show()
+
+
+```
+
+This chart has the same problem as before as the there is wide variation in the price data. To solve this problem we will have to calculate the cumulative returns and plot that data. We will discuss that in the next post.
+
+
+
+

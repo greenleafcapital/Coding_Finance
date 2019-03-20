@@ -1,0 +1,72 @@
+---
+title: "How to download stock prices in Python"
+author: "DD"
+date: "2018-04-02"
+description: "Downloading stock prices in Python"
+output: html_document
+---
+
+
+
+<div id="getting-stock-prices-from-yahoo-finance" class="section level2">
+<h2>Getting stock prices from Yahoo Finance</h2>
+<p>One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.</p>
+</div>
+<div id="python-module-for-downloading-price-data" class="section level2">
+<h2>Python module for downloading price data</h2>
+<p>Python has a module called <code>pandas-datareader</code> which is used for downloading financial data from yahoo. You can install it by typing the command <code>pip install pandas-datareader</code> in your terminal/command promt (update as of 2019 this is no longer true, use the fix-yahoo-finance module).</p>
+<p>Let us load the modules/libraries</p>
+<pre class="python"><code>import pandas as pd
+import pandas_datareader as web
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<p>We will download Apple stock’s price first.</p>
+<pre class="python"><code>aapl = web.get_data_yahoo(&quot;AAPL&quot;,
+start = &quot;2017-01-01&quot;,
+end = &quot;2018-03-01&quot;)</code></pre>
+<p>Lets look at the head of the data.</p>
+<pre class="python"><code>print(aapl.head())</code></pre>
+<pre><code>##                   High         Low     ...          Volume   Adj Close
+## Date                                   ...                            
+## 2017-01-03  116.330002  114.760002     ...      28781900.0  112.140007
+## 2017-01-04  116.510002  115.750000     ...      21118100.0  112.014503
+## 2017-01-05  116.860001  115.809998     ...      22193600.0  112.584129
+## 2017-01-06  118.160004  116.470001     ...      31751900.0  113.839249
+## 2017-01-09  119.430000  117.940002     ...      33561900.0  114.881950
+## 
+## [5 rows x 6 columns]</code></pre>
+<p>We can plot the data for Apple.</p>
+<pre class="python"><code>aapl[&quot;Adj Close&quot;].plot()
+plt.xlabel(&quot;Date&quot;)
+plt.ylabel(&quot;Adjusted Price&quot;)
+plt.title(&quot;Apple price data&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-03-27-download-price-py_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>We can also download the data for multiple stocks using the below command.</p>
+<pre class="python"><code>tickers = [&quot;AAPL&quot;, &quot;MSFT&quot;, &quot;AMZN&quot;, &quot;K&quot;, &quot;O&quot;]
+prices = web.get_data_yahoo(tickers,
+start = &quot;2017-01-01&quot;,
+end = &quot;2017-01-15&quot;)</code></pre>
+<p>We can look at the head of the data.</p>
+<pre class="python"><code>print(prices.head())</code></pre>
+<pre><code>## Attributes        High                ...      Adj Close           
+## Symbols           AAPL        AMZN    ...           MSFT          O
+## Date                                  ...                          
+## 2017-01-03  116.330002  758.760010    ...      59.915661  52.107613
+## 2017-01-04  116.510002  759.679993    ...      59.647575  52.887104
+## 2017-01-05  116.860001  782.400024    ...      59.647575  54.310097
+## 2017-01-06  118.160004  799.440002    ...      60.164589  54.237595
+## 2017-01-09  119.430000  801.770020    ...      59.973103  53.838795
+## 
+## [5 rows x 30 columns]</code></pre>
+<p>As we can see that all the stock prices have been merged in one table. We can also just look at the adjusted prices.</p>
+<pre class="python"><code>prices[&quot;Adj Close&quot;].head()</code></pre>
+<p>Next we can plot prices of the stocks.</p>
+<pre class="python"><code>prices[&quot;Adj Close&quot;].plot()
+plt.xlabel(&quot;Date&quot;)
+plt.ylabel(&quot;Adjusted Price&quot;)
+plt.title(&quot;All stocks price data&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-03-27-download-price-py_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>This chart has the same problem as before as the there is wide variation in the price data. To solve this problem we will have to calculate the cumulative returns and plot that data. We will discuss that in the next post.</p>
+</div>
