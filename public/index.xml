@@ -50,6 +50,17 @@ If you would like to learn, then a fake money account is more appropriate for le
     </item>
     
     <item>
+      <title>How to calculate stock returns in R</title>
+      <link>/post/2018-04-03-calc-returns/</link>
+      <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-04-03-calc-returns/</guid>
+      <description>Calculating financial returns in ROne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website.
+In this post we will:
+Download pricesCalculate ReturnsCalculate mean and standard deviation of returnsLets load the libraries first.</description>
+    </item>
+    
+    <item>
       <title>How to download stock prices in Python</title>
       <link>/post/2018-03-27-download-price-py/</link>
       <pubDate>Mon, 02 Apr 2018 00:00:00 +0000</pubDate>

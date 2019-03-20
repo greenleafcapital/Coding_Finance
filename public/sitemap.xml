@@ -23,6 +23,11 @@
   </url>
   
   <url>
+    <loc>/post/2018-04-03-calc-returns/</loc>
+    <lastmod>2018-04-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/2018-03-27-download-price-py/</loc>
     <lastmod>2018-04-02T00:00:00+00:00</lastmod>
   </url>
@@ -105,7 +110,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-04-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
