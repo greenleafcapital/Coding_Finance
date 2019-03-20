@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>How to calculate stock returns in Python :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2018-04-03-calc-returns-py/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="How to calculate stock returns in Python :: Coding Finance — " />
+<meta name="twitter:description" content="Calculating financial returns in PythonOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. In python we can do this using the pandas-datareader module.
+In this post we will:" />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to calculate stock returns in Python :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2018-04-03-calc-returns-py/" />
+<meta property="og:site_name" content="How to calculate stock returns in Python" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2018-04-03 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2018-04-03-calc-returns-py/">How to calculate stock returns in Python</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        4/3/2018
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <div id="calculating-financial-returns-in-python" class="section level2">
+<h2>Calculating financial returns in Python</h2>
+<p>One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. In python we can do this using the <code>pandas-datareader</code> module.</p>
+<p>In this post we will:</p>
+<ol style="list-style-type: decimal">
+<li>Download prices</li>
+<li>Calculate Returns</li>
+<li>Calculate mean and standard deviation of returns</li>
+</ol>
+<p>Lets load the modules first.</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas_datareader as web</code></pre>
+</div>
+<div id="individual-stock" class="section level2">
+<h2>Individual Stock</h2>
+<div id="dowloading-the-stock-price-for-netflix" class="section level3">
+<h3>Dowloading the stock price for Netflix</h3>
+<p>Netflix has seen phenomenal growth since 2009. It was responsible for producing a new category of business - subscription based online streaming. It has changed the industry landscape and pushed Blockbuster our of business. Old media companies like CBS, Fox, Viacom, Disney etc are under threat from the new way of consuming media. Netflix started as a content delivery platform, but today its responsible for content creation as well. Its original programs have won several Emmy awards. Today Netflix seems like an unstoppable force in the media landscape.</p>
+<p>To see just how well Netflix’s stock has performed, we will start by downloading the historical price for Netflix and then perform the return calculations.</p>
+<pre class="python"><code>netflix = web.get_data_yahoo(&quot;NFLX&quot;,
+                            start = &quot;2009-01-01&quot;,
+                            end = &quot;2018-03-01&quot;)</code></pre>
+<pre class="python"><code>print(netflix.head())</code></pre>
+<pre><code>##                 High       Low    ...          Volume  Adj Close
+## Date                              ...                           
+## 2009-01-02  4.357143  4.200000    ...       6605200.0   4.267143
+## 2009-01-05  4.562857  4.302857    ...      13044500.0   4.562857
+## 2009-01-06  4.750000  4.590000    ...      12065900.0   4.705714
+## 2009-01-07  4.734286  4.571429    ...      10133900.0   4.672857
+## 2009-01-08  4.797143  4.485714    ...       8175300.0   4.735714
+## 
+## [5 rows x 6 columns]</code></pre>
+<p>Next we will chart the Netflix’s adjusted closing price.</p>
+<pre class="python"><code>netflix[&#39;Adj Close&#39;].plot()
+plt.xlabel(&quot;Date&quot;)
+plt.ylabel(&quot;Adjusted&quot;)
+plt.title(&quot;Netflix Price data&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="calculating-the-daily-and-monthly-returns-for-individual-stock" class="section level3">
+<h3>Calculating the daily and monthly returns for individual stock</h3>
+<p>Once we downloaded the stock prices from yahoo finance, the next thing to do is to calculate the returns. We will again use pandas package to do the calculations. We have already downloaded the price data for Netflix above, if you haven’t done that then see the above section. We will calculate the monthly and daily price returns.</p>
+<pre class="python"><code>netflix_daily_returns = netflix[&#39;Adj Close&#39;].pct_change()
+netflix_monthly_returns = netflix[&#39;Adj Close&#39;].resample(&#39;M&#39;).ffill().pct_change()</code></pre>
+<p>Looking at the head of the daily returns.</p>
+<pre class="python"><code>print(netflix_daily_returns.head())</code></pre>
+<pre><code>## Date
+## 2009-01-02         NaN
+## 2009-01-05    0.069300
+## 2009-01-06    0.031309
+## 2009-01-07   -0.006982
+## 2009-01-08    0.013452
+## Name: Adj Close, dtype: float64</code></pre>
+<p>Looking at the head of the monthly returns.</p>
+<pre class="python"><code>print(netflix_monthly_returns.head())</code></pre>
+<pre><code>## Date
+## 2009-01-31         NaN
+## 2009-02-28    0.002767
+## 2009-03-31    0.184327
+## 2009-04-30    0.055685
+## 2009-05-31   -0.129993
+## Freq: M, Name: Adj Close, dtype: float64</code></pre>
+</div>
+<div id="charting-the-daily-and-monthly-for-netflix" class="section level3">
+<h3>Charting the daily and monthly for Netflix</h3>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.plot(netflix_daily_returns)
+ax1.set_xlabel(&quot;Date&quot;)
+ax1.set_ylabel(&quot;Percent&quot;)
+ax1.set_title(&quot;Netflix daily returns data&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.plot(netflix_monthly_returns)
+ax1.set_xlabel(&quot;Date&quot;)
+ax1.set_ylabel(&quot;Percent&quot;)
+ax1.set_title(&quot;Netflix monthly returns data&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>After looking at the daily returns chart for Netflix we can conclude that the returns are quite volatile and the stock can move +/- 5% on any given day. To get a sense of how extreme the returns can be we can plot a histogram.</p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+netflix_daily_returns.plot.hist(bins = 60)
+ax1.set_xlabel(&quot;Daily returns %&quot;)
+ax1.set_ylabel(&quot;Percent&quot;)
+ax1.set_title(&quot;Netflix daily returns data&quot;)
+ax1.text(-0.35,200,&quot;Extreme Low\nreturns&quot;)
+ax1.text(0.25,200,&quot;Extreme High\nreturns&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="caluating-the-cumulative-returns-for-the-netflix-stock" class="section level3">
+<h3>Caluating the cumulative returns for the Netflix stock</h3>
+<p>Plotting the daily and monthly returns are useful for understanding the daily and monthly volatility of the investment. To calculate the growth of our investment or in other word, calculating the total returns from our investment, we need to calculate the cumulative returns from that investment. To calculate the cumulative returns we will use the <strong>cumprod()</strong> function.</p>
+<pre class="python"><code>netflix_cum_returns = (netflix_daily_returns + 1).cumprod()</code></pre>
+<p>Next we can chart the cumulative returns of Netflix.</p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+netflix_cum_returns.plot()
+ax1.set_xlabel(&quot;Date&quot;)
+ax1.set_ylabel(&quot;Growth of $1 investment&quot;)
+ax1.set_title(&quot;Netflix daily cumulative returns data&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>This chart shows the cumulative returns since 2009 for Netflix. With the power of hindsight, one <em>could</em> have made $70 on a $1 investment since 2009. That is quite a remarkable performance. But as we know its easier said then done. During the 10 year or so period there were times when the investment lost 50% of its value during the <a href="%22https://som.yale.edu/case/2012/netflix-and-qwikster%22">Qwickster fiasco</a>. Very few investors can hold onto investments through such periods.</p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+netflix_cum_returns = (netflix_monthly_returns + 1).cumprod()
+ax1.plot(netflix_cum_returns)
+ax1.set_xlabel(&quot;Date&quot;)
+ax1.set_ylabel(&quot;Growth of $1 investment&quot;)
+ax1.set_title(&quot;Netflix Monthly cumulative returns data&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>We can visualize that the monthly returns chart is much more smoother than the daily chart.</p>
+</div>
+</div>
+<div id="multiple-stocks" class="section level2">
+<h2>Multiple stocks</h2>
+<div id="downloading-stock-market-data-for-multiple-stocks." class="section level3">
+<h3>Downloading stock market data for multiple stocks.</h3>
+<p>We can download the financial data for multiple stocks. We first assign the stock symbols to a variable named “tickers”", and use that to download the stock prices.</p>
+<pre class="python"><code>tickers = [&quot;FB&quot;, &quot;AMZN&quot;, &quot;AAPL&quot;, &quot;NFLX&quot;, &quot;GOOG&quot;]
+multpl_stocks = web.get_data_yahoo(tickers,
+start = &quot;2013-01-01&quot;,
+end = &quot;2018-03-01&quot;)</code></pre>
+</div>
+<div id="charting-the-stock-prices-for-multiple-stocks" class="section level3">
+<h3>Charting the stock prices for multiple stocks</h3>
+<p>Next we will chart the stock prices for multiple stocks</p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_subplot(321)
+ax2 = fig.add_subplot(322)
+ax3 = fig.add_subplot(323)
+ax4 = fig.add_subplot(324)
+ax5 = fig.add_subplot(325)
+ax1.plot(multpl_stocks[&#39;Adj Close&#39;][&#39;AMZN&#39;])
+ax1.set_title(&quot;Amazon&quot;)
+ax2.plot(multpl_stocks[&#39;Adj Close&#39;][&#39;AAPL&#39;])
+ax2.set_title(&quot;Apple&quot;)
+ax3.plot(multpl_stocks[&#39;Adj Close&#39;][&#39;FB&#39;])
+ax3.set_title(&quot;Facebook&quot;)
+ax4.plot(multpl_stocks[&#39;Adj Close&#39;][&#39;NFLX&#39;])
+ax4.set_title(&quot;Netflix&quot;)
+ax5.plot(multpl_stocks[&#39;Adj Close&#39;][&#39;GOOG&#39;])
+ax5.set_title(&quot;Google&quot;)
+plt.tight_layout()
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="calculating-the-returns-for-multiple-stocks" class="section level3">
+<h3>Calculating the returns for multiple stocks</h3>
+<p>Calculating the the returns for multiple stocks is just as easy as the single stock.</p>
+<pre class="python"><code>multpl_stock_daily_returns = multpl_stocks[&#39;Adj Close&#39;].pct_change()
+multpl_stock_monthly_returns = multpl_stocks[&#39;Adj Close&#39;].resample(&#39;M&#39;).ffill().pct_change()</code></pre>
+<pre class="python"><code>fig = plt.figure()
+(multpl_stock_monthly_returns + 1).cumprod().plot()
+plt.show()</code></pre>
+<p><img src="/post/2018-04-03-calc-returns-py_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Not surprisingly, Netflix had the best returns since 2013. Amazon and Facebook come in distant second and third. The most surprising result is Google. It has severely underperformed the other stocks in the FAANG group. Maybe the market participants are worried about its spending on the moon shot projects (Google glass, X Labs, Waymo etc). Whether these projects can produce results is yet to be seen.</p>
+<p>A contrarian could argue that given the investments in the future projects, Google is currently undervalued an could be the better investment among the FAANG stocks.</p>
+</div>
+</div>
+<div id="statistical-data" class="section level2">
+<h2>Statistical Data</h2>
+<div id="calculating-the-mean-standard-deviation-and-other-stats" class="section level3">
+<h3>Calculating the Mean, standard deviation and other stats</h3>
+<p>We already have the daily and monthly returns data for Netflix. Now we we will calculate the daily and monthly mean and standard deviations of the returns. We will use <strong>mean()</strong> and <strong>std()</strong> fucntions for our purpose.</p>
+<pre class="python"><code>print(multpl_stock_monthly_returns.mean())</code></pre>
+<pre><code>## Symbols
+## AAPL    0.023860
+## AMZN    0.031329
+## FB      0.031989
+## GOOG    0.018693
+## NFLX    0.049129
+## dtype: float64</code></pre>
+<pre class="python"><code>print(multpl_stock_monthly_returns.std())</code></pre>
+<pre><code>## Symbols
+## AAPL    0.068283
+## AMZN    0.080158
+## FB      0.089625
+## GOOG    0.056989
+## NFLX    0.125132
+## dtype: float64</code></pre>
+</div>
+</div>
+<div id="calculating-the-correlation-and-covariance-usning-pandas" class="section level2">
+<h2>Calculating the correlation and covariance usning pandas</h2>
+<pre class="python"><code>print(multpl_stock_monthly_returns.corr())</code></pre>
+<pre><code>## Symbols      AAPL      AMZN        FB      GOOG      NFLX
+## Symbols                                                  
+## AAPL     1.000000  0.276006  0.156129  0.217476  0.273787
+## AMZN     0.276006  1.000000  0.201276  0.630632  0.475268
+## FB       0.156129  0.201276  1.000000  0.265375  0.230154
+## GOOG     0.217476  0.630632  0.265375  1.000000  0.453463
+## NFLX     0.273787  0.475268  0.230154  0.453463  1.000000</code></pre>
+<pre class="python"><code>print(multpl_stock_monthly_returns.cov())</code></pre>
+<pre><code>## Symbols      AAPL      AMZN        FB      GOOG      NFLX
+## Symbols                                                  
+## AAPL     0.004663  0.001511  0.000955  0.000846  0.002339
+## AMZN     0.001511  0.006425  0.001446  0.002881  0.004767
+## FB       0.000955  0.001446  0.008033  0.001355  0.002581
+## GOOG     0.000846  0.002881  0.001355  0.003248  0.003234
+## NFLX     0.002339  0.004767  0.002581  0.003234  0.015658</code></pre>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>We did a lot in this port.</p>
+<ol style="list-style-type: decimal">
+<li>Download prices</li>
+<li>Calculate returns</li>
+<li>calculate mean and standard deviations</li>
+<li>calculate the correlation and covariance of stocks.</li>
+</ol>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2018-04-03-calc-returns/">How to calculate stock returns in R →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

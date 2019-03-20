@@ -12,6 +12,16 @@
     
     
     <item>
+      <title>How to calculate stock returns in Python</title>
+      <link>/post/2018-04-03-calc-returns-py/</link>
+      <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-04-03-calc-returns-py/</guid>
+      <description>Calculating financial returns in PythonOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. In python we can do this using the pandas-datareader module.
+In this post we will:</description>
+    </item>
+    
+    <item>
       <title>How to calculate stock returns in R</title>
       <link>/post/2018-04-03-calc-returns/</link>
       <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
