@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>How to download stock prices in R :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2018-03-27-download-price/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="How to download stock prices in R :: Coding Finance — " />
+<meta name="twitter:description" content="Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to download stock prices in R :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2018-03-27-download-price/" />
+<meta property="og:site_name" content="How to download stock prices in R" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2018-04-02 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2018-03-27-download-price/">How to download stock prices in R</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        4/2/2018
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <div id="getting-stock-prices-from-yahoo-finance" class="section level2">
+<h2>Getting stock prices from Yahoo Finance</h2>
+<p>One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.</p>
+</div>
+<div id="r-packages-to-download-stock-price-data" class="section level2">
+<h2>R packages to download stock price data</h2>
+<p>There are several ways to get financial data into R. The most popular method is the <code>quantmod</code> package. You can install it by typing the command <code>install.packages("quantmod")</code> in your R console. The prices dowloaded in by using <code>quantmod</code> are <code>xts</code> <code>zoo</code> objects. For our calculations we will use <code>tidyquant</code> package which downloads prices in a tidy format as a <code>tibble</code>. You can download the <code>tidyquant</code> package by typing <code>install.packages("tidyquant")</code> in you R console. <code>tidyquant</code> includes <code>quantmod</code> so you can install just <code>tidyquant</code> and get the <code>quantmod</code> packages as well.</p>
+<p>Lets load the library first.</p>
+<pre class="r"><code>library(tidyquant)</code></pre>
+<p>First we will download Apple price using <code>quantmod</code> from January 2017 to February 2018. By default <code>quantmod</code> download and stores the symbols with their own names. You can change this by passing the argument <code>auto.assign = FALSE</code>.</p>
+<pre class="r"><code>options(&quot;getSymbols.warning4.0&quot;=FALSE)
+options(&quot;getSymbols.yahoo.warning&quot;=FALSE)
+# Downloading Apple price using quantmod
+
+getSymbols(&quot;AAPL&quot;, from = &#39;2017-01-01&#39;,
+           to = &quot;2018-03-01&quot;,warnings = FALSE,
+           auto.assign = TRUE)</code></pre>
+<pre><code>## [1] &quot;AAPL&quot;</code></pre>
+<p>Lets look at the first few rows.</p>
+<pre class="r"><code>head(AAPL)</code></pre>
+<pre><code>##            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume
+## 2017-01-03    115.80    116.33   114.76     116.15    28781900
+## 2017-01-04    115.85    116.51   115.75     116.02    21118100
+## 2017-01-05    115.92    116.86   115.81     116.61    22193600
+## 2017-01-06    116.78    118.16   116.47     117.91    31751900
+## 2017-01-09    117.95    119.43   117.94     118.99    33561900
+## 2017-01-10    118.77    119.38   118.30     119.11    24462100
+##            AAPL.Adjusted
+## 2017-01-03      112.1400
+## 2017-01-04      112.0145
+## 2017-01-05      112.5841
+## 2017-01-06      113.8392
+## 2017-01-09      114.8820
+## 2017-01-10      114.9978</code></pre>
+<p>Lets look at the class of this object.</p>
+<pre class="r"><code>class(AAPL)</code></pre>
+<pre><code>## [1] &quot;xts&quot; &quot;zoo&quot;</code></pre>
+<p>As we mentioned before this is an <code>xts</code> <code>zoo</code> object. We can also chart the Apple stock price. We just pass the command <code>chart_Series</code></p>
+<pre class="r"><code>chart_Series(AAPL)</code></pre>
+<p><img src="/post/2018-03-27-download-price_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We can even zoom into a certain period of the series. Lets zoom in on the Dec to Feb period.</p>
+<pre class="r"><code>chart_Series(AAPL[&#39;2017-12/2018-03&#39;])</code></pre>
+<p><img src="/post/2018-03-27-download-price_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can download prices for several stocks. There are several steps to this</p>
+<pre class="r"><code>tickers = c(&quot;AAPL&quot;, &quot;NFLX&quot;, &quot;AMZN&quot;, &quot;K&quot;, &quot;O&quot;)
+
+getSymbols(tickers,
+           from = &quot;2017-01-01&quot;,
+           to = &quot;2017-01-15&quot;)</code></pre>
+<pre><code>## [1] &quot;AAPL&quot; &quot;NFLX&quot; &quot;AMZN&quot; &quot;K&quot;    &quot;O&quot;</code></pre>
+<pre class="r"><code>prices &lt;- map(tickers,function(x) Ad(get(x)))
+prices &lt;- reduce(prices,merge)
+colnames(prices) &lt;- tickers</code></pre>
+<pre class="r"><code>head(prices)</code></pre>
+<pre><code>##                AAPL   NFLX   AMZN        K        O
+## 2017-01-03 112.1400 127.49 753.67 68.17963 52.10761
+## 2017-01-04 112.0145 129.41 757.18 68.00307 52.88710
+## 2017-01-05 112.5841 131.81 780.45 67.93801 54.31010
+## 2017-01-06 113.8392 131.07 795.99 67.95660 54.23759
+## 2017-01-09 114.8820 130.95 796.92 67.02734 53.83879
+## 2017-01-10 114.9978 129.89 795.90 66.59059 53.19526</code></pre>
+<pre class="r"><code>class(prices)</code></pre>
+<pre><code>## [1] &quot;xts&quot; &quot;zoo&quot;</code></pre>
+<p>But we prefer the <code>tidyquant</code> package to download stock prices. Below we will demonstrate the simplicity of the process.</p>
+<pre class="r"><code>aapl &lt;- tq_get(&#39;AAPL&#39;,
+               from = &quot;2017-01-01&quot;,
+               to = &quot;2018-03-01&quot;,
+               get = &quot;stock.prices&quot;)</code></pre>
+<pre class="r"><code>head(aapl)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   date        open  high   low close   volume adjusted
+##   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 2017-01-03  116.  116.  115.  116. 28781900     112.
+## 2 2017-01-04  116.  117.  116.  116. 21118100     112.
+## 3 2017-01-05  116.  117.  116.  117. 22193600     113.
+## 4 2017-01-06  117.  118.  116.  118. 31751900     114.
+## 5 2017-01-09  118.  119.  118.  119. 33561900     115.
+## 6 2017-01-10  119.  119.  118.  119. 24462100     115.</code></pre>
+<pre class="r"><code>class(aapl)</code></pre>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<p>We can see that the object <code>aapl</code> is a <code>tibble</code>. Next we can chart the price for Apple. For that we will use the very popular <code>ggplot2</code> package.</p>
+<pre class="r"><code>aapl %&gt;%
+  ggplot(aes(x = date, y = adjusted)) +
+  geom_line() +
+  theme_classic() +
+  labs(x = &#39;Date&#39;,
+       y = &quot;Adjusted Price&quot;,
+       title = &quot;Apple price chart&quot;) +
+  scale_y_continuous(breaks = seq(0,300,10))</code></pre>
+<p><img src="/post/2018-03-27-download-price_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>We can also download multiple stock prices.</p>
+<pre class="r"><code>tickers = c(&quot;AAPL&quot;, &quot;NFLX&quot;, &quot;AMZN&quot;, &quot;K&quot;, &quot;O&quot;)
+
+prices &lt;- tq_get(tickers,
+                 from = &quot;2017-01-01&quot;,
+                 to = &quot;2017-03-01&quot;,
+                 get = &quot;stock.prices&quot;)</code></pre>
+<pre class="r"><code>head(prices)</code></pre>
+<pre><code>## # A tibble: 6 x 8
+##   symbol date        open  high   low close   volume adjusted
+##   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 AAPL   2017-01-03  116.  116.  115.  116. 28781900     112.
+## 2 AAPL   2017-01-04  116.  117.  116.  116. 21118100     112.
+## 3 AAPL   2017-01-05  116.  117.  116.  117. 22193600     113.
+## 4 AAPL   2017-01-06  117.  118.  116.  118. 31751900     114.
+## 5 AAPL   2017-01-09  118.  119.  118.  119. 33561900     115.
+## 6 AAPL   2017-01-10  119.  119.  118.  119. 24462100     115.</code></pre>
+<p>This data is in tidy format, where symbols are stacked on top of one another. To see the first row of each symbol, we need to slice the data.</p>
+<pre class="r"><code>prices %&gt;%
+  group_by(symbol) %&gt;%
+  slice(1)</code></pre>
+<pre><code>## # A tibble: 5 x 8
+## # Groups:   symbol [5]
+##   symbol date        open  high   low close   volume adjusted
+##   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 AAPL   2017-01-03 116.  116.  115.  116.  28781900    112. 
+## 2 AMZN   2017-01-03 758.  759.  748.  754.   3521100    754. 
+## 3 K      2017-01-03  73.7  73.7  72.8  73.4  1699800     68.2
+## 4 NFLX   2017-01-03 125.  128.  124.  127.   9437900    127. 
+## 5 O      2017-01-03  57.7  57.8  56.9  57.5  1973300     52.1</code></pre>
+<p>We can also chart the time series of all the prices.</p>
+<pre class="r"><code>prices %&gt;%
+  ggplot(aes(x = date, y = adjusted, color = symbol)) +
+  geom_line()</code></pre>
+<p><img src="/post/2018-03-27-download-price_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>This chart look weird, since the scale is not appropriate. Amazon price is above $800, other stocks are under $200. We can fix this with <code>facet_wrap</code></p>
+<pre class="r"><code>prices %&gt;%
+  ggplot(aes(x = date, y = adjusted, color = symbol)) +
+  geom_line() +
+  facet_wrap(~symbol,scales = &#39;free_y&#39;) +
+  theme_classic() +
+  labs(x = &#39;Date&#39;,
+       y = &quot;Adjusted Price&quot;,
+       title = &quot;Price Chart&quot;) +
+  scale_x_date(date_breaks = &quot;month&quot;,
+               date_labels = &quot;%b\n%y&quot;)</code></pre>
+<p><img src="/post/2018-03-27-download-price_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2018-03-27-retirement-py/">How to calculate retirement savings in Python →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>
