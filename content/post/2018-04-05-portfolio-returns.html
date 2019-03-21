@@ -1,0 +1,198 @@
+---
+title: "How to calculate portfolio returns in R"
+author: "DD"
+date: "2018-04-05"
+description: "Calculating portfolio returns in R"
+output: html_document
+---
+
+
+
+<div id="calculating-portfolio-returns-in-r" class="section level2">
+<h2>Calculating portfolio returns in R</h2>
+<p>In this post we will learn to calculate portfolio returns using R. Initially we will do this manually and then use the <code>tidyquant</code> package to calculate the portfolio returns for our purpose.</p>
+<div id="calculating-portfolio-returns-using-the-formula" class="section level3">
+<h3>Calculating portfolio returns using the formula</h3>
+<p>A portfolio return is the weighted average of indidual assets in the portfolio.</p>
+<p>Here is what we need</p>
+<ul>
+<li>Asset symbols that make up our portfolio</li>
+<li>Price data for the assets</li>
+<li>weights of assets</li>
+<li>Calculating the weighted average of our assets returns</li>
+<li>Adding them to get the portfolio returns</li>
+</ul>
+<p>Lets first load the packages</p>
+<pre class="r"><code>library(tidyquant)</code></pre>
+<p>We will invest in the following assets</p>
+<ul>
+<li>Aggregate Bonds ETF (BND) 10%</li>
+<li>Small Cap ETF (VB) 20%</li>
+<li>Developed markets ETF (VEA) 25%</li>
+<li>S&amp;P 500 ETF (VOO) 25%</li>
+<li>Emerging Markets ETF (VWO) 20%</li>
+</ul>
+<p>So lets assign out ticker symbols and weights.</p>
+<pre class="r"><code># Asset tickers
+tickers = c(&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;)
+
+# Asset weights
+
+wts = c(0.1,0.2,0.25,0.25,0.2)</code></pre>
+<p>Next we will download the price data</p>
+<pre class="r"><code>price_data &lt;- tq_get(tickers,
+                     from = &#39;2013-01-01&#39;,
+                     to = &#39;2018-03-01&#39;,
+                     get = &#39;stock.prices&#39;)</code></pre>
+<p>Then we will calculate the returns for our assets. We will calculate the daily returns.</p>
+<pre class="r"><code>ret_data &lt;- price_data %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select = adjusted,
+               mutate_fun = periodReturn,
+               period = &quot;daily&quot;,
+               col_rename = &quot;ret&quot;)</code></pre>
+<p>Lets take a look at the first and second row of each asset in our returns data.</p>
+<pre class="r"><code>ret_data %&gt;%
+  group_by(symbol) %&gt;%
+  slice(c(1,2))</code></pre>
+<pre><code>## # A tibble: 10 x 3
+## # Groups:   symbol [5]
+##    symbol date             ret
+##    &lt;chr&gt;  &lt;date&gt;         &lt;dbl&gt;
+##  1 BND    2013-01-02  0       
+##  2 BND    2013-01-03 -0.00298 
+##  3 VB     2013-01-02  0       
+##  4 VB     2013-01-03 -0.000601
+##  5 VEA    2013-01-02  0       
+##  6 VEA    2013-01-03 -0.0101  
+##  7 VOO    2013-01-02  0       
+##  8 VOO    2013-01-03 -0.000898
+##  9 VWO    2013-01-02  0       
+## 10 VWO    2013-01-03 -0.00594</code></pre>
+<p>Next we will have to add the weight column to our returns data. For that we will create a new weights table and then join that to our returns data table.</p>
+<pre class="r"><code>wts_tbl &lt;- tibble(symbol = tickers,
+                  wts = wts)
+head(wts_tbl)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   symbol   wts
+##   &lt;chr&gt;  &lt;dbl&gt;
+## 1 BND     0.1 
+## 2 VB      0.2 
+## 3 VEA     0.25
+## 4 VOO     0.25
+## 5 VWO     0.2</code></pre>
+<p>Now lets join this to our returns data table.</p>
+<pre class="r"><code>ret_data &lt;- left_join(ret_data,wts_tbl, by = &#39;symbol&#39;)</code></pre>
+<p>Again lets look at the first and second row of our table.</p>
+<pre class="r"><code>ret_data %&gt;%
+  group_by(symbol) %&gt;%
+  slice(c(1,2))</code></pre>
+<pre><code>## # A tibble: 10 x 4
+## # Groups:   symbol [5]
+##    symbol date             ret   wts
+##    &lt;chr&gt;  &lt;date&gt;         &lt;dbl&gt; &lt;dbl&gt;
+##  1 BND    2013-01-02  0         0.1 
+##  2 BND    2013-01-03 -0.00298   0.1 
+##  3 VB     2013-01-02  0         0.2 
+##  4 VB     2013-01-03 -0.000601  0.2 
+##  5 VEA    2013-01-02  0         0.25
+##  6 VEA    2013-01-03 -0.0101    0.25
+##  7 VOO    2013-01-02  0         0.25
+##  8 VOO    2013-01-03 -0.000898  0.25
+##  9 VWO    2013-01-02  0         0.2 
+## 10 VWO    2013-01-03 -0.00594   0.2</code></pre>
+<p>We can see that the weights have been correctly added to the corresponding assets. Now lets mutlply the two columns to get our weighted average.</p>
+<pre class="r"><code>ret_data &lt;- ret_data %&gt;%
+  mutate(wt_return = wts * ret)</code></pre>
+<p>Lets take a quick look at the result of our operation.</p>
+<pre class="r"><code>ret_data %&gt;%
+  group_by(symbol) %&gt;%
+  slice(c(1,2))</code></pre>
+<pre><code>## # A tibble: 10 x 5
+## # Groups:   symbol [5]
+##    symbol date             ret   wts wt_return
+##    &lt;chr&gt;  &lt;date&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1 BND    2013-01-02  0         0.1   0       
+##  2 BND    2013-01-03 -0.00298   0.1  -0.000298
+##  3 VB     2013-01-02  0         0.2   0       
+##  4 VB     2013-01-03 -0.000601  0.2  -0.000120
+##  5 VEA    2013-01-02  0         0.25  0       
+##  6 VEA    2013-01-03 -0.0101    0.25 -0.00251 
+##  7 VOO    2013-01-02  0         0.25  0       
+##  8 VOO    2013-01-03 -0.000898  0.25 -0.000225
+##  9 VWO    2013-01-02  0         0.2   0       
+## 10 VWO    2013-01-03 -0.00594   0.2  -0.00119</code></pre>
+<p>We now have a weighted returns column. Now the portfolio return for each day is simply the sum of the weighted returns each day. Lets add that and get our portfolio returns.</p>
+<pre class="r"><code>port_ret &lt;- ret_data %&gt;%
+  group_by(date) %&gt;%
+  summarise(port_ret = sum(wt_return))
+
+head(port_ret)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   date       port_ret
+##   &lt;date&gt;        &lt;dbl&gt;
+## 1 2013-01-02  0      
+## 2 2013-01-03 -0.00434
+## 3 2013-01-04  0.00448
+## 4 2013-01-07 -0.00432
+## 5 2013-01-08 -0.00402
+## 6 2013-01-09  0.00395</code></pre>
+<p>Now we have just calculated the portfolio returns using a manual process. Lets visualize the returns.</p>
+<pre class="r"><code>port_ret %&gt;%
+  ggplot(aes(x = port_ret)) + 
+  geom_histogram(bins = 60) +
+  theme_light() +
+  labs(x = &quot;Portfolio Returns&quot;,
+       y = &quot;Frequency&quot;,
+       title = &quot;Daily Portfolio returns histogram&quot;)</code></pre>
+<p><img src="/post/2018-04-05-portfolio-returns_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>We will analyze the portfolio returns little more in the post but right now we will show you a simpler way to calculate the portfolio returns using the <code>tidyquant</code> package.</p>
+<p><code>tidyquant</code> helps us eliminate the extra steps we took to add the weights columns and do the multiplication and the additions.</p>
+<p>So lets see how we will do this in <code>tidyquant</code></p>
+<pre class="r"><code>port_ret_tidy &lt;- price_data %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select = adjusted,
+               mutate_fun = periodReturn,
+               period = &quot;daily&quot;,
+               col_rename = &quot;ret&quot;) %&gt;%
+  #Using tq_portfolio from tidyquant
+  tq_portfolio(assets_col = symbol,
+               returns_col = ret,
+               weights = wts,
+               geometric = FALSE,
+               col_rename = &#39;port_ret&#39;)</code></pre>
+<p>As you will notice the first part is similar to what we did before, but then we simply used <code>tq_portfolio</code> to calculate our portfolio returns. Here we have to specify the asset column, the returns column and the weights to calculate the portfolio returns. We will demonstrate that the returns are the same by taking the difference between two methods. First we show the histogram of the returns and the we plot the time series.</p>
+<pre class="r"><code>port_ret_tidy %&gt;%
+  ggplot(aes(x = port_ret)) + 
+  geom_histogram(bins = 60) +
+  theme_light() +
+  labs(x = &quot;Portfolio Returns&quot;,
+       y = &quot;Frequency&quot;,
+       title = &quot;Daily Portfolio returns histogram\nCalculated using tidyquant&quot;)</code></pre>
+<p><img src="/post/2018-04-05-portfolio-returns_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>diff = port_ret$port_ret - port_ret_tidy$port_ret
+
+unique(diff)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>We can see the difference between the two methods is 0.</p>
+</div>
+<div id="portfolio-mean-returns-and-standard-deviation" class="section level3">
+<h3>Portfolio mean returns and standard deviation</h3>
+<p>Now that we are confident about our work, lets calculate the mean returns and the standard deviation of the portfolio.</p>
+<pre class="r"><code>mean(port_ret_tidy$port_ret, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 0.0003789623</code></pre>
+<pre class="r"><code>sd(port_ret_tidy$port_ret, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 0.007586076</code></pre>
+<p>We will conclude this post here and in the next post we will analyze our portfolio futher.</p>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>In this post we learned</p>
+<ul>
+<li>To download asset prices from yahoo finance</li>
+<li>To calculate portfolio returns manually</li>
+<li>To calculate portfolio returns using <code>tidyquant</code></li>
+<li>To calculate portfolio mean returns and portfolio standard deviation</li>
+</ul>
+</div>
