@@ -1,0 +1,254 @@
+---
+title: "How to calculate portfolio returns in Python"
+author: "DD"
+date: "2018-04-05"
+description: "Calculating portfolio returns in Python"
+output: html_document
+---
+
+## Calculating portfolio returns in Python
+
+In this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.
+
+### Calculating portfolio returns using the formula
+
+A portfolio return is the weighted average of indidual assets in the portfolio. 
+
+Here is what we need
+
+- Asset symbols that make up our portfolio
+- Price data for the assets
+- weights of assets
+- Calculating the weighted average of our assets returns
+- Adding them to get the portfolio returns
+
+
+Lets first load the modules
+
+```{python}
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas_datareader as web
+
+```
+
+We will invest in the following assets
+
+- Aggregate Bonds ETF (BND) 10%
+- Small Cap ETF (VB) 20%
+- Developed markets ETF (VEA) 25%
+- S&P 500 ETF (VOO)  25%
+- Emerging Markets ETF (VWO) 20% 
+
+So lets assign our assets to the symbols variable.
+
+```{python}
+
+symbols = ['VOO','VEA', 'VB', 'VWO','BND']
+
+```
+
+Next we download the price data for the assets.
+
+```{python}
+
+price_data = web.get_data_yahoo(symbols,
+                               start = '2013-01-01',
+                               end = '2018-03-01')
+
+```
+
+Now that we have the price data lets look at the head of this data.
+
+```{python}
+
+print(price_data.head())
+
+```
+
+But we just need the Adjusted Closing price for our returns calculations. So lets select that columns.
+
+```{python}
+
+price_data = price_data['Adj Close']
+price_data.head()
+
+```
+
+We can see that pandas has sorted our columns alphabetically so we need to align our weights correctly to the column names.
+
+```{python}
+
+w = [0.1,0.2,0.25,0.25,0.2]
+
+```
+
+A quick check to see if our weights add to one.
+
+```{python}
+
+sum(w)
+
+```
+
+
+Now we will calculate the asset returns in our portfolio.
+
+```{python}
+
+ret_data = price_data.pct_change()[1:]
+print(ret_data.head())
+
+```
+
+Next we can calculate the weighted returns of our assets.
+
+```{python}
+
+weighted_returns = (w * ret_data)
+print(weighted_returns.head())
+
+```
+
+Next the portfolio returns are simply the sum of the weighted returns of the assets. So lets add the rows.
+
+
+```{python}
+
+port_ret = weighted_returns.sum(axis=1)
+# axis =1 tells pandas we want to add
+# the rows
+
+```
+
+Lets plot the histogram of the returns.
+
+```{python}
+
+fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.hist(port_ret, bins = 60)
+ax1.set_xlabel('Portfolio returns')
+ax1.set_ylabel("Freq")
+ax1.set_title("Portfolio Returns calculated manually")
+plt.show(); 
+
+
+```
+
+## Tidy method in Python
+
+In the example given in the R post we calculate the portfolio returns using the tidy dataframe. We can also calculate the returns using a tidy method in Python. To do that we need to reshape our returns dataframe and create a new weights table. We will then join the two and calculate the portfolio returns.
+
+First lets create a weights table.
+
+```{python}
+
+wts_table = pd.DataFrame({'symbol':symbols,
+                          'wts':[0.25,0.25,0.2,0.2,0.1]})
+print(wts_table.head())
+
+```
+
+Next we will transform our returns data into a tidy data. First we need to reset the index and make the Date index into a separate column.
+
+```{python}
+
+ret_data_tidy = pd.melt(ret_data.reset_index(),
+        id_vars='Date',
+        var_name='symbol',
+        value_name='ret')
+        
+print(ret_data_tidy.head())
+
+
+```
+
+We can see that the assets have been stacked on top of one another and Date has a separate column. Next we can merge our data by symbols.
+
+```{python}
+
+ret_data_tidy_wts = pd.merge(ret_data_tidy,wts_table,on="symbol")
+print(ret_data_tidy_wts.head())
+
+```
+
+We have the data in the desired form and now we can multiply our columns to find out the weighted average.
+
+```{python}
+
+ret_data_tidy_wts['wt_returns'] = ret_data_tidy_wts['ret'] * ret_data_tidy_wts['wts'] 
+
+print(ret_data_tidy_wts.head())
+
+```
+
+Finally we need to group our dataframe by date to calculate the daily returns on our portfolio.
+
+```{python}
+
+port_ret_tidy = ret_data_tidy_wts.groupby("Date").sum()['wt_returns']
+print(port_ret_tidy.head())
+```
+
+So we now have the portfolio returns calculated in tidy format as well. We can see that the results are same since the difference between the two is 0.
+
+```{python}
+
+diff = port_ret - port_ret_tidy
+print(diff.unique())
+
+```
+
+We can also plot the two histograms.
+
+```{python}
+
+fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.hist(port_ret, bins = 60) # manually calculated returns
+ax1.set_xlabel('Portfolio returns')
+ax1.set_ylabel("Freq")
+ax1.set_title("Portfolio Returns calculated manually")
+plt.show();
+
+```
+
+```{python}
+
+fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.hist(port_ret_tidy, bins = 60) # Tidy returns
+ax1.set_xlabel('Portfolio returns')
+ax1.set_ylabel("Freq")
+ax1.set_title("Portfolio Returns calculated in Tidy format")
+plt.show();
+
+```
+
+### Portfolio mean and standard deviation
+
+Next we will calculate the portfolio mean and standard deviation, this is simple with the pandas module.
+
+```{python}
+
+mean_ret = port_ret.mean()
+std_returns = port_ret.std()
+
+print(mean_ret)
+print(std_returns)
+
+```
+
+
+### Summary
+
+In this post we learned 
+
+- To download asset prices in Python
+- To calculate portfolio returns
+- To transform the data into tudy format and calculate the returns
+
+

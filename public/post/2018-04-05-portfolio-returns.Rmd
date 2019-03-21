@@ -39,7 +39,7 @@ We will invest in the following assets
 - S&P 500 ETF (VOO)  25%
 - Emerging Markets ETF (VWO) 20% 
 
-So lets assign out ticker symbols and weights.
+So lets assign our ticker symbols and weights.
 
 ```{r}
 

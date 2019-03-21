@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>How to calculate portfolio returns in Python :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2018-04-05-portfolio-returns-py/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="How to calculate portfolio returns in Python :: Coding Finance — " />
+<meta name="twitter:description" content="Calculating portfolio returns in PythonIn this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.
+Calculating portfolio returns using the formulaA portfolio return is the weighted average of indidual assets in the portfolio.
+Here is what we need
+Asset symbols that make up our portfolioPrice data for the assetsweights of assetsCalculating the weighted average of our assets returnsAdding them to get the portfolio returnsLets first load the modules" />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to calculate portfolio returns in Python :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2018-04-05-portfolio-returns-py/" />
+<meta property="og:site_name" content="How to calculate portfolio returns in Python" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2018-04-05 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2018-04-05-portfolio-returns-py/">How to calculate portfolio returns in Python</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        4/5/2018
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <div id="calculating-portfolio-returns-in-python" class="section level2">
+<h2>Calculating portfolio returns in Python</h2>
+<p>In this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.</p>
+<div id="calculating-portfolio-returns-using-the-formula" class="section level3">
+<h3>Calculating portfolio returns using the formula</h3>
+<p>A portfolio return is the weighted average of indidual assets in the portfolio.</p>
+<p>Here is what we need</p>
+<ul>
+<li>Asset symbols that make up our portfolio</li>
+<li>Price data for the assets</li>
+<li>weights of assets</li>
+<li>Calculating the weighted average of our assets returns</li>
+<li>Adding them to get the portfolio returns</li>
+</ul>
+<p>Lets first load the modules</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas_datareader as web</code></pre>
+<p>We will invest in the following assets</p>
+<ul>
+<li>Aggregate Bonds ETF (BND) 10%</li>
+<li>Small Cap ETF (VB) 20%</li>
+<li>Developed markets ETF (VEA) 25%</li>
+<li>S&amp;P 500 ETF (VOO) 25%</li>
+<li>Emerging Markets ETF (VWO) 20%</li>
+</ul>
+<p>So lets assign our assets to the symbols variable.</p>
+<pre class="python"><code>symbols = [&#39;VOO&#39;,&#39;VEA&#39;, &#39;VB&#39;, &#39;VWO&#39;,&#39;BND&#39;]</code></pre>
+<p>Next we download the price data for the assets.</p>
+<pre class="python"><code>price_data = web.get_data_yahoo(symbols,
+                               start = &#39;2013-01-01&#39;,
+                               end = &#39;2018-03-01&#39;)</code></pre>
+<p>Now that we have the price data lets look at the head of this data.</p>
+<pre class="python"><code>print(price_data.head())</code></pre>
+<pre><code>## Attributes       High               ...       Adj Close           
+## Symbols           BND         VB    ...             VOO        VWO
+## Date                                ...                           
+## 2013-01-02  83.940002  83.209999    ...      118.514633  38.687973
+## 2013-01-03  83.930000  83.690002    ...      118.408173  38.458233
+## 2013-01-04  83.779999  83.919998    ...      118.904968  38.526299
+## 2013-01-07  83.760002  83.639999    ...      118.585602  38.194477
+## 2013-01-08  83.849998  83.610001    ...      118.230812  37.879665
+## 
+## [5 rows x 30 columns]</code></pre>
+<p>But we just need the Adjusted Closing price for our returns calculations. So lets select that columns.</p>
+<pre class="python"><code>price_data = price_data[&#39;Adj Close&#39;]
+price_data.head()</code></pre>
+<p>We can see that pandas has sorted our columns alphabetically so we need to align our weights correctly to the column names.</p>
+<pre class="python"><code>w = [0.1,0.2,0.25,0.25,0.2]</code></pre>
+<p>A quick check to see if our weights add to one.</p>
+<pre class="python"><code>sum(w)</code></pre>
+<p>Now we will calculate the asset returns in our portfolio.</p>
+<pre class="python"><code>ret_data = price_data.pct_change()[1:]
+print(ret_data.head())</code></pre>
+<pre><code>## Symbols          BND        VB       VEA       VOO       VWO
+## Date                                                        
+## 2013-01-03 -0.002979 -0.000601 -0.010053 -0.000898 -0.005938
+## 2013-01-04  0.001554  0.007578  0.005642  0.004196  0.001770
+## 2013-01-07 -0.000716 -0.002985 -0.005049 -0.002686 -0.008613
+## 2013-01-08  0.000956 -0.001916 -0.005357 -0.002992 -0.008242
+## 2013-01-09 -0.000359  0.004319  0.004819  0.003001  0.005840</code></pre>
+<p>Next we can calculate the weighted returns of our assets.</p>
+<pre class="python"><code>weighted_returns = (w * ret_data)
+print(weighted_returns.head())</code></pre>
+<pre><code>## Symbols          BND        VB       VEA       VOO       VWO
+## Date                                                        
+## 2013-01-03 -0.000298 -0.000120 -0.002513 -0.000225 -0.001188
+## 2013-01-04  0.000155  0.001516  0.001411  0.001049  0.000354
+## 2013-01-07 -0.000072 -0.000597 -0.001262 -0.000671 -0.001723
+## 2013-01-08  0.000096 -0.000383 -0.001339 -0.000748 -0.001648
+## 2013-01-09 -0.000036  0.000864  0.001205  0.000750  0.001168</code></pre>
+<p>Next the portfolio returns are simply the sum of the weighted returns of the assets. So lets add the rows.</p>
+<pre class="python"><code>port_ret = weighted_returns.sum(axis=1)
+# axis =1 tells pandas we want to add
+# the rows</code></pre>
+<p>Lets plot the histogram of the returns.</p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.hist(port_ret, bins = 60)
+ax1.set_xlabel(&#39;Portfolio returns&#39;)
+ax1.set_ylabel(&quot;Freq&quot;)
+ax1.set_title(&quot;Portfolio Returns calculated manually&quot;)
+plt.show(); </code></pre>
+<p><img src="/post/2018-04-05-portfolio-returns-py_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+</div>
+<div id="tidy-method-in-python" class="section level2">
+<h2>Tidy method in Python</h2>
+<p>In the example given in the R post we calculate the portfolio returns using the tidy dataframe. We can also calculate the returns using a tidy method in Python. To do that we need to reshape our returns dataframe and create a new weights table. We will then join the two and calculate the portfolio returns.</p>
+<p>First lets create a weights table.</p>
+<pre class="python"><code>wts_table = pd.DataFrame({&#39;symbol&#39;:symbols,
+                          &#39;wts&#39;:[0.25,0.25,0.2,0.2,0.1]})
+print(wts_table.head())</code></pre>
+<pre><code>##   symbol   wts
+## 0    VOO  0.25
+## 1    VEA  0.25
+## 2     VB  0.20
+## 3    VWO  0.20
+## 4    BND  0.10</code></pre>
+<p>Next we will transform our returns data into a tidy data. First we need to reset the index and make the Date index into a separate column.</p>
+<pre class="python"><code>ret_data_tidy = pd.melt(ret_data.reset_index(),
+        id_vars=&#39;Date&#39;,
+        var_name=&#39;symbol&#39;,
+        value_name=&#39;ret&#39;)
+        
+print(ret_data_tidy.head())</code></pre>
+<pre><code>##         Date symbol       ret
+## 0 2013-01-03    BND -0.002979
+## 1 2013-01-04    BND  0.001554
+## 2 2013-01-07    BND -0.000716
+## 3 2013-01-08    BND  0.000956
+## 4 2013-01-09    BND -0.000359</code></pre>
+<p>We can see that the assets have been stacked on top of one another and Date has a separate column. Next we can merge our data by symbols.</p>
+<pre class="python"><code>ret_data_tidy_wts = pd.merge(ret_data_tidy,wts_table,on=&quot;symbol&quot;)
+print(ret_data_tidy_wts.head())</code></pre>
+<pre><code>##         Date symbol       ret  wts
+## 0 2013-01-03    BND -0.002979  0.1
+## 1 2013-01-04    BND  0.001554  0.1
+## 2 2013-01-07    BND -0.000716  0.1
+## 3 2013-01-08    BND  0.000956  0.1
+## 4 2013-01-09    BND -0.000359  0.1</code></pre>
+<p>We have the data in the desired form and now we can multiply our columns to find out the weighted average.</p>
+<pre class="python"><code>ret_data_tidy_wts[&#39;wt_returns&#39;] = ret_data_tidy_wts[&#39;ret&#39;] * ret_data_tidy_wts[&#39;wts&#39;] 
+print(ret_data_tidy_wts.head())</code></pre>
+<pre><code>##         Date symbol       ret  wts  wt_returns
+## 0 2013-01-03    BND -0.002979  0.1   -0.000298
+## 1 2013-01-04    BND  0.001554  0.1    0.000155
+## 2 2013-01-07    BND -0.000716  0.1   -0.000072
+## 3 2013-01-08    BND  0.000956  0.1    0.000096
+## 4 2013-01-09    BND -0.000359  0.1   -0.000036</code></pre>
+<p>Finally we need to group our dataframe by date to calculate the daily returns on our portfolio.</p>
+<pre class="python"><code>port_ret_tidy = ret_data_tidy_wts.groupby(&quot;Date&quot;).sum()[&#39;wt_returns&#39;]
+print(port_ret_tidy.head())</code></pre>
+<pre><code>## Date
+## 2013-01-03   -0.004344
+## 2013-01-04    0.004484
+## 2013-01-07   -0.004325
+## 2013-01-08   -0.004023
+## 2013-01-09    0.003951
+## Name: wt_returns, dtype: float64</code></pre>
+<p>So we now have the portfolio returns calculated in tidy format as well. We can see that the results are same since the difference between the two is 0.</p>
+<pre class="python"><code>diff = port_ret - port_ret_tidy
+print(diff.unique())</code></pre>
+<pre><code>## [0.]</code></pre>
+<p>We can also plot the two histograms.</p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.hist(port_ret, bins = 60) # manually calculated returns
+ax1.set_xlabel(&#39;Portfolio returns&#39;)
+ax1.set_ylabel(&quot;Freq&quot;)
+ax1.set_title(&quot;Portfolio Returns calculated manually&quot;)
+plt.show();</code></pre>
+<p><img src="/post/2018-04-05-portfolio-returns-py_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.hist(port_ret_tidy, bins = 60) # Tidy returns
+ax1.set_xlabel(&#39;Portfolio returns&#39;)
+ax1.set_ylabel(&quot;Freq&quot;)
+ax1.set_title(&quot;Portfolio Returns calculated in Tidy format&quot;)
+plt.show();</code></pre>
+<p><img src="/post/2018-04-05-portfolio-returns-py_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div id="portfolio-mean-and-standard-deviation" class="section level3">
+<h3>Portfolio mean and standard deviation</h3>
+<p>Next we will calculate the portfolio mean and standard deviation, this is simple with the pandas module.</p>
+<pre class="python"><code>mean_ret = port_ret.mean()
+std_returns = port_ret.std()
+print(mean_ret)</code></pre>
+<pre><code>## 0.00037687449567662715</code></pre>
+<pre class="python"><code>print(std_returns)</code></pre>
+<pre><code>## 0.007587140787139987</code></pre>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<p>In this post we learned</p>
+<ul>
+<li>To download asset prices in Python</li>
+<li>To calculate portfolio returns</li>
+<li>To transform the data into tudy format and calculate the returns</li>
+</ul>
+</div>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2018-04-05-portfolio-returns/">How to calculate portfolio returns in R →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

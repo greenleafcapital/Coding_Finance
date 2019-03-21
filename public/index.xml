@@ -50,6 +50,18 @@ If you would like to learn, then a fake money account is more appropriate for le
     </item>
     
     <item>
+      <title>How to calculate portfolio returns in Python</title>
+      <link>/post/2018-04-05-portfolio-returns-py/</link>
+      <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-04-05-portfolio-returns-py/</guid>
+      <description>Calculating portfolio returns in PythonIn this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.
+Calculating portfolio returns using the formulaA portfolio return is the weighted average of indidual assets in the portfolio.
+Here is what we need
+Asset symbols that make up our portfolioPrice data for the assetsweights of assetsCalculating the weighted average of our assets returnsAdding them to get the portfolio returnsLets first load the modules</description>
+    </item>
+    
+    <item>
       <title>How to calculate portfolio returns in R</title>
       <link>/post/2018-04-05-portfolio-returns/</link>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
