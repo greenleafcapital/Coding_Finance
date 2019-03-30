@@ -55,11 +55,19 @@ import pandas_datareader as web</code></pre>
 ## [5 rows x 30 columns]</code></pre>
 <p>But we just need the Adjusted Closing price for our returns calculations. So lets select that columns.</p>
 <pre class="python"><code>price_data = price_data[&#39;Adj Close&#39;]
-price_data.head()</code></pre>
+print(price_data.head())</code></pre>
+<pre><code>## Symbols           BND         VB        VEA         VOO        VWO
+## Date                                                              
+## 2013-01-02  72.009705  76.226204  29.875366  118.514633  38.687973
+## 2013-01-03  71.795158  76.180389  29.575027  118.408173  38.458233
+## 2013-01-04  71.906746  76.757660  29.741890  118.904968  38.526299
+## 2013-01-07  71.855232  76.528564  29.591715  118.585602  38.194477
+## 2013-01-08  71.923927  76.381973  29.433203  118.230812  37.879665</code></pre>
 <p>We can see that pandas has sorted our columns alphabetically so we need to align our weights correctly to the column names.</p>
 <pre class="python"><code>w = [0.1,0.2,0.25,0.25,0.2]</code></pre>
 <p>A quick check to see if our weights add to one.</p>
-<pre class="python"><code>sum(w)</code></pre>
+<pre class="python"><code>print(sum(w))</code></pre>
+<pre><code>## 1.0</code></pre>
 <p>Now we will calculate the asset returns in our portfolio.</p>
 <pre class="python"><code>ret_data = price_data.pct_change()[1:]
 print(ret_data.head())</code></pre>
@@ -97,7 +105,7 @@ plt.show(); </code></pre>
 </div>
 <div id="tidy-method-in-python" class="section level2">
 <h2>Tidy method in Python</h2>
-<p>In the example given in the R post we calculate the portfolio returns using the tidy dataframe. We can also calculate the returns using a tidy method in Python. To do that we need to reshape our returns dataframe and create a new weights table. We will then join the two and calculate the portfolio returns.</p>
+<p>In the example given in the R post we calculated the portfolio returns using the tidy dataframe. We can also calculate the returns using a tidy method in Python. To do that we need to reshape our returns dataframe and create a new weights table. We will then join the two and calculate the portfolio returns.</p>
 <p>First lets create a weights table.</p>
 <pre class="python"><code>wts_table = pd.DataFrame({&#39;symbol&#39;:symbols,
                           &#39;wts&#39;:[0.25,0.25,0.2,0.2,0.1]})
@@ -149,7 +157,8 @@ print(port_ret_tidy.head())</code></pre>
 ## 2013-01-08   -0.004023
 ## 2013-01-09    0.003951
 ## Name: wt_returns, dtype: float64</code></pre>
-<p>So we now have the portfolio returns calculated in tidy format as well. We can see that the results are same since the difference between the two is 0.</p>
+<p>Now have the portfolio returns calculated in tidy format as well. We like this way since we can see which columns are getting multiplied.
+We can see that the results are same since the difference between the two is 0.</p>
 <pre class="python"><code>diff = port_ret - port_ret_tidy
 print(diff.unique())</code></pre>
 <pre><code>## [0.]</code></pre>
