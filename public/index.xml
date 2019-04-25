@@ -50,6 +50,29 @@ If you would like to learn, then a fake money account is more appropriate for le
     </item>
     
     <item>
+      <title>How to calculate Cumulative portfolio returns in Python</title>
+      <link>/post/2018-04-10-cumulative-portfolio-returns-py/</link>
+      <pubDate>Tue, 10 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-04-10-cumulative-portfolio-returns-py/</guid>
+      <description>Calculating Cumulative portfolio returns in PythonIn the last post we learned how to construct a portfolio in python. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.
+First lets load the library.
+import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webThen lets load the ticker symbols for our assets that we will include in our portfolio.</description>
+    </item>
+    
+    <item>
+      <title>How to calculate Cumulative portfolio returns in R</title>
+      <link>/post/2018-04-10-cumulative-portfolio-returns/</link>
+      <pubDate>Tue, 10 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-04-10-cumulative-portfolio-returns/</guid>
+      <description>Calculating Cumulative portfolio returns in RIn the last post we learned how to construct a portfolio in R. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.
+First lets load the library.
+library(tidyquant)Then lets load the ticker symbols for our assets that we will include in our portfolio.
+# Asset tickerstickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;)We will also create a vector for our asset weights.</description>
+    </item>
+    
+    <item>
       <title>How to calculate portfolio returns in Python</title>
       <link>/post/2018-04-05-portfolio-returns-py/</link>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>

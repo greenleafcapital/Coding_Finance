@@ -1,0 +1,128 @@
+---
+title: "How to calculate Cumulative portfolio returns in R"
+author: "DD"
+date: "2018-04-10"
+description: "Calculating cumulative portfolio returns in R"
+output: html_document
+---
+
+
+
+<div id="calculating-cumulative-portfolio-returns-in-r" class="section level2">
+<h2>Calculating Cumulative portfolio returns in R</h2>
+<p>In the last post we learned how to construct a portfolio in R. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.</p>
+<p>First lets load the library.</p>
+<pre class="r"><code>library(tidyquant)</code></pre>
+<p>Then lets load the ticker symbols for our assets that we will include in our portfolio.</p>
+<pre class="r"><code># Asset tickers
+
+tickers = c(&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;)</code></pre>
+<p>We will also create a vector for our asset weights.</p>
+<pre class="r"><code># Asset weights
+
+wts = c(0.1,0.2,0.25,0.25,0.2)</code></pre>
+<p>Next lets download the price data from yahoo finance.</p>
+<pre class="r"><code>price_data &lt;- tq_get(tickers,
+                     from = &#39;2013-01-01&#39;,
+                     to = &#39;2018-03-01&#39;,
+                     get = &#39;stock.prices&#39;)</code></pre>
+<p>Next we will calculate the daily returns for our assets.</p>
+<pre class="r"><code>ret_data &lt;- price_data %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select = adjusted,
+               mutate_fun = periodReturn,
+               period = &quot;daily&quot;,
+               col_rename = &quot;ret&quot;)</code></pre>
+<p>For our ease of calculations, we will create a weight table.</p>
+<pre class="r"><code>wts_tbl &lt;- tibble(symbol = tickers,
+                  wts = wts)</code></pre>
+<p>Then we will join our weights table and the returns data.</p>
+<pre class="r"><code>ret_data &lt;- left_join(ret_data,wts_tbl, by = &#39;symbol&#39;)</code></pre>
+<p>We will then calcualte the weighted average of our asset returns.</p>
+<pre class="r"><code>ret_data &lt;- ret_data %&gt;%
+  mutate(wt_return = wts * ret)</code></pre>
+<p>Finally the portfolio returns are the sum of the weighted returns.</p>
+<pre class="r"><code>port_ret &lt;- ret_data %&gt;%
+  group_by(date) %&gt;%
+  summarise(port_ret = sum(wt_return))</code></pre>
+<p>Once we have the portfolio returns, we will use the <code>cumprod()</code> function to calculate the cumulative returns for the portfolio.</p>
+<pre class="r"><code>port_cumulative_ret &lt;- port_ret %&gt;%
+  mutate(cr = cumprod(1 + port_ret))</code></pre>
+<p>We can visualize the portfolio returns using the below code.</p>
+<pre class="r"><code>port_cumulative_ret %&gt;%
+  ggplot(aes(x = date, y = cr)) +
+  geom_line() +
+  labs(x = &#39;Date&#39;,
+       y = &#39;Cumulative Returns&#39;,
+       title = &#39;Portfolio Cumulative Returns&#39;) +
+  theme_classic() +
+  scale_y_continuous(breaks = seq(1,2,0.1)) +
+  scale_x_date(date_breaks = &#39;year&#39;,
+               date_labels = &#39;%Y&#39;)</code></pre>
+<p><img src="/post/2018-04-10-cumulative-portfolio-returns_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>We will post the entire code here.</p>
+<pre class="r"><code>library(tidyquant)
+
+# Asset tickers
+
+tickers = c(&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;)
+
+# Asset weights
+
+wts = c(0.1,0.2,0.25,0.25,0.2)
+
+price_data &lt;- tq_get(tickers,
+                     from = &#39;2013-01-01&#39;,
+                     to = &#39;2018-03-01&#39;,
+                     get = &#39;stock.prices&#39;)
+
+ret_data &lt;- price_data %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select = adjusted,
+               mutate_fun = periodReturn,
+               period = &quot;daily&quot;,
+               col_rename = &quot;ret&quot;)
+
+wts_tbl &lt;- tibble(symbol = tickers,
+                  wts = wts)
+ret_data &lt;- left_join(ret_data,wts_tbl, by = &#39;symbol&#39;)
+
+ret_data &lt;- ret_data %&gt;%
+  mutate(wt_return = wts * ret)
+
+port_ret &lt;- ret_data %&gt;%
+  group_by(date) %&gt;%
+  summarise(port_ret = sum(wt_return))
+
+port_cumulative_ret &lt;- port_ret %&gt;%
+  mutate(cr = cumprod(1 + port_ret))</code></pre>
+<p>But there is a simpler code if we use the tidyquant function. We will demonstrate how to use to tidyquant to calculate cumulative portfolio returns.</p>
+<pre class="r"><code>port_ret_tidyquant &lt;- ret_data %&gt;%
+  tq_portfolio(assets_col = symbol,
+               returns_col = ret,
+               weights = wts,
+               col_rename = &#39;port_ret&#39;,
+               geometric = FALSE)
+
+port_cumulative_ret_tidyquant &lt;- port_ret_tidyquant %&gt;%
+  mutate(cr = cumprod(1 + port_ret))</code></pre>
+<p>As we can see that the above code is much shorter than the previous code. We can compre the two portfolio calculations.</p>
+<pre class="r"><code>port_cumulative_ret %&gt;%
+  mutate(port_ret_tidyquant = port_cumulative_ret_tidyquant$cr) %&gt;%
+  select(-port_ret) %&gt;%
+  rename(long_method = cr) %&gt;%
+  gather(long_method,port_ret_tidyquant,
+         key = port_method,
+         value = cr) %&gt;%
+  ggplot(aes(x = date, y = cr, color = port_method)) +
+  geom_line() +
+  labs(x = &#39;Date&#39;,
+       y = &#39;Cumulative Returns&#39;,
+       title = &#39;Portfolio Cumulative Returns&#39;) +
+  theme_classic() +
+  scale_y_continuous(breaks = seq(1,2,0.1)) +
+  scale_x_date(date_breaks = &#39;year&#39;,
+               date_labels = &#39;%Y&#39;)</code></pre>
+<p><img src="/post/2018-04-10-cumulative-portfolio-returns_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>We can see that both line overlap each other and the returns are the same. So in the future its best to use the shorter <code>tq_portfolio()</code> method.</p>
+</div>

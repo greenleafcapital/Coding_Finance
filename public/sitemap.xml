@@ -23,6 +23,16 @@
   </url>
   
   <url>
+    <loc>/post/2018-04-10-cumulative-portfolio-returns-py/</loc>
+    <lastmod>2018-04-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/2018-04-10-cumulative-portfolio-returns/</loc>
+    <lastmod>2018-04-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/2018-04-05-portfolio-returns-py/</loc>
     <lastmod>2018-04-05T00:00:00+00:00</lastmod>
   </url>
@@ -125,7 +135,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-04-05T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
