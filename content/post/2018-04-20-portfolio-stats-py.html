@@ -1,0 +1,63 @@
+---
+title: "How to calculate portfolios statistics in Python"
+author: "DD"
+date: "2018-04-20"
+description: "Calculating portfolio statistics in Python"
+output: html_document
+---
+
+
+
+<p>In this post we will calculate the following portfolio statistics using Python.</p>
+<ul>
+<li>Portfolio average returns</li>
+<li>Portfolio standard deviation</li>
+<li>Portfolio sharpe ratio</li>
+</ul>
+<p>As usual we will start with loading our libraries.</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas_datareader as web</code></pre>
+<p>We will use the same assets from the last post to build our portfolio.</p>
+<pre class="python"><code># Create a list of tickers and weights
+tickers = [&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;]
+wts = [0.1,0.2,0.25,0.25,0.2]</code></pre>
+<p>Next lets download the price data from yahoo finance. We will only keep the adjusted closing price for our stock tickers.</p>
+<pre class="python"><code>price_data = web.get_data_yahoo(tickers,
+                               start = &#39;2013-01-01&#39;,
+                               end = &#39;2018-03-01&#39;)
+price_data = price_data[&#39;Adj Close&#39;]
+                               </code></pre>
+<p>Next we will calculate the daily returns for our assets.</p>
+<pre class="python"><code>ret_data = price_data.pct_change()[1:]</code></pre>
+<p>After this we will calculate the portfolio returns.</p>
+<pre class="python"><code>port_ret = (ret_data * wts).sum(axis = 1)</code></pre>
+<p>Lets look at the total cumulative returns for our portfolio.</p>
+<pre class="python"><code>cumulative_ret = (port_ret + 1).cumprod()
+fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.plot(cumulative_ret)
+ax1.set_xlabel(&#39;Date&#39;)
+ax1.set_ylabel(&quot;Cumulative Returns&quot;)
+ax1.set_title(&quot;Portfolio Cumulative Returns&quot;)
+plt.show();</code></pre>
+<p><img src="/post/2018-04-20-portfolio-stats-py_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We now have the daily returns data. We will convert it to geometric average annual returns.</p>
+<pre class="python"><code>geometric_port_return = np.prod(port_ret + 1) ** (252/port_ret.shape[0]) - 1
+print(geometric_port_return)</code></pre>
+<pre><code>## 0.09164977877693814</code></pre>
+<p>Next we will calculate the portfolio standard deviation or volatility. This is the annual standard deviation for our portfolio.</p>
+<pre class="python"><code>annual_std = np.std(port_ret) * np.sqrt(252)
+print(annual_std)</code></pre>
+<pre><code>## 0.12039583631455449</code></pre>
+<p>Next we will calculate the portfolio sharpe ratio.</p>
+<pre class="python"><code>port_sharpe_ratio = geometric_port_return / annual_std
+print(port_sharpe_ratio)</code></pre>
+<pre><code>## 0.7612371123656435</code></pre>
+<p>In this post we calculate the</p>
+<ul>
+<li>Portfolio annualized returns</li>
+<li>Portfolio standard deviation</li>
+<li>Portfolio sharpe ratio</li>
+</ul>

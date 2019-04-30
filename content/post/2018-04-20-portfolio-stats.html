@@ -1,0 +1,108 @@
+---
+title: "How to calculate portfolios statistics in R"
+author: "DD"
+date: "2018-04-20"
+description: "Calculating portfolio statistics in R"
+output: html_document
+---
+
+
+
+<p>In this post we will calculate the following portfolio statistics using R.</p>
+<ul>
+<li>Portfolio average returns</li>
+<li>Portfolio standard deviation</li>
+<li>Portfolio sharpe ratio</li>
+</ul>
+<p>As usual we will start with loading our libraries.</p>
+<pre class="r"><code>library(tidyquant)
+library(timetk)</code></pre>
+<p>We will use the same assets from the last post to build our portfolio.</p>
+<pre class="r"><code># Create the tickers and weights vector
+
+tickers = c(&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;)
+
+wts = c(0.1,0.2,0.25,0.25,0.2)</code></pre>
+<p>Next lets download the price data from yahoo finance.</p>
+<pre class="r"><code>price_data &lt;- tq_get(tickers,
+                     from = &#39;2013-01-01&#39;,
+                     to = &#39;2018-03-01&#39;,
+                     get = &#39;stock.prices&#39;)</code></pre>
+<p>Next we will calculate the daily returns for our assets.</p>
+<pre class="r"><code>ret_data &lt;- price_data %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select = adjusted,
+               mutate_fun = periodReturn,
+               period = &quot;daily&quot;,
+               col_rename = &quot;ret&quot;)</code></pre>
+<p>We will use the <code>tq_portfolio</code> package to quickly calculate the portfolio returns.</p>
+<pre class="r"><code>port_ret &lt;- ret_data %&gt;%
+  tq_portfolio(assets_col = symbol,
+               returns_col = ret,
+               weights = wts,
+               col_rename = &#39;port_ret&#39;,
+               geometric = FALSE)</code></pre>
+<p>Lets look at the total cumulative returns for our portfolio.</p>
+<pre class="r"><code>port_ret %&gt;%
+  mutate(cr = cumprod(1 + port_ret)) %&gt;%
+  ggplot(aes(x = date, y = cr)) +
+  geom_line() +
+  labs(x = &#39;Date&#39;,
+       y = &#39;Cumulative Returns&#39;,
+       title = &#39;Portfolio Cumulative Returns&#39;) +
+  theme_bw() +
+  scale_y_continuous(breaks = seq(1,2,0.1)) +
+  scale_x_date(date_breaks = &#39;year&#39;,
+               date_labels = &#39;%Y&#39;)</code></pre>
+<p><img src="/post/2018-04-20-portfolio-stats_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Now lets begin by calculating the average annual portfolio returns.</p>
+<pre class="r"><code>average_annual_port_ret &lt;- port_ret %&gt;%
+  tq_performance(Ra = port_ret,
+                 performance_fun = Return.annualized)
+
+cat(&quot;The average annual portfolio returns is &quot;, round((average_annual_port_ret[[1]] * 100),2),&quot;%&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## The average annual portfolio returns is 9.22%</code></pre>
+<p>Next we will calculate the portfolio standard deviation or volatility. There are two methods to do this. We will first calculate this manually. For that we need to calculate the daily portfolio volatility.</p>
+<pre class="r"><code>daily_port_sd &lt;- sd(port_ret$port_ret)
+
+cat(&quot;The daily portfolio volatility is&quot;, round((daily_port_sd),4))</code></pre>
+<pre><code>## The daily portfolio volatility is 0.0076</code></pre>
+<p>Now we need to annualize this to find the annual volatility.</p>
+<pre class="r"><code>annual_port_sd &lt;- daily_port_sd * sqrt(252)
+
+cat(&quot;The annual portfolio volatility is&quot;, round((annual_port_sd),4))</code></pre>
+<pre><code>## The annual portfolio volatility is 0.1204</code></pre>
+<p>We can use the built in formula to calculate this as well, but to use that we need to convert our data into an xts format. We can do that as shown below.</p>
+<pre class="r"><code>annual_port_sd_xts &lt;- StdDev.annualized(tk_xts(port_ret, silent = TRUE))
+
+cat(&quot;The annual portfolio volatility using the xts method is&quot;, round((annual_port_sd_xts),4))</code></pre>
+<pre><code>## The annual portfolio volatility using the xts method is 0.1204</code></pre>
+<p>We can see that we get the same answer. Use whatever method you find easier.</p>
+<p>Next we will find the portfolio’s sharpe ratio. We will first calculate it manually and then we will use the built in formuala.</p>
+<pre class="r"><code>sharpe_ratio_manually &lt;- average_annual_port_ret$AnnualizedReturn / annual_port_sd
+
+cat(&quot;The annual portfolio sharpe ratio calculated manually is&quot;, round((sharpe_ratio_manually),4))</code></pre>
+<pre><code>## The annual portfolio sharpe ratio calculated manually is 0.7658</code></pre>
+<p>If Risk free interest rate is 4% (as it was pre 2008 crisis), then we get the sharpe ratio as follows.</p>
+<pre class="r"><code>sharpe_ratio_manually_rf_4 &lt;- (average_annual_port_ret$AnnualizedReturn - 0.04) / annual_port_sd
+
+cat(&quot;The annual portfolio sharpe ratio calculated manually when risk free interest rate is at 4% is&quot;, round((sharpe_ratio_manually_rf_4),4))</code></pre>
+<pre><code>## The annual portfolio sharpe ratio calculated manually when risk free interest rate is at 4% is 0.4337</code></pre>
+<p>We could do this using the <code>tq_performance</code> function.</p>
+<pre class="r"><code>sharpe_ratio &lt;- port_ret %&gt;%
+  tq_performance(Ra = port_ret,
+                 performance_fun = SharpeRatio.annualized) %&gt;%
+  .[[1]]
+
+cat(&quot;The annual portfolio sharpe ratio calculated using the tq_performance function is&quot;, round((sharpe_ratio),4))</code></pre>
+<pre><code>## The annual portfolio sharpe ratio calculated using the tq_performance function is 0.7658</code></pre>
+<p>We can also change the risk free rate to 4%.</p>
+<pre class="r"><code>sharpe_ratio_rf_4 &lt;- port_ret %&gt;%
+  tq_performance(Ra = port_ret,
+                 performance_fun = SharpeRatio.annualized,
+                 Rf = 0.04/252) %&gt;%
+  .[[1]]
+
+cat(&quot;The annual portfolio sharpe ratio calculated using the tq_performance function when Rf is 45 is&quot;, round((sharpe_ratio_rf_4),4))</code></pre>
+<pre><code>## The annual portfolio sharpe ratio calculated using the tq_performance function when Rf is 45 is 0.4103</code></pre>
+<p>This is slighlty different that our manually calculated number. This is due to the <code>tq_performance</code> function calculating the daily excess returns and then annualizing it. This causes the slight difference between our manual calculation, which ignored the daily excess returns.</p>

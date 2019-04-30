@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   
-    <title>How to calculate Cumulative portfolio returns in Python :: Coding Finance</title>
+    <title>How to calculate portfolios statistics in Python :: Coding Finance</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
 <meta name="robots" content="noodp"/>
-<link rel="canonical" href="/post/2018-04-10-cumulative-portfolio-returns-py/" />
+<link rel="canonical" href="/post/2018-04-20-portfolio-stats-py/" />
 
 
 <link rel="stylesheet" href="/assets/style.css">
@@ -25,10 +25,11 @@
 
 
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="How to calculate Cumulative portfolio returns in Python :: Coding Finance — " />
-<meta name="twitter:description" content="Calculating Cumulative portfolio returns in PythonIn the last post we learned how to construct a portfolio in python. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.
-First lets load the library.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webThen lets load the ticker symbols for our assets that we will include in our portfolio." />
+<meta name="twitter:title" content="How to calculate portfolios statistics in Python :: Coding Finance — " />
+<meta name="twitter:description" content="In this post we will calculate the following portfolio statistics using Python.
+Portfolio average returnsPortfolio standard deviationPortfolio sharpe ratioAs usual we will start with loading our libraries.
+import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webWe will use the same assets from the last post to build our portfolio.
+# Create a list of tickers and weightstickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;]wts = [0." />
 <meta name="twitter:site" content="" />
 <meta name="twitter:creator" content="" />
 <meta name="twitter:image" content="/img/default.jpg">
@@ -36,15 +37,15 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
 
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="How to calculate Cumulative portfolio returns in Python :: Coding Finance — ">
+<meta property="og:title" content="How to calculate portfolios statistics in Python :: Coding Finance — ">
 <meta property="og:description" content="" />
-<meta property="og:url" content="/post/2018-04-10-cumulative-portfolio-returns-py/" />
-<meta property="og:site_name" content="How to calculate Cumulative portfolio returns in Python" />
+<meta property="og:url" content="/post/2018-04-20-portfolio-stats-py/" />
+<meta property="og:site_name" content="How to calculate portfolios statistics in Python" />
 <meta property="og:image" content="/img/default.jpg">
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
 
-<meta property="article:published_time" content="2018-04-10 00:00:00 &#43;0000 UTC" />
+<meta property="article:published_time" content="2018-04-20 00:00:00 &#43;0000 UTC" />
 
 
 
@@ -105,10 +106,10 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
   <div class="content">
     
   <div class="post">
-    <h2 class="post-title"><a href="/post/2018-04-10-cumulative-portfolio-returns-py/">How to calculate Cumulative portfolio returns in Python</a></h2>
+    <h2 class="post-title"><a href="/post/2018-04-20-portfolio-stats-py/">How to calculate portfolios statistics in Python</a></h2>
     <div class="post-meta">
       <span class="post-date">
-        4/10/2018
+        4/20/2018
       </span>
       <span class="post-author">Written by DD</span>
     </div>
@@ -118,54 +119,59 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
     
 
     <div class="post-content">
-      <div id="calculating-cumulative-portfolio-returns-in-python" class="section level2">
-<h2>Calculating Cumulative portfolio returns in Python</h2>
-<p>In the last post we learned how to construct a portfolio in python. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.</p>
-<p>First lets load the library.</p>
+      <p>In this post we will calculate the following portfolio statistics using Python.</p>
+<ul>
+<li>Portfolio average returns</li>
+<li>Portfolio standard deviation</li>
+<li>Portfolio sharpe ratio</li>
+</ul>
+<p>As usual we will start with loading our libraries.</p>
 <pre class="python"><code>import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas_datareader as web</code></pre>
-<p>Then lets load the ticker symbols for our assets that we will include in our portfolio.</p>
-<pre class="python"><code>#  Assets to be included in the portfolio
-tickers = [&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;]</code></pre>
-<p>We will also create a vector for our asset weights.</p>
-<pre class="python"><code># Asset weights
+<p>We will use the same assets from the last post to build our portfolio.</p>
+<pre class="python"><code># Create a list of tickers and weights
+tickers = [&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;]
 wts = [0.1,0.2,0.25,0.25,0.2]</code></pre>
-<p>Next lets download the price data from yahoo finance.</p>
+<p>Next lets download the price data from yahoo finance. We will only keep the adjusted closing price for our stock tickers.</p>
 <pre class="python"><code>price_data = web.get_data_yahoo(tickers,
                                start = &#39;2013-01-01&#39;,
                                end = &#39;2018-03-01&#39;)
+price_data = price_data[&#39;Adj Close&#39;]
                                </code></pre>
-<pre class="python"><code>price_data = price_data[&#39;Adj Close&#39;]</code></pre>
 <p>Next we will calculate the daily returns for our assets.</p>
 <pre class="python"><code>ret_data = price_data.pct_change()[1:]</code></pre>
-<p>We will then calcualte the weighted average of our asset returns.</p>
-<pre class="python"><code>weighted_returns = (wts * ret_data)
-print(weighted_returns.head())</code></pre>
-<pre><code>## Symbols          BND        VB       VEA       VOO       VWO
-## Date                                                        
-## 2013-01-03 -0.000298 -0.000120 -0.002513 -0.000225 -0.001188
-## 2013-01-04  0.000155  0.001516  0.001410  0.001049  0.000354
-## 2013-01-07 -0.000072 -0.000597 -0.001262 -0.000671 -0.001723
-## 2013-01-08  0.000096 -0.000383 -0.001339 -0.000748 -0.001648
-## 2013-01-09 -0.000036  0.000864  0.001205  0.000750  0.001168</code></pre>
-<p>Finally the portfolio returns are the sum of the weighted returns.</p>
-<pre class="python"><code>port_ret = weighted_returns.sum(axis=1)
-# axis =1 tells pandas we want to add
-# the rows</code></pre>
-<p>To calculate cumulative returns we need to use the <code>cumprod()</code> function.</p>
-<pre class="python"><code>cumulative_ret = (port_ret + 1).cumprod()</code></pre>
-<p>Lastly we will plot our portfolios cumulative returns.</p>
-<pre class="python"><code>fig = plt.figure()
+<p>After this we will calculate the portfolio returns.</p>
+<pre class="python"><code>port_ret = (ret_data * wts).sum(axis = 1)</code></pre>
+<p>Lets look at the total cumulative returns for our portfolio.</p>
+<pre class="python"><code>cumulative_ret = (port_ret + 1).cumprod()
+fig = plt.figure()
 ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
 ax1.plot(cumulative_ret)
 ax1.set_xlabel(&#39;Date&#39;)
 ax1.set_ylabel(&quot;Cumulative Returns&quot;)
 ax1.set_title(&quot;Portfolio Cumulative Returns&quot;)
 plt.show();</code></pre>
-<p><img src="/post/2018-04-10-cumulative-portfolio-returns-py_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-</div>
+<p><img src="/post/2018-04-20-portfolio-stats-py_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We now have the daily returns data. We will convert it to geometric average annual returns.</p>
+<pre class="python"><code>geometric_port_return = np.prod(port_ret + 1) ** (252/port_ret.shape[0]) - 1
+print(geometric_port_return)</code></pre>
+<pre><code>## 0.09164977877693814</code></pre>
+<p>Next we will calculate the portfolio standard deviation or volatility. This is the annual standard deviation for our portfolio.</p>
+<pre class="python"><code>annual_std = np.std(port_ret) * np.sqrt(252)
+print(annual_std)</code></pre>
+<pre><code>## 0.12039583631455449</code></pre>
+<p>Next we will calculate the portfolio sharpe ratio.</p>
+<pre class="python"><code>port_sharpe_ratio = geometric_port_return / annual_std
+print(port_sharpe_ratio)</code></pre>
+<pre><code>## 0.7612371123656435</code></pre>
+<p>In this post we calculate the</p>
+<ul>
+<li>Portfolio annualized returns</li>
+<li>Portfolio standard deviation</li>
+<li>Portfolio sharpe ratio</li>
+</ul>
 
     </div>
     
@@ -176,10 +182,8 @@ plt.show();</code></pre>
         </div>
         <div class="pagination__buttons">
           
-            <a class="btn next" href="/post/2018-04-20-portfolio-stats/">← How to calculate portfolios statistics in R</a>
           
-          
-            <a class="btn previous" href="/post/2018-04-10-cumulative-portfolio-returns/">How to calculate Cumulative portfolio returns in R →</a>
+            <a class="btn previous" href="/post/2018-04-20-portfolio-stats/">How to calculate portfolios statistics in R →</a>
            
         </div>
       </div>

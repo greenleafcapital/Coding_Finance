@@ -6,10 +6,34 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to calculate portfolios statistics in Python</title>
+      <link>/post/2018-04-20-portfolio-stats-py/</link>
+      <pubDate>Fri, 20 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-04-20-portfolio-stats-py/</guid>
+      <description>In this post we will calculate the following portfolio statistics using Python.
+Portfolio average returnsPortfolio standard deviationPortfolio sharpe ratioAs usual we will start with loading our libraries.
+import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webWe will use the same assets from the last post to build our portfolio.
+# Create a list of tickers and weightstickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;]wts = [0.</description>
+    </item>
+    
+    <item>
+      <title>How to calculate portfolios statistics in R</title>
+      <link>/post/2018-04-20-portfolio-stats/</link>
+      <pubDate>Fri, 20 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-04-20-portfolio-stats/</guid>
+      <description>In this post we will calculate the following portfolio statistics using R.
+Portfolio average returnsPortfolio standard deviationPortfolio sharpe ratioAs usual we will start with loading our libraries.
+library(tidyquant)library(timetk)We will use the same assets from the last post to build our portfolio.
+# Create the tickers and weights vectortickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;)wts = c(0.1,0.2,0.25,0.25,0.2)Next lets download the price data from yahoo finance.</description>
+    </item>
     
     <item>
       <title>How to calculate Cumulative portfolio returns in Python</title>
