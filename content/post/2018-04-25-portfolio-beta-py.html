@@ -1,0 +1,54 @@
+---
+title: "How to calculate portfolio beta in Python"
+author: "DD"
+date: "2018-04-25"
+description: "Calculating portfolio beta in Python"
+output: html_document
+---
+
+
+
+<p>In this post we will calculate the portfolio beta</p>
+<p>As usual we will start with loading our libraries.</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas_datareader as web
+from scipy import stats
+import seaborn as sns</code></pre>
+<p>We will use the same assets from the last post to build our portfolio.</p>
+<pre class="python"><code># Create a list of tickers and weights
+tickers = [&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;]
+wts = [0.1,0.2,0.25,0.25,0.2]</code></pre>
+<p>Next lets download the price data from yahoo finance.</p>
+<pre class="python"><code>price_data = web.get_data_yahoo(tickers,
+                               start = &#39;2013-01-01&#39;,
+                               end = &#39;2018-03-01&#39;)
+price_data = price_data[&#39;Adj Close&#39;]</code></pre>
+<p>Then we will calculate the daily returns for our assets.</p>
+<pre class="python"><code>ret_data = price_data.pct_change()[1:]</code></pre>
+<p>After this we will calculate the portfolio returns.</p>
+<pre class="python"><code>port_ret = (ret_data * wts).sum(axis = 1)</code></pre>
+<p>In order to calculate the portfolio beta, we need to regress the portfolio returns against the benchmark returns. To do that we will use S&amp;P 500 etf as our benchmark and calculate its returns.</p>
+<pre class="python"><code>benchmark_price = web.get_data_yahoo(&#39;SPY&#39;,
+                               start = &#39;2013-01-01&#39;,
+                               end = &#39;2018-03-01&#39;)
+                               
+benchmark_ret = benchmark_price[&quot;Adj Close&quot;].pct_change()[1:]</code></pre>
+<p>Once we have the benchmark returns, we can visualize the scatter plot of our portfolio returns versus benchmark returns.</p>
+<pre class="python"><code>sns.regplot(benchmark_ret.values,
+port_ret.values)
+plt.xlabel(&quot;Benchmark Returns&quot;)
+plt.ylabel(&quot;Portfolio Returns&quot;)
+plt.title(&quot;Portfolio Returns vs Benchmark Returns&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-25-portfolio-beta-py_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>We can see that our portolio returns are highly correlated to the benchmark returns. We can use the regression model to calculate the portfolio beta and the portfolio alpha. We will us the linear regression model to calculate the alpha and the beta.</p>
+<pre class="python"><code>(beta, alpha) = stats.linregress(benchmark_ret.values,
+                port_ret.values)[0:2]
+                
+print(&quot;The portfolio beta is&quot;, round(beta, 4))</code></pre>
+<pre><code>## The portfolio beta is 0.9329</code></pre>
+<pre class="python"><code>print(&quot;The portfolio beta is&quot;, round(alpha,5))</code></pre>
+<pre><code>## The portfolio beta is -0.00016</code></pre>
+<p>We can see that this portfolio had a negative alpha. The portfolio beta was 0.93. This suggests that for every +1% move in the S&amp;P 500 our portfolio will go up 0.93% in value.</p>

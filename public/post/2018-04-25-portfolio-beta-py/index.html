@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   
-    <title>How to calculate portfolio statistics in Python :: Coding Finance</title>
+    <title>How to calculate portfolio beta in Python :: Coding Finance</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
 <meta name="robots" content="noodp"/>
-<link rel="canonical" href="/post/2018-04-20-portfolio-stats-py/" />
+<link rel="canonical" href="/post/2018-04-25-portfolio-beta-py/" />
 
 
 <link rel="stylesheet" href="/assets/style.css">
@@ -25,10 +25,10 @@
 
 
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="How to calculate portfolio statistics in Python :: Coding Finance — " />
-<meta name="twitter:description" content="In this post we will calculate the following portfolio statistics using Python.
-Portfolio average returnsPortfolio standard deviationPortfolio sharpe ratioAs usual we will start with loading our libraries.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webWe will use the same assets from the last post to build our portfolio.
+<meta name="twitter:title" content="How to calculate portfolio beta in Python :: Coding Finance — " />
+<meta name="twitter:description" content="In this post we will calculate the portfolio beta
+As usual we will start with loading our libraries.
+import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webfrom scipy import statsimport seaborn as snsWe will use the same assets from the last post to build our portfolio.
 # Create a list of tickers and weightstickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;]wts = [0." />
 <meta name="twitter:site" content="" />
 <meta name="twitter:creator" content="" />
@@ -37,15 +37,15 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
 
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="How to calculate portfolio statistics in Python :: Coding Finance — ">
+<meta property="og:title" content="How to calculate portfolio beta in Python :: Coding Finance — ">
 <meta property="og:description" content="" />
-<meta property="og:url" content="/post/2018-04-20-portfolio-stats-py/" />
-<meta property="og:site_name" content="How to calculate portfolio statistics in Python" />
+<meta property="og:url" content="/post/2018-04-25-portfolio-beta-py/" />
+<meta property="og:site_name" content="How to calculate portfolio beta in Python" />
 <meta property="og:image" content="/img/default.jpg">
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
 
-<meta property="article:published_time" content="2018-04-20 00:00:00 &#43;0000 UTC" />
+<meta property="article:published_time" content="2018-04-25 00:00:00 &#43;0000 UTC" />
 
 
 
@@ -106,10 +106,10 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
   <div class="content">
     
   <div class="post">
-    <h2 class="post-title"><a href="/post/2018-04-20-portfolio-stats-py/">How to calculate portfolio statistics in Python</a></h2>
+    <h2 class="post-title"><a href="/post/2018-04-25-portfolio-beta-py/">How to calculate portfolio beta in Python</a></h2>
     <div class="post-meta">
       <span class="post-date">
-        4/20/2018
+        4/25/2018
       </span>
       <span class="post-author">Written by DD</span>
     </div>
@@ -119,59 +119,50 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
     
 
     <div class="post-content">
-      <p>In this post we will calculate the following portfolio statistics using Python.</p>
-<ul>
-<li>Portfolio average returns</li>
-<li>Portfolio standard deviation</li>
-<li>Portfolio sharpe ratio</li>
-</ul>
+      <p>In this post we will calculate the portfolio beta</p>
 <p>As usual we will start with loading our libraries.</p>
 <pre class="python"><code>import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas_datareader as web</code></pre>
+import pandas_datareader as web
+from scipy import stats
+import seaborn as sns</code></pre>
 <p>We will use the same assets from the last post to build our portfolio.</p>
 <pre class="python"><code># Create a list of tickers and weights
 tickers = [&#39;BND&#39;, &#39;VB&#39;, &#39;VEA&#39;, &#39;VOO&#39;, &#39;VWO&#39;]
 wts = [0.1,0.2,0.25,0.25,0.2]</code></pre>
-<p>Next lets download the price data from yahoo finance. We will only keep the adjusted closing price for our stock tickers.</p>
+<p>Next lets download the price data from yahoo finance.</p>
 <pre class="python"><code>price_data = web.get_data_yahoo(tickers,
                                start = &#39;2013-01-01&#39;,
                                end = &#39;2018-03-01&#39;)
-price_data = price_data[&#39;Adj Close&#39;]
-                               </code></pre>
-<p>Next we will calculate the daily returns for our assets.</p>
+price_data = price_data[&#39;Adj Close&#39;]</code></pre>
+<p>Then we will calculate the daily returns for our assets.</p>
 <pre class="python"><code>ret_data = price_data.pct_change()[1:]</code></pre>
 <p>After this we will calculate the portfolio returns.</p>
 <pre class="python"><code>port_ret = (ret_data * wts).sum(axis = 1)</code></pre>
-<p>Lets look at the total cumulative returns for our portfolio.</p>
-<pre class="python"><code>cumulative_ret = (port_ret + 1).cumprod()
-fig = plt.figure()
-ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
-ax1.plot(cumulative_ret)
-ax1.set_xlabel(&#39;Date&#39;)
-ax1.set_ylabel(&quot;Cumulative Returns&quot;)
-ax1.set_title(&quot;Portfolio Cumulative Returns&quot;)
-plt.show();</code></pre>
-<p><img src="/post/2018-04-20-portfolio-stats-py_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>We now have the daily returns data. We will convert it to geometric average annual returns.</p>
-<pre class="python"><code>geometric_port_return = np.prod(port_ret + 1) ** (252/port_ret.shape[0]) - 1
-print(geometric_port_return)</code></pre>
-<pre><code>## 0.09164977877693814</code></pre>
-<p>Next we will calculate the portfolio standard deviation or volatility. This is the annual standard deviation for our portfolio.</p>
-<pre class="python"><code>annual_std = np.std(port_ret) * np.sqrt(252)
-print(annual_std)</code></pre>
-<pre><code>## 0.12039583631455449</code></pre>
-<p>Next we will calculate the portfolio sharpe ratio.</p>
-<pre class="python"><code>port_sharpe_ratio = geometric_port_return / annual_std
-print(port_sharpe_ratio)</code></pre>
-<pre><code>## 0.7612371123656435</code></pre>
-<p>In this post we calculate the</p>
-<ul>
-<li>Portfolio annualized returns</li>
-<li>Portfolio standard deviation</li>
-<li>Portfolio sharpe ratio</li>
-</ul>
+<p>In order to calculate the portfolio beta, we need to regress the portfolio returns against the benchmark returns. To do that we will use S&amp;P 500 etf as our benchmark and calculate its returns.</p>
+<pre class="python"><code>benchmark_price = web.get_data_yahoo(&#39;SPY&#39;,
+                               start = &#39;2013-01-01&#39;,
+                               end = &#39;2018-03-01&#39;)
+                               
+benchmark_ret = benchmark_price[&quot;Adj Close&quot;].pct_change()[1:]</code></pre>
+<p>Once we have the benchmark returns, we can visualize the scatter plot of our portfolio returns versus benchmark returns.</p>
+<pre class="python"><code>sns.regplot(benchmark_ret.values,
+port_ret.values)
+plt.xlabel(&quot;Benchmark Returns&quot;)
+plt.ylabel(&quot;Portfolio Returns&quot;)
+plt.title(&quot;Portfolio Returns vs Benchmark Returns&quot;)
+plt.show()</code></pre>
+<p><img src="/post/2018-04-25-portfolio-beta-py_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>We can see that our portolio returns are highly correlated to the benchmark returns. We can use the regression model to calculate the portfolio beta and the portfolio alpha. We will us the linear regression model to calculate the alpha and the beta.</p>
+<pre class="python"><code>(beta, alpha) = stats.linregress(benchmark_ret.values,
+                port_ret.values)[0:2]
+                
+print(&quot;The portfolio beta is&quot;, round(beta, 4))</code></pre>
+<pre><code>## The portfolio beta is 0.9329</code></pre>
+<pre class="python"><code>print(&quot;The portfolio beta is&quot;, round(alpha,5))</code></pre>
+<pre><code>## The portfolio beta is -0.00016</code></pre>
+<p>We can see that this portfolio had a negative alpha. The portfolio beta was 0.93. This suggests that for every +1% move in the S&amp;P 500 our portfolio will go up 0.93% in value.</p>
 
     </div>
     
@@ -182,10 +173,8 @@ print(port_sharpe_ratio)</code></pre>
         </div>
         <div class="pagination__buttons">
           
-            <a class="btn next" href="/post/2018-04-25-portfolio-beta/">← How to calculate portfolio beta in R</a>
           
-          
-            <a class="btn previous" href="/post/2018-04-20-portfolio-stats/">How to calculate portfolio statistics in R →</a>
+            <a class="btn previous" href="/post/2018-04-25-portfolio-beta/">How to calculate portfolio beta in R →</a>
            
         </div>
       </div>
