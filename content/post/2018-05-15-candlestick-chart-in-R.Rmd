@@ -1,0 +1,36 @@
+---
+title: "Creating Candlestick charts in R"
+author: "DD"
+date: "2018-05-15"
+description: "Creating Candlestick charts in R"
+output: html_document
+---
+
+```{r message=FALSE,warning=FALSE}
+
+library(tidyquant)
+library(plotly)
+```
+
+Plotting S&P 500 etf (SPY) price data since March 1, 2019. We will use the below code to plot the chart using plotly.
+
+```{r}
+
+spy_price <- tq_get('SPY',
+                    from = '2019-03-01',
+                    get = 'stock.prices')
+
+spy_price %>%
+  plot_ly(x = ~date,
+          type = 'candlestick',
+          open = ~open,
+          close = ~close,
+          high = ~high,
+          low = ~low) %>%
+  layout(title = 'SPY Price since March 2019',
+         xaxis = list(rangeslider = list(visible = F)))
+
+
+
+```
+

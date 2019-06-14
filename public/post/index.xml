@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 15 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Creating Candlestick charts in R</title>
+      <link>/post/2018-05-15-candlestick-chart-in-r/</link>
+      <pubDate>Tue, 15 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-05-15-candlestick-chart-in-r/</guid>
+      <description>library(tidyquant)library(plotly)Plotting S&amp;amp;P 500 etf (SPY) price data since March 1, 2019. We will use the below code to plot the chart using plotly.
+spy_price &amp;lt;- tq_get(&amp;#39;SPY&amp;#39;,from = &amp;#39;2019-03-01&amp;#39;,get = &amp;#39;stock.prices&amp;#39;)spy_price %&amp;gt;%plot_ly(x = ~date,type = &amp;#39;candlestick&amp;#39;,open = ~open,close = ~close,high = ~high,low = ~low) %&amp;gt;%layout(title = &amp;#39;SPY Price since March 2019&amp;#39;,xaxis = list(rangeslider = list(visible = F))){&#34;</description>
+    </item>
     
     <item>
       <title>How to calculate portfolio beta in Python</title>

@@ -23,6 +23,11 @@
   </url>
   
   <url>
+    <loc>/post/2018-05-15-candlestick-chart-in-r/</loc>
+    <lastmod>2018-05-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/2018-04-25-portfolio-beta-py/</loc>
     <lastmod>2018-04-25T00:00:00+00:00</lastmod>
   </url>
@@ -155,7 +160,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-04-25T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
