@@ -25,7 +25,7 @@ output: html_document
 <li>The investment is for 5 years</li>
 <li>The billboard pays an annual rent of $10000</li>
 <li>Current interest rates are 5%</li>
-<li>After five years the billboard needs upgrades, but you dont want to bother with that and you hope to sell it.</li>
+<li>After five years the billboard needs upgrades, but you don’t want to bother with that and you hope to sell it.</li>
 <li>You are fairly confident that you could sell this investment to someone at $45000, after 5 years and let them do the upgrades.</li>
 </ol>
 <p>Is this a good deal?</p>
@@ -65,8 +65,8 @@ pv %&gt;%
 
 print(pv1)</code></pre>
 <pre><code>## [1] 78553.44</code></pre>
-<p>Based on our calculations the present value of the billboard is about 78553.44. The offer to buy this invesment opportunity is $70000, so our net present value (NPV) is 8553.44. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%.</p>
-<p>You are pleased with your calculations and are about to finalise the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is $200000, but he is short exactly $70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.</p>
+<p>Based on our calculations the present value of the billboard is about 78553.44. The offer to buy this investment opportunity is $70000, so our net present value (NPV) is 8553.44. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%.</p>
+<p>You are pleased with your calculations and are about to finalize the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is $200000, but he is short exactly $70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.</p>
 <pre class="r"><code>#First we build the cash flow table
 
 billoard_cashflow &lt;- tribble(~Year,~cf,

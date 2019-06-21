@@ -13,7 +13,7 @@ output: html_document
 <p>In this post we will learn to calculate portfolio returns using R. Initially we will do this manually and then use the <code>tidyquant</code> package to calculate the portfolio returns for our purpose.</p>
 <div id="calculating-portfolio-returns-using-the-formula" class="section level3">
 <h3>Calculating portfolio returns using the formula</h3>
-<p>A portfolio return is the weighted average of indidual assets in the portfolio.</p>
+<p>A portfolio return is the weighted average of individual assets in the portfolio.</p>
 <p>Here is what we need</p>
 <ul>
 <li>Asset symbols that make up our portfolio</li>
@@ -101,7 +101,7 @@ head(wts_tbl)</code></pre>
 ##  8 VOO    2013-01-03 -0.000898  0.25
 ##  9 VWO    2013-01-02  0         0.2 
 ## 10 VWO    2013-01-03 -0.00594   0.2</code></pre>
-<p>We can see that the weights have been correctly added to the corresponding assets. Now lets mutlply the two columns to get our weighted average.</p>
+<p>We can see that the weights have been correctly added to the corresponding assets. Now lets multiply the two columns to get our weighted average.</p>
 <pre class="r"><code>ret_data &lt;- ret_data %&gt;%
   mutate(wt_return = wts * ret)</code></pre>
 <p>Lets take a quick look at the result of our operation.</p>
@@ -182,8 +182,8 @@ unique(diff)</code></pre>
 <pre class="r"><code>mean(port_ret_tidy$port_ret, na.rm = TRUE)</code></pre>
 <pre><code>## [1] 0.0003789623</code></pre>
 <pre class="r"><code>sd(port_ret_tidy$port_ret, na.rm = TRUE)</code></pre>
-<pre><code>## [1] 0.007586076</code></pre>
-<p>We will conclude this post here and in the next post we will analyze our portfolio futher.</p>
+<pre><code>## [1] 0.007586083</code></pre>
+<p>We will conclude this post here and in the next post we will analyze our portfolio further.</p>
 </div>
 </div>
 <div id="summary" class="section level2">

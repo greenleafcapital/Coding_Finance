@@ -27,7 +27,7 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="How to calculate portfolio returns in Python :: Coding Finance — " />
 <meta name="twitter:description" content="Calculating portfolio returns in PythonIn this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.
-Calculating portfolio returns using the formulaA portfolio return is the weighted average of indidual assets in the portfolio.
+Calculating portfolio returns using the formulaA portfolio return is the weighted average of individual assets in the portfolio.
 Here is what we need
 Asset symbols that make up our portfolioPrice data for the assetsweights of assetsCalculating the weighted average of our assets returnsAdding them to get the portfolio returnsLets first load the modules" />
 <meta name="twitter:site" content="" />
@@ -124,7 +124,7 @@ Here is what we need
 <p>In this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.</p>
 <div id="calculating-portfolio-returns-using-the-formula" class="section level3">
 <h3>Calculating portfolio returns using the formula</h3>
-<p>A portfolio return is the weighted average of indidual assets in the portfolio.</p>
+<p>A portfolio return is the weighted average of individual assets in the portfolio.</p>
 <p>Here is what we need</p>
 <ul>
 <li>Asset symbols that make up our portfolio</li>
@@ -157,11 +157,11 @@ import pandas_datareader as web</code></pre>
 <pre><code>## Attributes       High               ...       Adj Close           
 ## Symbols           BND         VB    ...             VOO        VWO
 ## Date                                ...                           
-## 2013-01-02  83.940002  83.209999    ...      118.514633  38.687973
-## 2013-01-03  83.930000  83.690002    ...      118.408173  38.458233
-## 2013-01-04  83.779999  83.919998    ...      118.904968  38.526299
-## 2013-01-07  83.760002  83.639999    ...      118.585602  38.194477
-## 2013-01-08  83.849998  83.610001    ...      118.230812  37.879665
+## 2013-01-02  83.940002  83.209999    ...      117.851250  38.347870
+## 2013-01-03  83.930000  83.690002    ...      117.745369  38.120152
+## 2013-01-04  83.779999  83.919998    ...      118.239380  38.187622
+## 2013-01-07  83.760002  83.639999    ...      117.921799  37.858707
+## 2013-01-08  83.849998  83.610001    ...      117.568985  37.546669
 ## 
 ## [5 rows x 30 columns]</code></pre>
 <p>But we just need the Adjusted Closing price for our returns calculations. So lets select that columns.</p>
@@ -169,11 +169,11 @@ import pandas_datareader as web</code></pre>
 print(price_data.head())</code></pre>
 <pre><code>## Symbols           BND         VB        VEA         VOO        VWO
 ## Date                                                              
-## 2013-01-02  72.009705  76.226204  29.875366  118.514633  38.687973
-## 2013-01-03  71.795158  76.180389  29.575027  118.408173  38.458233
-## 2013-01-04  71.906746  76.757660  29.741890  118.904968  38.526299
-## 2013-01-07  71.855232  76.528564  29.591715  118.585602  38.194477
-## 2013-01-08  71.923927  76.381973  29.433203  118.230812  37.879665</code></pre>
+## 2013-01-02  71.491119  75.985794  29.420095  117.851250  38.347870
+## 2013-01-03  71.278122  75.940125  29.124334  117.745369  38.120152
+## 2013-01-04  71.388893  76.515572  29.288649  118.239380  38.187622
+## 2013-01-07  71.337738  76.287193  29.140768  117.921799  37.858707
+## 2013-01-08  71.405899  76.141068  28.984674  117.568985  37.546669</code></pre>
 <p>We can see that pandas has sorted our columns alphabetically so we need to align our weights correctly to the column names.</p>
 <pre class="python"><code>w = [0.1,0.2,0.25,0.25,0.2]</code></pre>
 <p>A quick check to see if our weights add to one.</p>
@@ -186,16 +186,16 @@ print(ret_data.head())</code></pre>
 ## Date                                                        
 ## 2013-01-03 -0.002979 -0.000601 -0.010053 -0.000898 -0.005938
 ## 2013-01-04  0.001554  0.007578  0.005642  0.004196  0.001770
-## 2013-01-07 -0.000716 -0.002985 -0.005049 -0.002686 -0.008613
-## 2013-01-08  0.000956 -0.001916 -0.005357 -0.002992 -0.008242
-## 2013-01-09 -0.000359  0.004319  0.004819  0.003001  0.005840</code></pre>
+## 2013-01-07 -0.000717 -0.002985 -0.005049 -0.002686 -0.008613
+## 2013-01-08  0.000955 -0.001915 -0.005357 -0.002992 -0.008242
+## 2013-01-09 -0.000358  0.004319  0.004818  0.003001  0.005840</code></pre>
 <p>Next we can calculate the weighted returns of our assets.</p>
 <pre class="python"><code>weighted_returns = (w * ret_data)
 print(weighted_returns.head())</code></pre>
 <pre><code>## Symbols          BND        VB       VEA       VOO       VWO
 ## Date                                                        
 ## 2013-01-03 -0.000298 -0.000120 -0.002513 -0.000225 -0.001188
-## 2013-01-04  0.000155  0.001516  0.001411  0.001049  0.000354
+## 2013-01-04  0.000155  0.001516  0.001410  0.001049  0.000354
 ## 2013-01-07 -0.000072 -0.000597 -0.001262 -0.000671 -0.001723
 ## 2013-01-08  0.000096 -0.000383 -0.001339 -0.000748 -0.001648
 ## 2013-01-09 -0.000036  0.000864  0.001205  0.000750  0.001168</code></pre>
@@ -237,27 +237,27 @@ print(ret_data_tidy.head())</code></pre>
 <pre><code>##         Date symbol       ret
 ## 0 2013-01-03    BND -0.002979
 ## 1 2013-01-04    BND  0.001554
-## 2 2013-01-07    BND -0.000716
-## 3 2013-01-08    BND  0.000956
-## 4 2013-01-09    BND -0.000359</code></pre>
+## 2 2013-01-07    BND -0.000717
+## 3 2013-01-08    BND  0.000955
+## 4 2013-01-09    BND -0.000358</code></pre>
 <p>We can see that the assets have been stacked on top of one another and Date has a separate column. Next we can merge our data by symbols.</p>
 <pre class="python"><code>ret_data_tidy_wts = pd.merge(ret_data_tidy,wts_table,on=&quot;symbol&quot;)
 print(ret_data_tidy_wts.head())</code></pre>
 <pre><code>##         Date symbol       ret  wts
 ## 0 2013-01-03    BND -0.002979  0.1
 ## 1 2013-01-04    BND  0.001554  0.1
-## 2 2013-01-07    BND -0.000716  0.1
-## 3 2013-01-08    BND  0.000956  0.1
-## 4 2013-01-09    BND -0.000359  0.1</code></pre>
+## 2 2013-01-07    BND -0.000717  0.1
+## 3 2013-01-08    BND  0.000955  0.1
+## 4 2013-01-09    BND -0.000358  0.1</code></pre>
 <p>We have the data in the desired form and now we can multiply our columns to find out the weighted average.</p>
 <pre class="python"><code>ret_data_tidy_wts[&#39;wt_returns&#39;] = ret_data_tidy_wts[&#39;ret&#39;] * ret_data_tidy_wts[&#39;wts&#39;] 
 print(ret_data_tidy_wts.head())</code></pre>
 <pre><code>##         Date symbol       ret  wts  wt_returns
 ## 0 2013-01-03    BND -0.002979  0.1   -0.000298
 ## 1 2013-01-04    BND  0.001554  0.1    0.000155
-## 2 2013-01-07    BND -0.000716  0.1   -0.000072
-## 3 2013-01-08    BND  0.000956  0.1    0.000096
-## 4 2013-01-09    BND -0.000359  0.1   -0.000036</code></pre>
+## 2 2013-01-07    BND -0.000717  0.1   -0.000072
+## 3 2013-01-08    BND  0.000955  0.1    0.000096
+## 4 2013-01-09    BND -0.000358  0.1   -0.000036</code></pre>
 <p>Finally we need to group our dataframe by date to calculate the daily returns on our portfolio.</p>
 <pre class="python"><code>port_ret_tidy = ret_data_tidy_wts.groupby(&quot;Date&quot;).sum()[&#39;wt_returns&#39;]
 print(port_ret_tidy.head())</code></pre>
@@ -296,9 +296,9 @@ plt.show();</code></pre>
 <pre class="python"><code>mean_ret = port_ret.mean()
 std_returns = port_ret.std()
 print(mean_ret)</code></pre>
-<pre><code>## 0.00037687449567662715</code></pre>
+<pre><code>## 0.0003768744769855518</code></pre>
 <pre class="python"><code>print(std_returns)</code></pre>
-<pre><code>## 0.007587140787139987</code></pre>
+<pre><code>## 0.007587147407342516</code></pre>
 </div>
 <div id="summary" class="section level3">
 <h3>Summary</h3>
@@ -306,7 +306,7 @@ print(mean_ret)</code></pre>
 <ul>
 <li>To download asset prices in Python</li>
 <li>To calculate portfolio returns</li>
-<li>To transform the data into tudy format and calculate the returns</li>
+<li>To transform the data into tidy format and calculate the returns</li>
 </ul>
 </div>
 </div>

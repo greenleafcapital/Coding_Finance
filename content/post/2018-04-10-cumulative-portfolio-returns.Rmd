@@ -78,7 +78,7 @@ ret_data <- left_join(ret_data,wts_tbl, by = 'symbol')
 
 ```
 
-We will then calcualte the weighted average of our asset returns.
+We will then calculate the weighted average of our asset returns.
 
 ```{r}
 
@@ -181,7 +181,7 @@ port_cumulative_ret_tidyquant <- port_ret_tidyquant %>%
 
 ```
 
-As we can see that the above code is much shorter than the previous code. We can compre the two portfolio calculations.
+As we can see that the above code is much shorter than the previous code. We can compare the two portfolio calculations.
 
 ```{r}
 

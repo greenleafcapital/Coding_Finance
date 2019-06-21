@@ -90,7 +90,7 @@ plt.show()
 
 ```
 
-We can see that our portolio returns are highly correlated to the benchmark returns. We can use the regression model to calculate the portfolio beta and the portfolio alpha. We will us the linear regression model to calculate the alpha and the beta.
+We can see that our portfolio returns are highly correlated to the benchmark returns. We can use the regression model to calculate the portfolio beta and the portfolio alpha. We will us the linear regression model to calculate the alpha and the beta.
 
 ```{python}
 

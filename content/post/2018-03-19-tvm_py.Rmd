@@ -167,7 +167,7 @@ print(value)
 
 ### Calculating present value of finite growing annuity
 
-There are cases when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tennants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.
+There are cases when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tenants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.
 
 ```{python}
 

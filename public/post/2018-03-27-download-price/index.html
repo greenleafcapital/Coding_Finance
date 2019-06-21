@@ -26,7 +26,7 @@
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="How to download stock prices in R :: Coding Finance — " />
-<meta name="twitter:description" content="Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api." />
+<meta name="twitter:description" content="Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API." />
 <meta name="twitter:site" content="" />
 <meta name="twitter:creator" content="" />
 <meta name="twitter:image" content="/img/default.jpg">
@@ -118,11 +118,11 @@
     <div class="post-content">
       <div id="getting-stock-prices-from-yahoo-finance" class="section level2">
 <h2>Getting stock prices from Yahoo Finance</h2>
-<p>One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.</p>
+<p>One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.</p>
 </div>
 <div id="r-packages-to-download-stock-price-data" class="section level2">
 <h2>R packages to download stock price data</h2>
-<p>There are several ways to get financial data into R. The most popular method is the <code>quantmod</code> package. You can install it by typing the command <code>install.packages("quantmod")</code> in your R console. The prices dowloaded in by using <code>quantmod</code> are <code>xts</code> <code>zoo</code> objects. For our calculations we will use <code>tidyquant</code> package which downloads prices in a tidy format as a <code>tibble</code>. You can download the <code>tidyquant</code> package by typing <code>install.packages("tidyquant")</code> in you R console. <code>tidyquant</code> includes <code>quantmod</code> so you can install just <code>tidyquant</code> and get the <code>quantmod</code> packages as well.</p>
+<p>There are several ways to get financial data into R. The most popular method is the <code>quantmod</code> package. You can install it by typing the command <code>install.packages("quantmod")</code> in your R console. The prices downloaded in by using <code>quantmod</code> are <code>xts</code> <code>zoo</code> objects. For our calculations we will use <code>tidyquant</code> package which downloads prices in a tidy format as a <code>tibble</code>. You can download the <code>tidyquant</code> package by typing <code>install.packages("tidyquant")</code> in you R console. <code>tidyquant</code> includes <code>quantmod</code> so you can install just <code>tidyquant</code> and get the <code>quantmod</code> packages as well.</p>
 <p>Lets load the library first.</p>
 <pre class="r"><code>library(tidyquant)</code></pre>
 <p>First we will download Apple price using <code>quantmod</code> from January 2017 to February 2018. By default <code>quantmod</code> download and stores the symbols with their own names. You can change this by passing the argument <code>auto.assign = FALSE</code>.</p>
@@ -144,12 +144,12 @@ getSymbols(&quot;AAPL&quot;, from = &#39;2017-01-01&#39;,
 ## 2017-01-09    117.95    119.43   117.94     118.99    33561900
 ## 2017-01-10    118.77    119.38   118.30     119.11    24462100
 ##            AAPL.Adjusted
-## 2017-01-03      112.1400
-## 2017-01-04      112.0145
-## 2017-01-05      112.5841
-## 2017-01-06      113.8392
-## 2017-01-09      114.8820
-## 2017-01-10      114.9978</code></pre>
+## 2017-01-03      111.7098
+## 2017-01-04      111.5848
+## 2017-01-05      112.1522
+## 2017-01-06      113.4025
+## 2017-01-09      114.4412
+## 2017-01-10      114.5567</code></pre>
 <p>Lets look at the class of this object.</p>
 <pre class="r"><code>class(AAPL)</code></pre>
 <pre><code>## [1] &quot;xts&quot; &quot;zoo&quot;</code></pre>
@@ -171,12 +171,12 @@ prices &lt;- reduce(prices,merge)
 colnames(prices) &lt;- tickers</code></pre>
 <pre class="r"><code>head(prices)</code></pre>
 <pre><code>##                AAPL   NFLX   AMZN        K        O
-## 2017-01-03 112.1400 127.49 753.67 68.17963 52.10761
-## 2017-01-04 112.0145 129.41 757.18 68.00307 52.88710
-## 2017-01-05 112.5841 131.81 780.45 67.93801 54.31010
-## 2017-01-06 113.8392 131.07 795.99 67.95660 54.23759
-## 2017-01-09 114.8820 130.95 796.92 67.02734 53.83879
-## 2017-01-10 114.9978 129.89 795.90 66.59059 53.19526</code></pre>
+## 2017-01-03 111.7098 127.49 753.67 67.44665 51.61059
+## 2017-01-04 111.5848 129.41 757.18 67.27199 52.38263
+## 2017-01-05 112.1522 131.81 780.45 67.20763 53.79208
+## 2017-01-06 113.4025 131.07 795.99 67.22601 53.72025
+## 2017-01-09 114.4412 130.95 796.92 66.30675 53.32525
+## 2017-01-10 114.5567 129.89 795.90 65.87470 52.68785</code></pre>
 <pre class="r"><code>class(prices)</code></pre>
 <pre><code>## [1] &quot;xts&quot; &quot;zoo&quot;</code></pre>
 <p>But we prefer the <code>tidyquant</code> package to download stock prices. Below we will demonstrate the simplicity of the process.</p>
@@ -190,9 +190,9 @@ colnames(prices) &lt;- tickers</code></pre>
 ##   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 2017-01-03  116.  116.  115.  116. 28781900     112.
 ## 2 2017-01-04  116.  117.  116.  116. 21118100     112.
-## 3 2017-01-05  116.  117.  116.  117. 22193600     113.
-## 4 2017-01-06  117.  118.  116.  118. 31751900     114.
-## 5 2017-01-09  118.  119.  118.  119. 33561900     115.
+## 3 2017-01-05  116.  117.  116.  117. 22193600     112.
+## 4 2017-01-06  117.  118.  116.  118. 31751900     113.
+## 5 2017-01-09  118.  119.  118.  119. 33561900     114.
 ## 6 2017-01-10  119.  119.  118.  119. 24462100     115.</code></pre>
 <pre class="r"><code>class(aapl)</code></pre>
 <pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
@@ -219,9 +219,9 @@ prices &lt;- tq_get(tickers,
 ##   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 AAPL   2017-01-03  116.  116.  115.  116. 28781900     112.
 ## 2 AAPL   2017-01-04  116.  117.  116.  116. 21118100     112.
-## 3 AAPL   2017-01-05  116.  117.  116.  117. 22193600     113.
-## 4 AAPL   2017-01-06  117.  118.  116.  118. 31751900     114.
-## 5 AAPL   2017-01-09  118.  119.  118.  119. 33561900     115.
+## 3 AAPL   2017-01-05  116.  117.  116.  117. 22193600     112.
+## 4 AAPL   2017-01-06  117.  118.  116.  118. 31751900     113.
+## 5 AAPL   2017-01-09  118.  119.  118.  119. 33561900     114.
 ## 6 AAPL   2017-01-10  119.  119.  118.  119. 24462100     115.</code></pre>
 <p>This data is in tidy format, where symbols are stacked on top of one another. To see the first row of each symbol, we need to slice the data.</p>
 <pre class="r"><code>prices %&gt;%
@@ -233,9 +233,9 @@ prices &lt;- tq_get(tickers,
 ##   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 AAPL   2017-01-03 116.  116.  115.  116.  28781900    112. 
 ## 2 AMZN   2017-01-03 758.  759.  748.  754.   3521100    754. 
-## 3 K      2017-01-03  73.7  73.7  72.8  73.4  1699800     68.2
+## 3 K      2017-01-03  73.7  73.7  72.8  73.4  1699800     67.4
 ## 4 NFLX   2017-01-03 125.  128.  124.  127.   9437900    127. 
-## 5 O      2017-01-03  57.7  57.8  56.9  57.5  1973300     52.1</code></pre>
+## 5 O      2017-01-03  57.7  57.8  56.9  57.5  1973300     51.6</code></pre>
 <p>We can also chart the time series of all the prices.</p>
 <pre class="r"><code>prices %&gt;%
   ggplot(aes(x = date, y = adjusted, color = symbol)) +

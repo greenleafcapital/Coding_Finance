@@ -27,7 +27,7 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Calculating potential returns in Python :: Coding Finance — " />
 <meta name="twitter:description" content="Investment opportunity in advertising billboard.You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
-You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you dont want to bother with that." />
+You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you don’t want to bother with that." />
 <meta name="twitter:site" content="" />
 <meta name="twitter:creator" content="" />
 <meta name="twitter:image" content="/img/default.jpg">
@@ -125,7 +125,7 @@ You are required to pay $70000 todayThe investment is for 5 yearsThe billboard
 <li>The investment is for 5 years</li>
 <li>The billboard pays an annual rent of $10000</li>
 <li>Current interest rates are 5%</li>
-<li>After five years the billboard needs upgrades, but you dont want to bother with that.</li>
+<li>After five years the billboard needs upgrades, but you don’t want to bother with that.</li>
 <li>You are fairly confident that you could sell this investment to someone at $45000, after 5 years and let them do the upgrades.</li>
 </ol>
 <p>Is this a good deal?</p>
@@ -156,8 +156,8 @@ print(billboard_cashflow)</code></pre>
 <pre class="python"><code>pv = billboard_cashflow[&quot;pv&quot;].sum()
 print(pv)</code></pre>
 <pre><code>## 78553.44419738883</code></pre>
-<p>Based on our calculations the present value of the billboard is about 78553.44. Offer to buy this invesment opportunity is $70000, so our net present value (NPV) is 8553.44. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%.</p>
-<p>You are pleased with your calculations and are about to finalise the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is $200000, but is short exactly $70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.</p>
+<p>Based on our calculations the present value of the billboard is about 78553.44. Offer to buy this investment opportunity is $70000, so our net present value (NPV) is 8553.44. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%.</p>
+<p>You are pleased with your calculations and are about to finalize the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is $200000, but is short exactly $70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.</p>
 <pre class="python"><code>billboard_cashflow = pd.DataFrame({&quot;Year&quot;:np.arange(1,6),
 &quot;cf&quot;:[10000,10000,10000,10000,55000]})  # The last payment includes the $45000 sale price
 # interest rates

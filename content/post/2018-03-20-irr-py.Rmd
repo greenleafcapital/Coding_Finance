@@ -16,7 +16,7 @@ Let us suppose a manager has an opportunity to invest in two projects, but can o
 
 Project 1 requires \$800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.
 
-Project 2 required \$500 million in investment today, but it will pay 150,170,178,250,300 in payements each year for the next 5 years.
+Project 2 required \$500 million in investment today, but it will pay 150,170,178,250,300 in payments each year for the next 5 years.
 
 How would the manager decide which project to choose? To solve this problem we need to calculate the IRR of the two projects. We show the solution below.
 

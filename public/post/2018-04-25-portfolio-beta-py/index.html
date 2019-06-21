@@ -154,7 +154,7 @@ plt.ylabel(&quot;Portfolio Returns&quot;)
 plt.title(&quot;Portfolio Returns vs Benchmark Returns&quot;)
 plt.show()</code></pre>
 <p><img src="/post/2018-04-25-portfolio-beta-py_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>We can see that our portolio returns are highly correlated to the benchmark returns. We can use the regression model to calculate the portfolio beta and the portfolio alpha. We will us the linear regression model to calculate the alpha and the beta.</p>
+<p>We can see that our portfolio returns are highly correlated to the benchmark returns. We can use the regression model to calculate the portfolio beta and the portfolio alpha. We will us the linear regression model to calculate the alpha and the beta.</p>
 <pre class="python"><code>(beta, alpha) = stats.linregress(benchmark_ret.values,
                 port_ret.values)[0:2]
                 

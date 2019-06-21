@@ -12,7 +12,7 @@ In this post we will learn to calculate the portfolio returns in Python. Since w
 
 ### Calculating portfolio returns using the formula
 
-A portfolio return is the weighted average of indidual assets in the portfolio. 
+A portfolio return is the weighted average of individual assets in the portfolio. 
 
 Here is what we need
 
@@ -250,6 +250,6 @@ In this post we learned
 
 - To download asset prices in Python
 - To calculate portfolio returns
-- To transform the data into tudy format and calculate the returns
+- To transform the data into tidy format and calculate the returns
 
 

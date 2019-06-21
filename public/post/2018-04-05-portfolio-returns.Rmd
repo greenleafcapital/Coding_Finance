@@ -12,7 +12,7 @@ In this post we will learn to calculate portfolio returns using R. Initially we 
 
 ### Calculating portfolio returns using the formula
 
-A portfolio return is the weighted average of indidual assets in the portfolio. 
+A portfolio return is the weighted average of individual assets in the portfolio. 
 
 Here is what we need
 
@@ -116,7 +116,7 @@ ret_data %>%
 
 ```
 
-We can see that the weights have been correctly added to the corresponding assets. Now lets mutlply the two columns to get our weighted average.
+We can see that the weights have been correctly added to the corresponding assets. Now lets multiply the two columns to get our weighted average.
 
 ```{r}
 
@@ -230,7 +230,7 @@ sd(port_ret_tidy$port_ret, na.rm = TRUE)
 ```
 
 
-We will conclude this post here and in the next post we will analyze our portfolio futher.
+We will conclude this post here and in the next post we will analyze our portfolio further.
 
 ## Summary
 

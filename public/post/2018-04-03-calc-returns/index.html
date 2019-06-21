@@ -135,7 +135,7 @@ library(timetk)</code></pre>
                   from = &#39;2009-01-01&#39;,
                   to = &quot;2018-03-01&quot;,
                   get = &quot;stock.prices&quot;)</code></pre>
-<p>Next we will plot the adjusted price of netflix.</p>
+<p>Next we will plot the adjusted price of Netflix.</p>
 <pre class="r"><code>netflix %&gt;%
   ggplot(aes(x = date, y = adjusted)) +
   geom_line() +
@@ -208,8 +208,8 @@ netflix_monthly_returns %&gt;%
   scale_x_date(date_breaks = &quot;years&quot;, date_labels = &quot;%Y&quot;)</code></pre>
 <p><img src="/post/2018-04-03-calc-returns_files/figure-html/chart-NFLX-monthly-returns-1.png" width="672" /></p>
 </div>
-<div id="caluating-the-cumulative-returns-for-the-netflix-stock" class="section level3">
-<h3>Caluating the cumulative returns for the Netflix stock</h3>
+<div id="calculating-the-cumulative-returns-for-the-netflix-stock" class="section level3">
+<h3>Calculating the cumulative returns for the Netflix stock</h3>
 <p>Plotting the daily and monthly returns are useful for understanding the daily and monthly volatility of the investment. To calculate the growth of our investment or in other word, calculating the total returns from our investment, we need to calculate the cumulative returns from that investment. To calculate the cumulative returns we will use the <strong>cumprod()</strong> function.</p>
 <pre class="r"><code>netflix_cum_returns &lt;- netflix_daily_returns %&gt;%
   mutate(cr = cumprod(1 + nflx_returns)) %&gt;%      # using the cumprod function
@@ -256,7 +256,7 @@ multpl_stocks &lt;- tq_get(tickers,
 <pre class="r"><code>multpl_stocks %&gt;%
   ggplot(aes(x = date, y = adjusted, color = symbol)) +
   geom_line() +
-  ggtitle(&quot;Price chart for mutiple stocks&quot;)</code></pre>
+  ggtitle(&quot;Price chart for multiple stocks&quot;)</code></pre>
 <p><img src="/post/2018-04-03-calc-returns_files/figure-html/multiple-stocks-charting-1.png" width="672" /></p>
 <p>This is not the result we expected. Since these stocks have huge price differences (FB is under 165 and AMZN is above 1950), their scales are different. We can overcome this problem by plotting stocks on their own individual y scale.</p>
 <pre class="r"><code>multpl_stocks %&gt;%
@@ -321,7 +321,7 @@ multpl_stock_monthly_returns &lt;- multpl_stocks %&gt;%
 </div>
 <div id="calculating-cumulative-returns-for-multiple-stocks" class="section level3">
 <h3>Calculating Cumulative returns for multiple stocks</h3>
-<p>Often we would like to see which investment produced the best results in the past. To do this we can caluclate the cumulative results.
+<p>Often we would like to see which investment produced the best results in the past. To do this we can calculate the cumulative results.
 Below we compare the investment result for all the FAANG stocks since 2013. Which was the best investment since 2013?</p>
 <pre class="r"><code>multpl_stock_monthly_returns %&gt;%
   mutate(returns = if_else(date == &quot;2013-01-31&quot;, 0, returns)) %&gt;%
@@ -338,15 +338,15 @@ Below we compare the investment result for all the FAANG stocks since 2013. Whic
                      name = &quot;&quot;) +
   theme_bw()</code></pre>
 <p><img src="/post/2018-04-03-calc-returns_files/figure-html/chart-cum-multi-daily-returns-1.png" width="672" /></p>
-<p>Not surprisingly, Netflix had the best returns since 2013. Amazon and Facebook come in distant second and third. The most surprising result is Google. It has severely underperformed the other stocks in the FAANG group. Maybe the market participants are worried about its spending on the moon shot projects (Google glass, X Labs, Waymo etc). Whether these projects can produce results is yet to be seen.</p>
+<p>Not surprisingly, Netflix had the best returns since 2013. Amazon and Facebook come in distant second and third. The most surprising result is Google. It has severely under performed the other stocks in the FAANG group. Maybe the market participants are worried about its spending on the moon shot projects (Google glass, X Labs, Waymo etc). Whether these projects can produce results is yet to be seen.</p>
 <p>A contrarian could argue that given the investments in the future projects, Google is currently undervalued an could be the better investment among the FAANG stocks.</p>
 </div>
 </div>
 <div id="statistical-data" class="section level2">
 <h2>Statistical Data</h2>
-<div id="calculating-the-mean-standard-deviantion-for-individual-stock" class="section level3">
-<h3>Calculating the Mean, standard deviantion for Individual Stock</h3>
-<p>We already have the daily and monthly returns data for Netflix. Now we we will calculate the daily and monthly mean and standard deviations of the returns. We will use <strong>mean()</strong> and <strong>sd()</strong> fucntions for our purpose.</p>
+<div id="calculating-the-mean-standard-deviation-for-individual-stock" class="section level3">
+<h3>Calculating the Mean, standard deviation for Individual Stock</h3>
+<p>We already have the daily and monthly returns data for Netflix. Now we we will calculate the daily and monthly mean and standard deviations of the returns. We will use <strong>mean()</strong> and <strong>sd()</strong> functions for our purpose.</p>
 <pre class="r"><code># Calculating the mean
 nflx_daily_mean_ret &lt;- netflix_daily_returns %&gt;%
   select(nflx_returns) %&gt;%
@@ -380,7 +380,7 @@ nflx_stat </code></pre>
 ##   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Daily   0.00240 0.0337
 ## 2 Monthly 0.0535  0.176</code></pre>
-<p>We can see that Netflix has an average daily returns of 0.2% and 3.3% standard deviation. Its monthly mean returns is 5.2% and 17% standard deviation. This data is for the entire period since 2009. What if we want to calculate the mean and standard deviations for each year. We can calulate this by grouping the netflix returns data by year and performing our calculations.</p>
+<p>We can see that Netflix has an average daily returns of 0.2% and 3.3% standard deviation. Its monthly mean returns is 5.2% and 17% standard deviation. This data is for the entire period since 2009. What if we want to calculate the mean and standard deviations for each year. We can calculate this by grouping the Netflix returns data by year and performing our calculations.</p>
 <pre class="r"><code>netflix_monthly_returns %&gt;%
   mutate(year = year(date)) %&gt;%
   group_by(year) %&gt;%
@@ -421,8 +421,8 @@ nflx_stat </code></pre>
 <p><img src="/post/2018-04-03-calc-returns_files/figure-html/nflx-stats-yearly-mean-sd-1.png" width="672" /></p>
 <p>As we can see, the monthly returns and standard deviations have fluctuated a lot since 2009. In 2011 the average monthly return was -5%. This was the year when Netflix had the Qwickster fiasco. The stock lost about 75% during this year.</p>
 </div>
-<div id="calculating-the-mean-standard-deviantion-for-multiple-stocks" class="section level3">
-<h3>Calculating the Mean, standard deviantion for Multiple Stocks</h3>
+<div id="calculating-the-mean-standard-deviation-for-multiple-stocks" class="section level3">
+<h3>Calculating the Mean, standard deviation for Multiple Stocks</h3>
 <p>Next we can calculate the mean and standard deviations for multiple stocks.</p>
 <pre class="r"><code>multpl_stock_daily_returns %&gt;%
   group_by(symbol) %&gt;%
@@ -514,12 +514,12 @@ multpl_stock_monthly_returns %&gt;%
   spread(symbol, value = returns) %&gt;%
   tk_xts(silent = TRUE) %&gt;%
   cov()</code></pre>
-<pre><code>##               AAPL        AMZN           FB         GOOG          NFLX
-## AAPL  5.254737e-03 0.001488463 0.0006998146 0.0007420319 -1.528007e-05
-## AMZN  1.488463e-03 0.006399439 0.0014185615 0.0028531565  4.754894e-03
-## FB    6.998146e-04 0.001418561 0.0080915945 0.0013566480  3.458228e-03
-## GOOG  7.420319e-04 0.002853157 0.0013566480 0.0032287790  3.529245e-03
-## NFLX -1.528007e-05 0.004754894 0.0034582284 0.0035292451  2.464202e-02</code></pre>
+<pre><code>##               AAPL        AMZN          FB         GOOG          NFLX
+## AAPL  5.254736e-03 0.001488462 0.000699818 0.0007420307 -1.528193e-05
+## AMZN  1.488462e-03 0.006399439 0.001418561 0.0028531565  4.754894e-03
+## FB    6.998180e-04 0.001418561 0.008091594 0.0013566480  3.458228e-03
+## GOOG  7.420307e-04 0.002853157 0.001356648 0.0032287790  3.529245e-03
+## NFLX -1.528193e-05 0.004754894 0.003458228 0.0035292451  2.464202e-02</code></pre>
 <p>The correlation table</p>
 <pre class="r"><code># Calculating the correlation
 
@@ -528,11 +528,11 @@ multpl_stock_monthly_returns %&gt;%
   tk_xts(silent = TRUE) %&gt;%
   cor() </code></pre>
 <pre><code>##              AAPL      AMZN        FB      GOOG         NFLX
-## AAPL  1.000000000 0.2566798 0.1073224 0.1801474 -0.001342801
-## AMZN  0.256679787 1.0000000 0.1971334 0.6276759  0.378644485
-## FB    0.107322407 0.1971334 1.0000000 0.2654184  0.244905437
-## GOOG  0.180147364 0.6276759 0.2654184 1.0000000  0.395662114
-## NFLX -0.001342801 0.3786445 0.2449054 0.3956621  1.000000000</code></pre>
+## AAPL  1.000000000 0.2566795 0.1073230 0.1801471 -0.001342964
+## AMZN  0.256679539 1.0000000 0.1971334 0.6276759  0.378644485
+## FB    0.107322952 0.1971334 1.0000000 0.2654184  0.244905437
+## GOOG  0.180147089 0.6276759 0.2654184 1.0000000  0.395662114
+## NFLX -0.001342964 0.3786445 0.2449054 0.3956621  1.000000000</code></pre>
 <p>We can plot this using a <code>corrplot()</code> package to chart the correlation matrix chart.</p>
 <pre class="r"><code>library(corrplot)</code></pre>
 <pre><code>## corrplot 0.84 loaded</code></pre>

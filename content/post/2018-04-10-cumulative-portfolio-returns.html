@@ -38,7 +38,7 @@ wts = c(0.1,0.2,0.25,0.25,0.2)</code></pre>
                   wts = wts)</code></pre>
 <p>Then we will join our weights table and the returns data.</p>
 <pre class="r"><code>ret_data &lt;- left_join(ret_data,wts_tbl, by = &#39;symbol&#39;)</code></pre>
-<p>We will then calcualte the weighted average of our asset returns.</p>
+<p>We will then calculate the weighted average of our asset returns.</p>
 <pre class="r"><code>ret_data &lt;- ret_data %&gt;%
   mutate(wt_return = wts * ret)</code></pre>
 <p>Finally the portfolio returns are the sum of the weighted returns.</p>
@@ -106,7 +106,7 @@ port_cumulative_ret &lt;- port_ret %&gt;%
 
 port_cumulative_ret_tidyquant &lt;- port_ret_tidyquant %&gt;%
   mutate(cr = cumprod(1 + port_ret))</code></pre>
-<p>As we can see that the above code is much shorter than the previous code. We can compre the two portfolio calculations.</p>
+<p>As we can see that the above code is much shorter than the previous code. We can compare the two portfolio calculations.</p>
 <pre class="r"><code>port_cumulative_ret %&gt;%
   mutate(port_ret_tidyquant = port_cumulative_ret_tidyquant$cr) %&gt;%
   select(-port_ret) %&gt;%

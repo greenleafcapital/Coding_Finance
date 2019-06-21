@@ -12,7 +12,7 @@ output: html_document
 <ul>
 <li>Portfolio average returns</li>
 <li>Portfolio standard deviation</li>
-<li>Portfolio sharpe ratio</li>
+<li>Portfolio Sharpe ratio</li>
 </ul>
 <p>As usual we will start with loading our libraries.</p>
 <pre class="python"><code>import pandas as pd
@@ -46,18 +46,18 @@ plt.show();</code></pre>
 <p>We now have the daily returns data. We will convert it to geometric average annual returns.</p>
 <pre class="python"><code>geometric_port_return = np.prod(port_ret + 1) ** (252/port_ret.shape[0]) - 1
 print(geometric_port_return)</code></pre>
-<pre><code>## 0.09164977877693814</code></pre>
+<pre><code>## 0.09164978620705222</code></pre>
 <p>Next we will calculate the portfolio standard deviation or volatility. This is the annual standard deviation for our portfolio.</p>
 <pre class="python"><code>annual_std = np.std(port_ret) * np.sqrt(252)
 print(annual_std)</code></pre>
-<pre><code>## 0.12039583631455449</code></pre>
-<p>Next we will calculate the portfolio sharpe ratio.</p>
+<pre><code>## 0.12039589835434619</code></pre>
+<p>Next we will calculate the portfolio Sharpe ratio.</p>
 <pre class="python"><code>port_sharpe_ratio = geometric_port_return / annual_std
 print(port_sharpe_ratio)</code></pre>
-<pre><code>## 0.7612371123656435</code></pre>
+<pre><code>## 0.7612367818155304</code></pre>
 <p>In this post we calculate the</p>
 <ul>
 <li>Portfolio annualized returns</li>
 <li>Portfolio standard deviation</li>
-<li>Portfolio sharpe ratio</li>
+<li>Portfolio Sharpe ratio</li>
 </ul>

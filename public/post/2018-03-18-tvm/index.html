@@ -134,9 +134,9 @@ Calculating the Net Present Value (NPV)Financial problems such as valuing an as
 <p>Financial problems such as valuing an asset can be solved by calculating its net present value. The underlying principle in the calculation is that a dollar today is worth more than a dollar a year from now. This principle was well known to our ancestors thousands of year ago.</p>
 <blockquote>
 <p>A bird in hand is worth two in the bush.</p>
-<p>— Aesops Fables</p>
+<p>— Aesop’s Fables</p>
 </blockquote>
-<p>So a stream of cash flows that we will receive in the future have to be discounted to calculate the net present value. We will see some methods to discout this cash flow in the following sections.</p>
+<p>So a stream of cash flows that we will receive in the future have to be discounted to calculate the net present value. We will see some methods to discount this cash flow in the following sections.</p>
 <p>First we begin by loading all the libraries.</p>
 <pre class="r"><code># We will be using the folowing libraries for this chapter
 
@@ -266,7 +266,7 @@ value &lt;- cf/r</code></pre>
 </div>
 <div id="calculating-present-value-of-finite-growing-annuity" class="section level3">
 <h3>Calculating present value of finite growing annuity</h3>
-<p>There are cases when when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tennants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.</p>
+<p>There are cases when when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tenants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.</p>
 <pre class="r"><code>payment &lt;- 1000
 growth &lt;- 0.03 # Growth rate of payments
 n &lt;- 5 # years
@@ -306,8 +306,8 @@ annuity &lt;- payment/(rate - growth)</code></pre>
 <p>Here the present value of annuity is 3333.333, for $100 payment that grows at 3% forever.</p>
 </div>
 </div>
-<div id="calculating-future-vaue-fv" class="section level2">
-<h2>Calculating Future Vaue (FV)</h2>
+<div id="calculating-future-value-fv" class="section level2">
+<h2>Calculating Future Value (FV)</h2>
 <p>We can use the above formula to calculate the calculate the Future value of a stream of payments. For example if we are promised $100 per year for 5 years at 5% interest rate, what is the future value of such a payment.</p>
 <pre class="r"><code># Lets create our table
 

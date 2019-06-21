@@ -12,7 +12,7 @@ output: html_document
 <ul>
 <li>Portfolio average returns</li>
 <li>Portfolio standard deviation</li>
-<li>Portfolio sharpe ratio</li>
+<li>Portfolio Sharpe ratio</li>
 </ul>
 <p>As usual we will start with loading our libraries.</p>
 <pre class="r"><code>library(tidyquant)
@@ -78,12 +78,12 @@ cat(&quot;The annual portfolio volatility is&quot;, round((annual_port_sd),4))</
 cat(&quot;The annual portfolio volatility using the xts method is&quot;, round((annual_port_sd_xts),4))</code></pre>
 <pre><code>## The annual portfolio volatility using the xts method is 0.1204</code></pre>
 <p>We can see that we get the same answer. Use whatever method you find easier.</p>
-<p>Next we will find the portfolio’s sharpe ratio. We will first calculate it manually and then we will use the built in formuala.</p>
+<p>Next we will find the portfolio’s Sharpe ratio. We will first calculate it manually and then we will use the built in formula.</p>
 <pre class="r"><code>sharpe_ratio_manually &lt;- average_annual_port_ret$AnnualizedReturn / annual_port_sd
 
 cat(&quot;The annual portfolio sharpe ratio calculated manually is&quot;, round((sharpe_ratio_manually),4))</code></pre>
 <pre><code>## The annual portfolio sharpe ratio calculated manually is 0.7658</code></pre>
-<p>If Risk free interest rate is 4% (as it was pre 2008 crisis), then we get the sharpe ratio as follows.</p>
+<p>If Risk free interest rate is 4% (as it was pre 2008 crisis), then we get the Sharpe ratio as follows.</p>
 <pre class="r"><code>sharpe_ratio_manually_rf_4 &lt;- (average_annual_port_ret$AnnualizedReturn - 0.04) / annual_port_sd
 
 cat(&quot;The annual portfolio sharpe ratio calculated manually when risk free interest rate is at 4% is&quot;, round((sharpe_ratio_manually_rf_4),4))</code></pre>
@@ -105,4 +105,4 @@ cat(&quot;The annual portfolio sharpe ratio calculated using the tq_performance 
 
 cat(&quot;The annual portfolio sharpe ratio calculated using the tq_performance function when Rf is 45 is&quot;, round((sharpe_ratio_rf_4),4))</code></pre>
 <pre><code>## The annual portfolio sharpe ratio calculated using the tq_performance function when Rf is 45 is 0.4103</code></pre>
-<p>This is slighlty different that our manually calculated number. This is due to the <code>tq_performance</code> function calculating the daily excess returns and then annualizing it. This causes the slight difference between our manual calculation, which ignored the daily excess returns.</p>
+<p>This is slightly different that our manually calculated number. This is due to the <code>tq_performance</code> function calculating the daily excess returns and then annualizing it. This causes the slight difference between our manual calculation, which ignored the daily excess returns.</p>

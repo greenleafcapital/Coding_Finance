@@ -119,7 +119,7 @@ loan_table
 
 ```
 
-Now that we have out empty table we need to fill the table with our calculations. We need to calculate the first column manually and then we can fill the rest using a for loop using the first values. This is similar to excel, where we need to calculate the first row manually and then drang down to copy the formula to fill the remaining columns.
+Now that we have out empty table we need to fill the table with our calculations. We need to calculate the first column manually and then we can fill the rest using a for loop using the first values. This is similar to excel, where we need to calculate the first row manually and then drag down to copy the formula to fill the remaining columns.
 
 ```{r}
 
@@ -183,7 +183,7 @@ And there you have it, we just built our car loan payment schedule. It may seem 
 
 In this post we learned 
 
-- To calcualte the car payments using the pmt() function
+- To calculate the car payments using the pmt() function
 - To create an empty dataframe
 - To run a for loop
 - To build car loan payment

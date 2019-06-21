@@ -8,12 +8,12 @@ output: html_document
 
 ## Getting stock prices from Yahoo Finance
 
-One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo's finance website. Since Yahoo was bought by Verizon, there have been several changes with their api. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.
+One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo's finance website. Since Yahoo was bought by Verizon, there have been several changes with their API. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.
 
 
 ## R packages to download stock price data
 
-There are several ways to get financial data into R. The most popular method is the `quantmod` package. You can install it by typing the command `install.packages("quantmod")` in your R console. The prices dowloaded in by using `quantmod` are `xts` `zoo` objects. For our calculations we will use `tidyquant` package which downloads prices in a tidy format as a `tibble`. You can download the `tidyquant` package by typing `install.packages("tidyquant")` in you R console. `tidyquant` includes `quantmod` so you can install just `tidyquant` and get the `quantmod` packages as well.
+There are several ways to get financial data into R. The most popular method is the `quantmod` package. You can install it by typing the command `install.packages("quantmod")` in your R console. The prices downloaded in by using `quantmod` are `xts` `zoo` objects. For our calculations we will use `tidyquant` package which downloads prices in a tidy format as a `tibble`. You can download the `tidyquant` package by typing `install.packages("tidyquant")` in you R console. `tidyquant` includes `quantmod` so you can install just `tidyquant` and get the `quantmod` packages as well.
 
 Lets load the library first.
 

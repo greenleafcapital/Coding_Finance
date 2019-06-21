@@ -69,7 +69,7 @@ ret_data = price_data.pct_change()[1:]
 ```
 
 
-We will then calcualte the weighted average of our asset returns.
+We will then calculate the weighted average of our asset returns.
 
 ```{python}
 

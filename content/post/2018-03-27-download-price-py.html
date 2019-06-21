@@ -10,11 +10,11 @@ output: html_document
 
 <div id="getting-stock-prices-from-yahoo-finance" class="section level2">
 <h2>Getting stock prices from Yahoo Finance</h2>
-<p>One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.</p>
+<p>One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.</p>
 </div>
 <div id="python-module-for-downloading-price-data" class="section level2">
 <h2>Python module for downloading price data</h2>
-<p>Python has a module called <code>pandas-datareader</code> which is used for downloading financial data from yahoo. You can install it by typing the command <code>pip install pandas-datareader</code> in your terminal/command promt (update as of 2019 this is no longer true, use the fix-yahoo-finance module).</p>
+<p>Python has a module called <code>pandas-datareader</code> which is used for downloading financial data from yahoo. You can install it by typing the command <code>pip install pandas-datareader</code> in your terminal/command prompt (update as of 2019 this is no longer true, use the fix-yahoo-finance module).</p>
 <p>Let us load the modules/libraries</p>
 <pre class="python"><code>import pandas as pd
 import pandas_datareader as web
@@ -28,11 +28,11 @@ end = &quot;2018-03-01&quot;)</code></pre>
 <pre class="python"><code>print(aapl.head())</code></pre>
 <pre><code>##                   High         Low     ...          Volume   Adj Close
 ## Date                                   ...                            
-## 2017-01-03  116.330002  114.760002     ...      28781900.0  112.140007
-## 2017-01-04  116.510002  115.750000     ...      21118100.0  112.014503
-## 2017-01-05  116.860001  115.809998     ...      22193600.0  112.584129
-## 2017-01-06  118.160004  116.470001     ...      31751900.0  113.839249
-## 2017-01-09  119.430000  117.940002     ...      33561900.0  114.881950
+## 2017-01-03  116.330002  114.760002     ...      28781900.0  111.709831
+## 2017-01-04  116.510002  115.750000     ...      21118100.0  111.584778
+## 2017-01-05  116.860001  115.809998     ...      22193600.0  112.152229
+## 2017-01-06  118.160004  116.470001     ...      31751900.0  113.402542
+## 2017-01-09  119.430000  117.940002     ...      33561900.0  114.441246
 ## 
 ## [5 rows x 6 columns]</code></pre>
 <p>We can plot the data for Apple.</p>
@@ -52,11 +52,11 @@ end = &quot;2017-01-15&quot;)</code></pre>
 <pre><code>## Attributes        High                ...      Adj Close           
 ## Symbols           AAPL        AMZN    ...           MSFT          O
 ## Date                                  ...                          
-## 2017-01-03  116.330002  758.760010    ...      59.915661  52.107613
-## 2017-01-04  116.510002  759.679993    ...      59.647575  52.887104
-## 2017-01-05  116.860001  782.400024    ...      59.647575  54.310097
-## 2017-01-06  118.160004  799.440002    ...      60.164589  54.237595
-## 2017-01-09  119.430000  801.770020    ...      59.973103  53.838795
+## 2017-01-03  116.330002  758.760010    ...      59.694695  51.610588
+## 2017-01-04  116.510002  759.679993    ...      59.427597  52.382626
+## 2017-01-05  116.860001  782.400024    ...      59.427597  53.792084
+## 2017-01-06  118.160004  799.440002    ...      59.942703  53.720253
+## 2017-01-09  119.430000  801.770020    ...      59.751923  53.325245
 ## 
 ## [5 rows x 30 columns]</code></pre>
 <p>As we can see that all the stock prices have been merged in one table. We can also just look at the adjusted prices.</p>

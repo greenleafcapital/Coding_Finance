@@ -15,9 +15,9 @@ Financial problems such as valuing an asset can be solved by calculating its net
 
 > A bird in hand is worth two in the bush.
 >
-> --- Aesops Fables
+> --- Aesop's Fables
 
-So a stream of cash flows that we will receive in the future have to be discounted to calculate the net present value. We will see some methods to discout this cash flow in the following sections.
+So a stream of cash flows that we will receive in the future have to be discounted to calculate the net present value. We will see some methods to discount this cash flow in the following sections.
 
 First we begin by loading all the libraries.
 
@@ -189,7 +189,7 @@ The value of this bond is `r value`
 
 ### Calculating present value of finite growing annuity
 
-There are cases when when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tennants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.
+There are cases when when an investor may be offered a stream of payments that grow at a certain rate. Suppose you own an apartment complex. The tenants pay you a fixed rent every month. You can increase the rent to tackle higher inflation. This apartment building may be described as an annuity payment that grows at the rate of inflation. We can calculate the present value of those payments as below.
 
 ```{r grow-annuity,warning=FALSE,message=FALSE}
 
@@ -242,7 +242,7 @@ annuity <- payment/(rate - growth)
 
 Here the present value of annuity is `r annuity`, for \$100 payment that grows at 3% forever.
 
-## Calculating Future Vaue (FV)
+## Calculating Future Value (FV)
 
 We can use the above formula to calculate the calculate the Future value of a stream of payments. For example if we are promised \$100 per year for 5 years at 5% interest rate, what is the future value of such a payment.
 

@@ -10,7 +10,7 @@ In this post we will calculate the following portfolio statistics using R.
 
 - Portfolio average returns
 - Portfolio standard deviation
-- Portfolio sharpe ratio
+- Portfolio Sharpe ratio
 
 
 As usual we will start with loading our libraries.
@@ -137,7 +137,7 @@ cat("The annual portfolio volatility using the xts method is", round((annual_por
 ```
 We can see that we get the same answer. Use whatever method you find easier.
 
-Next we will find the portfolio's sharpe ratio. We will first calculate it manually and then we will use the built in formuala.
+Next we will find the portfolio's Sharpe ratio. We will first calculate it manually and then we will use the built in formula.
 
 
 ```{r}
@@ -148,7 +148,7 @@ cat("The annual portfolio sharpe ratio calculated manually is", round((sharpe_ra
 
 ```
 
-If Risk free interest rate is 4% (as it was pre 2008 crisis), then we get the sharpe ratio as follows.
+If Risk free interest rate is 4% (as it was pre 2008 crisis), then we get the Sharpe ratio as follows.
 
 ```{r}
 
@@ -186,7 +186,7 @@ cat("The annual portfolio sharpe ratio calculated using the tq_performance funct
 
 ```
 
-This is slighlty different that our manually calculated number. This is due to the `tq_performance` function calculating the daily excess returns and then annualizing it. This causes the slight difference between our manual calculation, which ignored the daily excess returns.
+This is slightly different that our manually calculated number. This is due to the `tq_performance` function calculating the daily excess returns and then annualizing it. This causes the slight difference between our manual calculation, which ignored the daily excess returns.
 
 
 

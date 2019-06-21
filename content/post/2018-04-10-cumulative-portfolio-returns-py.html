@@ -30,7 +30,7 @@ wts = [0.1,0.2,0.25,0.25,0.2]</code></pre>
 <pre class="python"><code>price_data = price_data[&#39;Adj Close&#39;]</code></pre>
 <p>Next we will calculate the daily returns for our assets.</p>
 <pre class="python"><code>ret_data = price_data.pct_change()[1:]</code></pre>
-<p>We will then calcualte the weighted average of our asset returns.</p>
+<p>We will then calculate the weighted average of our asset returns.</p>
 <pre class="python"><code>weighted_returns = (wts * ret_data)
 print(weighted_returns.head())</code></pre>
 <pre><code>## Symbols          BND        VB       VEA       VOO       VWO

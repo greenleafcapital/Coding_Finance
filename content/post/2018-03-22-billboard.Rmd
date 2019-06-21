@@ -14,7 +14,7 @@ You are a rich investor, and somebody comes to you with an investment opportunit
 2. The investment is for 5 years
 3. The billboard pays an annual rent of \$10000
 4. Current interest rates are 5%
-5. After five years the billboard needs upgrades, but you dont want to bother with that and you hope to sell it.
+5. After five years the billboard needs upgrades, but you don't want to bother with that and you hope to sell it.
 6. You are fairly confident that you could sell this investment to someone at \$45000, after 5 years and let them do the upgrades.
 
 Is this a good deal? 
@@ -67,9 +67,9 @@ print(pv1)
 ```
 
 
-Based on our calculations the present value of the billboard is about 78553.44. The offer to buy this invesment opportunity is \$70000, so our net present value (NPV) is `r round(pv1 - 70000,2)`. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%. 
+Based on our calculations the present value of the billboard is about 78553.44. The offer to buy this investment opportunity is \$70000, so our net present value (NPV) is `r round(pv1 - 70000,2)`. Since we have a positive NPV, we can conclude that this is a good deal if interest rate is 5%. 
 
-You are pleased with your calculations and are about to finalise the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is \$200000, but he is short exactly \$70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.
+You are pleased with your calculations and are about to finalize the terms, but you receive a call from your brother in law Jim, who wants to start a laundromat business. The cost of laundromat is \$200000, but he is short exactly \$70000. He is willing to pay you 7.5% for the the loan. You reason that Jim is fairly good with money and he maybe able to pay the money back. So you rerun you billboard calculation with the new interest rate of 7.5%.
 
 ```{r Pv-Billboard-0.08, warning=FALSE,message=FALSE}
 

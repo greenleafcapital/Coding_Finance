@@ -9,11 +9,11 @@ output: html_document
 ## Getting stock prices from Yahoo Finance
 
 
-One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo's finance website. Since Yahoo was bought by Verizon, there have been several changes with their api. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.
+One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo's finance website. Since Yahoo was bought by Verizon, there have been several changes with their API. They may decide to stop providing stock prices in the future. So the method discussed on this article may not work in the future.
 
 ## Python module for downloading price data
 
-Python has a module called `pandas-datareader` which is used for downloading financial data from yahoo. You can install it by typing the command `pip install pandas-datareader` in your terminal/command promt (update as of 2019 this is no longer true, use the fix-yahoo-finance module).
+Python has a module called `pandas-datareader` which is used for downloading financial data from yahoo. You can install it by typing the command `pip install pandas-datareader` in your terminal/command prompt (update as of 2019 this is no longer true, use the fix-yahoo-finance module).
 
 Let us load the modules/libraries
 

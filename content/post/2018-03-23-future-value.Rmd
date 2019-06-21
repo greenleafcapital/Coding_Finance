@@ -8,7 +8,7 @@ output: html_document
 
 ## Calculating the potential future value of Bitcoin Investment
 
-The year 2017 was a great year for cryptocurrencies and in particular for the crypto leader Bitcoin. Many people called crypotcurrencies the future of money, but so far 2018 has been lousy. The crypto currency advocates argue that the value of will increase in the future. We have seen many claims, from \$50000 to \$1000000 per bitcoin. We take no sides and the Market will decide the future. For this example we want to demonstrate how much one can make in Bitcoin, if the predictions are correct. Our focus is not on making predictions, but on learing performing future value calculations in R.
+The year 2017 was a great year for cryptocurrencies and in particular for the crypto leader Bitcoin. Many people called crypotcurrencies the future of money, but so far 2018 has been lousy. The crypto currency advocates argue that the value of will increase in the future. We have seen many claims, from \$50000 to \$1000000 per bitcoin. We take no sides and the Market will decide the future. For this example we want to demonstrate how much one can make in Bitcoin, if the predictions are correct. Our focus is not on making predictions, but on learning to perform future value calculations in R.
 
 Since the end 2010 Bitcoin prices have gone up from about \$0.05 to about \$6500 today. That is a 320%  increase per year. We don't believe that it will continue at that pace in the future, but let's say it grows at 1/10th of that or 35% per year (still a big leap of faith and hard to replicate). 
 
@@ -252,19 +252,19 @@ fv_table_jerry <- fv_table
   
 fv_table_both <- left_join(fv_table_tom, fv_table_jerry, by = "Year")
 
-colnames(fv_table_both) <- paste(c("Year", "Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"))
+colnames(fv_table_both) <- paste(c("Year", "Tom's initial value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's initial value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"))
 
 options(digits = 2)
 
 fv_table_both %>%
-  gather(`Tom's inital value`:`Jerry's Ending value`, key = Name, value = save, factor_key = TRUE) %>%
+  gather(`Tom's initial value`:`Jerry's Ending value`, key = Name, value = save, factor_key = TRUE) %>%
   mutate(save = if_else(is.na(save), 0, save)) %>%
   spread(Name, value = save) %>%
   datatable(caption = "Comparing the Savings and investment growth \n for Tom
             and Jerry", rownames = FALSE,options = list(pageLength = 10,
                           autoWidth = TRUE,
                           scrollX = TRUE)) %>%
-  formatRound(columns = c("Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"), digits = 2)
+  formatRound(columns = c("Tom's initial value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's initial value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"), digits = 2)
 
 ```
 
@@ -427,7 +427,7 @@ fv_table_both <- left_join(fv_table_tom, fv_table_jerry, by = "Year")
 
 # Changing the column names
 
-colnames(fv_table_both) <- paste(c("Year", "Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"))
+colnames(fv_table_both) <- paste(c("Year", "Tom's initial value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's initial value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"))
 
 # Rounding off to two digits
 options(digits = 2)
@@ -438,14 +438,14 @@ options(digits = 2)
 # We are just using this so our table looks pretty
 
 fv_table_both %>%
-  gather(`Tom's inital value`:`Jerry's Ending value`, key = Name, value = save, factor_key = TRUE) %>%
+  gather(`Tom's initial value`:`Jerry's Ending value`, key = Name, value = save, factor_key = TRUE) %>%
   mutate(save = if_else(is.na(save), 0, save)) %>%
   spread(Name, value = save) %>%
   datatable(caption = "Comparing the Savings and investment growth \n for Tom
             and Jerry", rownames = FALSE,options = list(pageLength = 10,
                           autoWidth = TRUE,
                           scrollX = TRUE)) %>%
-  formatRound(columns = c("Tom's inital value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's inital value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"), digits = 2)
+  formatRound(columns = c("Tom's initial value", "Tom's Deposit", "Tom's Interest", "Tom's Ending value", "Jerry's initial value", "Jerry's Deposit", "Jerry's Interest", "Jerry's Ending value"), digits = 2)
 
 ```
 

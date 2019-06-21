@@ -36,7 +36,7 @@ netflix <- tq_get("NFLX",
 
 ```
 
-Next we will plot the adjusted price of netflix.
+Next we will plot the adjusted price of Netflix.
 
 ```{r}
 
@@ -137,7 +137,7 @@ netflix_monthly_returns %>%
 ```
 
 
-### Caluating the cumulative returns for the Netflix stock
+### Calculating the cumulative returns for the Netflix stock
 
 Plotting the daily and monthly returns are useful for understanding the daily and monthly volatility of the investment. To calculate the growth of our investment or in other word, calculating the total returns from our investment, we need to calculate the cumulative returns from that investment. To calculate the cumulative returns we will use the **cumprod()** function. 
 
@@ -209,7 +209,7 @@ Next we will chart the stock prices for multiple stocks
 multpl_stocks %>%
   ggplot(aes(x = date, y = adjusted, color = symbol)) +
   geom_line() +
-  ggtitle("Price chart for mutiple stocks")
+  ggtitle("Price chart for multiple stocks")
 
 
 ```
@@ -300,7 +300,7 @@ Apple is the least volatile of the FAANG stocks and Facebook and Netflix are the
 
 ### Calculating Cumulative returns for multiple stocks
 
-Often we would like to see which investment produced the best results in the past. To do this we can caluclate the cumulative results.
+Often we would like to see which investment produced the best results in the past. To do this we can calculate the cumulative results.
 Below we compare the investment result for all the FAANG stocks since 2013. Which was the best investment since 2013? 
 
 ```{r chart-cum-multi-daily-returns, warning=FALSE,message=FALSE}
@@ -324,15 +324,15 @@ multpl_stock_monthly_returns %>%
 ```
 
 
-Not surprisingly, Netflix had the best returns since 2013. Amazon and Facebook come in distant second and third. The most surprising result is Google. It has severely underperformed the other stocks in the FAANG group. Maybe the market participants are worried about its spending on the moon shot projects (Google glass, X Labs, Waymo etc). Whether these projects can produce results is yet to be seen. 
+Not surprisingly, Netflix had the best returns since 2013. Amazon and Facebook come in distant second and third. The most surprising result is Google. It has severely under performed the other stocks in the FAANG group. Maybe the market participants are worried about its spending on the moon shot projects (Google glass, X Labs, Waymo etc). Whether these projects can produce results is yet to be seen. 
 
 A contrarian could argue that given the investments in the future projects, Google is currently undervalued an could be the better investment among the FAANG stocks.
 
 ## Statistical Data
 
-### Calculating the Mean, standard deviantion for Individual Stock
+### Calculating the Mean, standard deviation for Individual Stock
 
-We already have the daily and monthly returns data for Netflix. Now we we will calculate the daily and monthly mean and standard deviations of the returns. We will use **mean()** and **sd()** fucntions for our purpose.
+We already have the daily and monthly returns data for Netflix. Now we we will calculate the daily and monthly mean and standard deviations of the returns. We will use **mean()** and **sd()** functions for our purpose.
 
 
 ```{r nflx-mean-returns,warning=FALSE,message=FALSE}
@@ -367,7 +367,7 @@ nflx_stat <- tibble(period = c("Daily", "Monthly"),
 nflx_stat 
   
 ```
-We can see that Netflix has an average daily returns of 0.2% and 3.3% standard deviation. Its monthly mean returns is 5.2% and 17% standard deviation. This data is for the entire period since 2009. What if we want to calculate the mean and standard deviations for each year. We can calulate this by grouping the netflix returns data by year and performing our calculations.
+We can see that Netflix has an average daily returns of 0.2% and 3.3% standard deviation. Its monthly mean returns is 5.2% and 17% standard deviation. This data is for the entire period since 2009. What if we want to calculate the mean and standard deviations for each year. We can calculate this by grouping the Netflix returns data by year and performing our calculations.
 
 ```{r nflx-mean-std-yearly, message=FALSE, warning=FALSE}
 
@@ -409,7 +409,7 @@ netflix_monthly_returns %>%
 As we can see, the monthly returns and standard deviations have fluctuated a lot since 2009. In 2011 the average monthly return was -5%. This was the year when Netflix had the Qwickster fiasco. The stock lost about 75% during this year.
 
 
-### Calculating the Mean, standard deviantion for Multiple Stocks
+### Calculating the Mean, standard deviation for Multiple Stocks
 
 Next we can calculate the mean and standard deviations for multiple stocks.
 

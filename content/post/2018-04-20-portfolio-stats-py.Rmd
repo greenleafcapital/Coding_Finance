@@ -10,7 +10,7 @@ In this post we will calculate the following portfolio statistics using Python.
 
 - Portfolio average returns
 - Portfolio standard deviation
-- Portfolio sharpe ratio
+- Portfolio Sharpe ratio
 
 
 As usual we will start with loading our libraries.
@@ -102,7 +102,7 @@ print(annual_std)
 ```
 
 
-Next we will calculate the portfolio sharpe ratio.
+Next we will calculate the portfolio Sharpe ratio.
 
 ```{python}
 
@@ -116,7 +116,7 @@ In this post we calculate the
 
 - Portfolio annualized returns
 - Portfolio standard deviation
-- Portfolio sharpe ratio
+- Portfolio Sharpe ratio
 
 
 

@@ -35,8 +35,7 @@
       <pubDate>Wed, 18 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>Welcome This website was built to log financial events, portfolio strategies and trading ideas. This website is not intended to provide financial advice. Financial assets such as company stocks are risky. They can depreciate in value and cause permanent loss of capital. It is always important to consult a financial advisor to discuss whether a certain investment is suitable for you.
-If you would like to learn, then a fake money account is more appropriate for learning.</description>
+      <description>Welcome Like most college students in Finance major I used Excel a lot. Excel is great and works well for millions of people, but it has its limitations. I have always loved tinkering with computers and a few year ago discovered Python &amp;amp; R. Soon it became clear to me that these programming languages can be used to solve many financial problems. But learning these languages can be challenging for many.</description>
     </item>
     
     <item>
@@ -91,7 +90,7 @@ price_data &amp;lt;- tq_get(tickers,from = &amp;#39;2013-01-01&amp;#39;,to = &
       
       <guid>/post/2018-04-20-portfolio-stats-py/</guid>
       <description>In this post we will calculate the following portfolio statistics using Python.
-Portfolio average returnsPortfolio standard deviationPortfolio sharpe ratioAs usual we will start with loading our libraries.
+Portfolio average returnsPortfolio standard deviationPortfolio Sharpe ratioAs usual we will start with loading our libraries.
 import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webWe will use the same assets from the last post to build our portfolio.
 # Create a list of tickers and weightstickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;]wts = [0.</description>
     </item>
@@ -103,7 +102,7 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
       
       <guid>/post/2018-04-20-portfolio-stats/</guid>
       <description>In this post we will calculate the following portfolio statistics using R.
-Portfolio average returnsPortfolio standard deviationPortfolio sharpe ratioAs usual we will start with loading our libraries.
+Portfolio average returnsPortfolio standard deviationPortfolio Sharpe ratioAs usual we will start with loading our libraries.
 library(tidyquant)library(timetk)We will use the same assets from the last post to build our portfolio.
 # Create the tickers and weights vectortickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;)wts = c(0.1,0.2,0.25,0.25,0.2)Next lets download the price data from yahoo finance.</description>
     </item>
@@ -138,7 +137,7 @@ library(tidyquant)Then lets load the ticker symbols for our assets that we will
       
       <guid>/post/2018-04-05-portfolio-returns-py/</guid>
       <description>Calculating portfolio returns in PythonIn this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.
-Calculating portfolio returns using the formulaA portfolio return is the weighted average of indidual assets in the portfolio.
+Calculating portfolio returns using the formulaA portfolio return is the weighted average of individual assets in the portfolio.
 Here is what we need
 Asset symbols that make up our portfolioPrice data for the assetsweights of assetsCalculating the weighted average of our assets returnsAdding them to get the portfolio returnsLets first load the modules</description>
     </item>
@@ -150,7 +149,7 @@ Here is what we need
       
       <guid>/post/2018-04-05-portfolio-returns/</guid>
       <description>Calculating portfolio returns in RIn this post we will learn to calculate portfolio returns using R. Initially we will do this manually and then use the tidyquant package to calculate the portfolio returns for our purpose.
-Calculating portfolio returns using the formulaA portfolio return is the weighted average of indidual assets in the portfolio.
+Calculating portfolio returns using the formulaA portfolio return is the weighted average of individual assets in the portfolio.
 Here is what we need
 Asset symbols that make up our portfolioPrice data for the assetsweights of assetsCalculating the weighted average of our assets returnsAdding them to get the portfolio returnsLets first load the packages</description>
     </item>
@@ -182,7 +181,7 @@ Download pricesCalculate ReturnsCalculate mean and standard deviation of retur
       <pubDate>Mon, 02 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-download-price-py/</guid>
-      <description>Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api.</description>
+      <description>Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API.</description>
     </item>
     
     <item>
@@ -191,7 +190,7 @@ Download pricesCalculate ReturnsCalculate mean and standard deviation of retur
       <pubDate>Mon, 02 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-download-price/</guid>
-      <description>Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their api.</description>
+      <description>Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API.</description>
     </item>
     
     <item>
@@ -200,7 +199,7 @@ Download pricesCalculate ReturnsCalculate mean and standard deviation of retur
       <pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-retirement-py/</guid>
-      <description>Retirement problemIn the previos posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
+      <description>Retirement problemIn the previous posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
 Suppose we have an individual Jack who is currently 55 years old and intends to retire at 60 (5 years to retirement). Jack expects to live only 10 years after his retirement.</description>
     </item>
     
@@ -210,7 +209,7 @@ Suppose we have an individual Jack who is currently 55 years old and intends to 
       <pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-retirement/</guid>
-      <description>Retirement problemIn the previos posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
+      <description>Retirement problemIn the previous posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
 Suppose we have an individual Jack who is currently 55 years old and intends to retire at 60 (5 years to retirement). Jack expects to live only 10 years after his retirement.</description>
     </item>
     
@@ -261,7 +260,7 @@ Here is what we know
       
       <guid>/post/2018-03-22-billboard-py/</guid>
       <description>Investment opportunity in advertising billboard.You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
-You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you dont want to bother with that.</description>
+You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you don’t want to bother with that.</description>
     </item>
     
     <item>
@@ -271,7 +270,7 @@ You are required to pay $70000 todayThe investment is for 5 yearsThe billboard
       
       <guid>/post/2018-03-22-billboard/</guid>
       <description>Investment opportunity in advertising billboard.You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
-You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you dont want to bother with that and you hope to sell it.</description>
+You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you don’t want to bother with that and you hope to sell it.</description>
     </item>
     
     <item>
