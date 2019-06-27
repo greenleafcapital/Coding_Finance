@@ -351,7 +351,18 @@ p <- portfolio_values %>%
   scale_x_continuous(labels = scales::percent) +
   labs(x = 'Annualized Risk',
        y = 'Annualized Returns',
-       title = "Portfolio Optimization & Efficient Frontier") 
+       title = "Portfolio Optimization & Efficient Frontier") +
+  geom_point(aes(x = Risk,
+                 y = Return), data = min_var, color = 'red') +
+  geom_point(aes(x = Risk,
+                 y = Return), data = max_sr, color = 'red') +
+  annotate('text', x = 0.20, y = 0.42, label = "Tangency Portfolio") +
+  annotate('text', x = 0.18, y = 0.01, label = "Minimum variance portfolio") +
+  annotate(geom = 'segment', x = 0.14, xend = 0.135,  y = 0.01, 
+           yend = 0.06, color = 'red', arrow = arrow(type = "open")) +
+  annotate(geom = 'segment', x = 0.22, xend = 0.2275,  y = 0.405, 
+           yend = 0.365, color = 'red', arrow = arrow(type = "open"))
+  
 
 ggplotly(p)
 
