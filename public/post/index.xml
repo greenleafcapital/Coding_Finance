@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 31 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Portfolio Optimization in R</title>
+      <link>/post/2018-05-31-portfolio-opt-in-r/</link>
+      <pubDate>Thu, 31 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-05-31-portfolio-opt-in-r/</guid>
+      <description>Portfolio optimization is an important topic in Finance. Modern portfolio theory (MPT) states that investors are risk averse and given a level of risk, they will choose the portfolios that offer the most return. To do that we need to optimize the portfolios.
+To perform the optimization we will need
+To download the price data of the assetsCalculate the mean returns for the time periodAssign random weights to the assets and then use those to build an efficient frontierSo lets begin</description>
+    </item>
     
     <item>
       <title>Creating Candlestick charts in R</title>
