@@ -1,7 +1,7 @@
 ---
 title: "How to download Fama French 3 factor Model data in R"
 author: "DD"
-date: "2018-05-31"
+date: "2018-06-10"
 description: "Downloading Fama French 3 factor Model data in R"
 output: html_document
 ---
@@ -13,7 +13,7 @@ output: html_document
 <p>Since we will just be learning how to download the data and not perform any analysis, we won’t need to load any libraries.</p>
 <p>First we will need to copy the link of the data that we are trying to download. If you visit the site’s home page, you should ‘copy link location’ by right clicking on the “csv” link. We have already done that. Below we will save that link to a an object call <code>ff_url</code></p>
 <pre class="r"><code>ff_url &lt;- &quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&quot;</code></pre>
-<p>We can see that this is a zip file. We have the tools in R to open a zip file. But first we need to create a temporary object to store our file. In R we can create a <code>tempfile()</code> where we can store files downloaded from the internet. So lets create that, we will call it simply temp_file.</p>
+<p>We can see that this is a zip file. We have the tools in R to open a zip file. But first we need to create a temporary object to store our file. In R we can create a <code>tempfile()</code> where we can store files downloaded from the internet. So lets create that, we will simply call it temp_file.</p>
 <p>Now that we have both the url and the temporary location to store it, we are ready to download the file. We will perform all the steps below.</p>
 <p>Once we have downloaded the zip file we need to unzip it to extract the contents. To do that we will use the <code>tidyverse()</code> package since we need it to read the .csv file.</p>
 <pre class="r"><code>library(tidyverse)

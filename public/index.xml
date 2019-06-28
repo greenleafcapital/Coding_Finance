@@ -51,7 +51,7 @@
     <item>
       <title>How to download Fama French 3 factor Model data in R</title>
       <link>/post/2018-05-31-download-ff-data-in-r/</link>
-      <pubDate>Thu, 31 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-05-31-download-ff-data-in-r/</guid>
       <description>In this post we will show you how to use R to download Fama French 3 factor model data from their website. You can find the data on their website at “https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html” We will select and download the Fama/French 3 factors monthly data.

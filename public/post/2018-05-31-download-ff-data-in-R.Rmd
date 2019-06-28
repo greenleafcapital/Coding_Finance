@@ -1,7 +1,7 @@
 ---
 title: "How to download Fama French 3 factor Model data in R"
 author: "DD"
-date: "2018-05-31"
+date: "2018-06-10"
 description: "Downloading Fama French 3 factor Model data in R"
 output: html_document
 ---
@@ -20,7 +20,7 @@ ff_url <- "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Resea
 
 ```
 
-We can see that this is a zip file. We have the tools in R to open a zip file. But first we need to create a temporary object to store our file. In R we can create a `tempfile()` where we can store files downloaded from the internet. So lets create that, we will call it simply temp_file. 
+We can see that this is a zip file. We have the tools in R to open a zip file. But first we need to create a temporary object to store our file. In R we can create a `tempfile()` where we can store files downloaded from the internet. So lets create that, we will simply call it temp_file. 
 
 Now that we have both the url and the temporary location to store it, we are ready to download the file. We will perform all the steps below.
 
