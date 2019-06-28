@@ -1,0 +1,39 @@
+---
+title: "How to download Fama French 3 factor Model data in Python"
+author: "DD"
+date: "2018-06-10"
+description: "Downloading Fama French 3 factor Model data in Python"
+output: html_document
+---
+
+
+
+<p>We will perform the same step as we did in the last post. This time we will do it in Python. We will need a few libraries to download our data. We will use the <code>urllib.request</code> for downloading the file and <code>zipfile</code> to extract the content of the zip file.</p>
+<pre class="python"><code>import urllib.request
+import zipfile</code></pre>
+<p>Once we have imported the modules, we are ready to download the files from the website.</p>
+<pre class="python"><code># Create the download url
+ff_url = &quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&quot;
+# Download the file and save it
+# We will name it fama_french.zip file
+urllib.request.urlretrieve(ff_url,&#39;fama_french.zip&#39;)</code></pre>
+<p>Next we will open the file</p>
+<pre class="python"><code># Use the zilfile package to load the contents, here we are
+# Reading the file
+zip_file = zipfile.ZipFile(&#39;fama_french.zip&#39;, &#39;r&#39;)
+# Next we extact the file data
+# We will call it ff_factors.csv
+zip_file.extractall(&#39;ff_factors.csv&#39;)
+# Make sure you close the file after extraction
+zip_file.close()</code></pre>
+<p>Next we can use pandas package to read the csv file. We already know that the first 3 rows are unnecessary so we will skip those rows.</p>
+<pre class="python"><code>import pandas as pd
+ff_factors = pd.read_csv(&#39;F-F_Research_Data_Factors.csv&#39;, skiprows = 3)
+print(ff_factors.head())</code></pre>
+<pre><code>##   Unnamed: 0    Mkt-RF       SMB       HML        RF
+## 0     192607      2.96     -2.30     -2.87      0.22
+## 1     192608      2.64     -1.40      4.19      0.25
+## 2     192609      0.36     -1.32      0.01      0.23
+## 3     192610     -3.24      0.04      0.51      0.32
+## 4     192611      2.53     -0.20     -0.35      0.31</code></pre>
+<p>Success Again this data needs to be cleaned, which we will do in the next post.</p>

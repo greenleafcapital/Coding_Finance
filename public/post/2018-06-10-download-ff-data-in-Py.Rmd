@@ -1,0 +1,64 @@
+---
+title: "How to download Fama French 3 factor Model data in Python"
+author: "DD"
+date: "2018-06-10"
+description: "Downloading Fama French 3 factor Model data in Python"
+output: html_document
+---
+
+We will perform the same step as we did in the last post. This time we will do it in Python. We will need a few libraries to download our data. We will use the `urllib.request` for downloading the file and `zipfile` to extract the content of the zip file.
+
+```{python}
+
+import urllib.request
+import zipfile
+
+```
+
+Once we have imported the modules, we are ready to download the files from the website.
+
+```{python}
+
+# Create the download url
+
+ff_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+
+# Download the file and save it
+# We will name it fama_french.zip file
+
+urllib.request.urlretrieve(ff_url,'fama_french.zip')
+
+```
+
+Next we will open the file
+
+```{python}
+
+# Use the zilfile package to load the contents, here we are
+# Reading the file
+
+zip_file = zipfile.ZipFile('fama_french.zip', 'r')
+
+# Next we extact the file data
+# We will call it ff_factors.csv
+
+zip_file.extractall('ff_factors.csv')
+
+# Make sure you close the file after extraction
+zip_file.close()
+
+```
+
+Next we can use pandas package to read the csv file. We already know that the first 3 rows are unnecessary so we will skip those rows.
+
+```{python}
+
+import pandas as pd
+
+ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows = 3)
+
+print(ff_factors.head())
+
+```
+
+Success Again this data needs to be cleaned, which we will do in the next post. 

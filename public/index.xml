@@ -49,6 +49,16 @@
     </item>
     
     <item>
+      <title>How to download Fama French 3 factor Model data in Python</title>
+      <link>/post/2018-06-10-download-ff-data-in-py/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-06-10-download-ff-data-in-py/</guid>
+      <description>We will perform the same step as we did in the last post. This time we will do it in Python. We will need a few libraries to download our data. We will use the urllib.request for downloading the file and zipfile to extract the content of the zip file.
+import urllib.requestimport zipfileOnce we have imported the modules, we are ready to download the files from the website.</description>
+    </item>
+    
+    <item>
       <title>How to download Fama French 3 factor Model data in R</title>
       <link>/post/2018-05-31-download-ff-data-in-r/</link>
       <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
