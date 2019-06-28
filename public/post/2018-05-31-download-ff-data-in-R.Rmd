@@ -1,0 +1,103 @@
+---
+title: "How to download Fama French 3 factor Model data in R"
+author: "DD"
+date: "2018-05-31"
+description: "Downloading Fama French 3 factor Model data in R"
+output: html_document
+---
+
+In this post we will show you how to use R to download Fama French 3 factor model data from their website. You can find the data on their website at "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html" We will select and download the Fama/French 3 factors monthly data.
+
+Lets begin!
+
+Since we will just be learning how to download the data and not perform any analysis, we won't need to load any libraries.
+
+First we will need to copy the link of the data that we are trying to download. If you visit the site's home page, you should 'copy link location' by right clicking on the "csv" link. We have already done that. Below we will save that link to a an object call `ff_url`
+
+```{r}
+
+ff_url <- "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+
+```
+
+We can see that this is a zip file. We have the tools in R to open a zip file. But first we need to create a temporary object to store our file. In R we can create a `tempfile()` where we can store files downloaded from the internet. So lets create that, we will call it simply temp_file. 
+
+Now that we have both the url and the temporary location to store it, we are ready to download the file. We will perform all the steps below.
+
+Once we have downloaded the zip file we need to unzip it to extract the contents. To do that we will use the `tidyverse()` package since we need it to read the .csv file.
+
+```{r message=FALSE,warning=FALSE}
+
+library(tidyverse)
+
+# Create temp_file to store the file
+
+temp_file <- tempfile()
+
+# Download the file
+
+download.file(ff_url, temp_file)
+
+# Unzip the file, to extract the data
+
+ff_factors_raw_data <- unzip(temp_file)
+
+# Read the contents using tidyverse package
+
+ff_factors_raw_data <- read_csv(ff_factors_raw_data)
+
+# Check the data
+
+head(ff_factors_raw_data)
+
+```
+
+Well that did not turn out nicely. We got the data but it doesn't make any sense. This is happening because, the first few rows of the file have some unwanted(for our purpose anyways) information. By doing a bit of trial and error you will notice that you need to skip the first 3 rows to get our data. So lets do that next. We present the entire code again.
+
+```{r}
+
+# We need to load the file again
+ff_url <- "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+
+temp_file <- tempfile()
+download.file(ff_url, temp_file)
+
+ff_factors_raw_data <- unzip(temp_file)
+
+# Skipping the first 3 rows
+
+ff_factors_raw_data <- read_csv(ff_factors_raw_data, skip = 3)
+head(ff_factors_raw_data)
+
+```
+In the warnings we can see that tidyverse failed to parse row 1116. This warning is important and we will need it for further analysis. Lets see the dimensions.
+
+```{r}
+
+dim(ff_factors_raw_data)
+
+```
+
+Lets look at the tail of the data.
+
+```{r}
+
+tail(ff_factors_raw_data)
+
+```
+
+Ah! We can see that the date format has changed. The reason for this is that Fama/French also includes the yearly data for the factors. Lets see where they are located, perhaps something is going on in rows 1116 onwards. Lets investigate.
+
+```{r}
+
+ff_factors_raw_data[c(1110:1123),]
+
+```
+
+We can see that the date formate changes and there are many NA values in the data.
+
+We will need to clean up this data, before we can use it for any analysis. This is the essence of any kind of data analysis. Most of the time is spent getting the data and wrangling it in correct form and then the analysis don't take much time.
+
+We will do it with Python next.
+
+

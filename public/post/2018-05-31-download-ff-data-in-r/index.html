@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>How to download Fama French 3 factor Model data in R :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2018-05-31-download-ff-data-in-r/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="How to download Fama French 3 factor Model data in R :: Coding Finance — " />
+<meta name="twitter:description" content="In this post we will show you how to use R to download Fama French 3 factor model data from their website. You can find the data on their website at “https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html” We will select and download the Fama/French 3 factors monthly data.
+Lets begin!
+Since we will just be learning how to download the data and not perform any analysis, we won’t need to load any libraries.
+First we will need to copy the link of the data that we are trying to download." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to download Fama French 3 factor Model data in R :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2018-05-31-download-ff-data-in-r/" />
+<meta property="og:site_name" content="How to download Fama French 3 factor Model data in R" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2018-05-31 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2018-05-31-download-ff-data-in-r/">How to download Fama French 3 factor Model data in R</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        5/31/2018
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <p>In this post we will show you how to use R to download Fama French 3 factor model data from their website. You can find the data on their website at “<a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html" class="uri">https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html</a>” We will select and download the Fama/French 3 factors monthly data.</p>
+<p>Lets begin!</p>
+<p>Since we will just be learning how to download the data and not perform any analysis, we won’t need to load any libraries.</p>
+<p>First we will need to copy the link of the data that we are trying to download. If you visit the site’s home page, you should ‘copy link location’ by right clicking on the “csv” link. We have already done that. Below we will save that link to a an object call <code>ff_url</code></p>
+<pre class="r"><code>ff_url &lt;- &quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&quot;</code></pre>
+<p>We can see that this is a zip file. We have the tools in R to open a zip file. But first we need to create a temporary object to store our file. In R we can create a <code>tempfile()</code> where we can store files downloaded from the internet. So lets create that, we will call it simply temp_file.</p>
+<p>Now that we have both the url and the temporary location to store it, we are ready to download the file. We will perform all the steps below.</p>
+<p>Once we have downloaded the zip file we need to unzip it to extract the contents. To do that we will use the <code>tidyverse()</code> package since we need it to read the .csv file.</p>
+<pre class="r"><code>library(tidyverse)
+
+# Create temp_file to store the file
+
+temp_file &lt;- tempfile()
+
+# Download the file
+
+download.file(ff_url, temp_file)
+
+# Unzip the file, to extract the data
+
+ff_factors_raw_data &lt;- unzip(temp_file)
+
+# Read the contents using tidyverse package
+
+ff_factors_raw_data &lt;- read_csv(ff_factors_raw_data)
+
+# Check the data
+
+head(ff_factors_raw_data)</code></pre>
+<pre><code>## # A tibble: 6 x 1
+##   `This file was created by CMPT_ME_BEME_RETS using the 201904 CRSP databa~
+##   &lt;chr&gt;                                                                    
+## 1 The 1-month TBill return is from Ibbotson and Associates                 
+## 2 &lt;NA&gt;                                                                     
+## 3 192607                                                                   
+## 4 192608                                                                   
+## 5 192609                                                                   
+## 6 192610</code></pre>
+<p>Well that did not turn out nicely. We got the data but it doesn’t make any sense. This is happening because, the first few rows of the file have some unwanted(for our purpose anyways) information. By doing a bit of trial and error you will notice that you need to skip the first 3 rows to get our data. So lets do that next. We present the entire code again.</p>
+<pre class="r"><code># We need to load the file again
+ff_url &lt;- &quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&quot;
+
+temp_file &lt;- tempfile()
+download.file(ff_url, temp_file)
+
+ff_factors_raw_data &lt;- unzip(temp_file)
+
+# Skipping the first 3 rows
+
+ff_factors_raw_data &lt;- read_csv(ff_factors_raw_data, skip = 3)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X1&#39; [1]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   X1 = col_integer(),
+##   `Mkt-RF` = col_double(),
+##   SMB = col_double(),
+##   HML = col_double(),
+##   RF = col_double()
+## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 8 parsing failures.
+## row # A tibble: 5 x 5 col     row col    expected   actual                  file                     expected   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;                   &lt;chr&gt;                    actual 1  1115 X1     an integer Annual Factors: Januar~ &#39;./F-F_Research_Data_Fa~ file 2  1115 &lt;NA&gt;   5 columns  1 columns               &#39;./F-F_Research_Data_Fa~ row 3  1116 Mkt-RF a double   Mkt-RF                  &#39;./F-F_Research_Data_Fa~ col 4  1116 SMB    a double   SMB                     &#39;./F-F_Research_Data_Fa~ expected 5  1116 HML    a double   HML                     &#39;./F-F_Research_Data_Fa~
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
+<pre class="r"><code>head(ff_factors_raw_data)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##       X1 `Mkt-RF`   SMB   HML    RF
+##    &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 192607     2.96 -2.3  -2.87  0.22
+## 2 192608     2.64 -1.4   4.19  0.25
+## 3 192609     0.36 -1.32  0.01  0.23
+## 4 192610    -3.24  0.04  0.51  0.32
+## 5 192611     2.53 -0.2  -0.35  0.31
+## 6 192612     2.62 -0.04 -0.02  0.28</code></pre>
+<p>In the warnings we can see that tidyverse failed to parse row 1116. This warning is important and we will need it for further analysis. Lets see the dimensions.</p>
+<pre class="r"><code>dim(ff_factors_raw_data)</code></pre>
+<pre><code>## [1] 1209    5</code></pre>
+<p>Lets look at the tail of the data.</p>
+<pre class="r"><code>tail(ff_factors_raw_data)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##      X1 `Mkt-RF`    SMB    HML    RF
+##   &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1  2014    11.7   -8.08  -1.64  0.02
+## 2  2015     0.07  -4.05  -9.61  0.02
+## 3  2016    13.3    6.6   22.9   0.2 
+## 4  2017    21.5   -4.77 -13.9   0.8 
+## 5  2018    -6.93  -3.32  -9.4   1.81
+## 6    NA    NA     NA     NA    NA</code></pre>
+<p>Ah! We can see that the date format has changed. The reason for this is that Fama/French also includes the yearly data for the factors. Lets see where they are located, perhaps something is going on in rows 1116 onwards. Lets investigate.</p>
+<pre class="r"><code>ff_factors_raw_data[c(1110:1123),]</code></pre>
+<pre><code>## # A tibble: 14 x 5
+##        X1 `Mkt-RF`    SMB    HML    RF
+##     &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 201812    -9.55  -2.58  -1.51  0.19
+##  2 201901     8.41   3.02  -0.6   0.21
+##  3 201902     3.4    2.02  -2.84  0.18
+##  4 201903     1.1   -3.15  -4.07  0.19
+##  5 201904     3.96  -1.69   1.99  0.21
+##  6     NA    NA     NA     NA    NA   
+##  7     NA    NA     NA     NA    NA   
+##  8   1927    29.5   -2.46  -3.75  3.12
+##  9   1928    35.4    4.2   -6.15  3.56
+## 10   1929   -19.5  -30.8   11.8   4.75
+## 11   1930   -31.2   -5.13 -12.3   2.41
+## 12   1931   -45.1    3.53 -14.3   1.07
+## 13   1932    -9.39   4.67  10.2   0.96
+## 14   1933    57.0   49.1   28.5   0.3</code></pre>
+<p>We can see that the date formate changes and there are many NA values in the data.</p>
+<p>We will need to clean up this data, before we can use it for any analysis. This is the essence of any kind of data analysis. Most of the time is spent getting the data and wrangling it in correct form and then the analysis don’t take much time.</p>
+<p>We will do it with Python next.</p>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2018-05-31-portfolio-opt-in-python/">Portfolio Optimization in Python →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>
