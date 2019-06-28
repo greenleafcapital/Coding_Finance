@@ -6,10 +6,54 @@
     <description>Recent content on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 27 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 16 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to download and clean Fama French 3 factor model data in Python</title>
+      <link>/post/2018-06-15-clean-ff-data-in-py/</link>
+      <pubDate>Sun, 16 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-06-15-clean-ff-data-in-py/</guid>
+      <description>In this post we will download and clean the Fama/French 3 factors model data. First we will download the data like we did in the previous post.
+To keep it breif we will execute the entire code at once.
+import urllib.requestimport zipfileff_url = &amp;quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&amp;quot;# Download the file and save it# We will name it fama_french.zip fileurllib.request.urlretrieve(ff_url,&amp;#39;fama_french.zip&amp;#39;)zip_file = zipfile.ZipFile(&amp;#39;fama_french.zip&amp;#39;, &amp;#39;r&amp;#39;)# Next we extact the file data# We will call it ff_factors.</description>
+    </item>
+    
+    <item>
+      <title>How to download and clean Fama French 3 factor model data in R</title>
+      <link>/post/2018-06-15-clean-ff-data-in-r/</link>
+      <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-06-15-clean-ff-data-in-r/</guid>
+      <description>In the last post we learned to download the FF data. In this post we will learn to clean the data so we can use it for our analysis.
+First lets load the libraries and the data.
+library(tidyquant)library(timetk)ff_url &amp;lt;- &amp;quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&amp;quot;temp_file &amp;lt;- tempfile()download.file(ff_url, temp_file)ff_data_raw &amp;lt;- read_csv(unzip(temp_file), skip = 3)## Warning: Missing column names filled in: &amp;#39;X1&amp;#39; [1]## Parsed with column specification:## cols(## X1 = col_integer(),## `Mkt-RF` = col_double(),## SMB = col_double(),## HML = col_double(),## RF = col_double()## )## Warning in rbind(names(probs), probs_f): number of columns of result is not## a multiple of vector length (arg 1)## Warning: 8 parsing failures.</description>
+    </item>
+    
+    <item>
+      <title>How to download Fama French 3 factor Model data in Python</title>
+      <link>/post/2018-06-10-download-ff-data-in-py/</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-06-10-download-ff-data-in-py/</guid>
+      <description>We will perform the same step as we did in the last post. This time we will do it in Python. We will need a few libraries to download our data. We will use the urllib.request for downloading the file and zipfile to extract the content of the zip file.
+import urllib.requestimport zipfileOnce we have imported the modules, we are ready to download the files from the website.</description>
+    </item>
+    
+    <item>
+      <title>How to download Fama French 3 factor Model data in R</title>
+      <link>/post/2018-05-31-download-ff-data-in-r/</link>
+      <pubDate>Mon, 10 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-05-31-download-ff-data-in-r/</guid>
+      <description>In this post we will show you how to use R to download Fama French 3 factor model data from their website. You can find the data on their website at “https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html” We will select and download the Fama/French 3 factors monthly data.
+Lets begin!
+Since we will just be learning how to download the data and not perform any analysis, we won’t need to load any libraries.
+First we will need to copy the link of the data that we are trying to download.</description>
+    </item>
     
     <item>
       <title>Code</title>
@@ -46,28 +90,6 @@
       <guid>/showcase/</guid>
       <description>Header 2 Backup two-step verification breach, anonymous terminal traffic worm virus reboot fsociety dat file. Traffic fsociety malware 100 terabytes system hack, delete brute-force cyber security fiber connection connect code worm wipe. Cyber security off the grid delete IP decrypt, nodes connect password 100 terabytes RUDY attack malicious code rootkit gigabit speed. Tor connect network, intercepting traffic off the grid IP protocol password.
  Backup DDoS attack rootkit nodes disconnect website.</description>
-    </item>
-    
-    <item>
-      <title>How to download Fama French 3 factor Model data in Python</title>
-      <link>/post/2018-06-10-download-ff-data-in-py/</link>
-      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018-06-10-download-ff-data-in-py/</guid>
-      <description>We will perform the same step as we did in the last post. This time we will do it in Python. We will need a few libraries to download our data. We will use the urllib.request for downloading the file and zipfile to extract the content of the zip file.
-import urllib.requestimport zipfileOnce we have imported the modules, we are ready to download the files from the website.</description>
-    </item>
-    
-    <item>
-      <title>How to download Fama French 3 factor Model data in R</title>
-      <link>/post/2018-05-31-download-ff-data-in-r/</link>
-      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018-05-31-download-ff-data-in-r/</guid>
-      <description>In this post we will show you how to use R to download Fama French 3 factor model data from their website. You can find the data on their website at “https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html” We will select and download the Fama/French 3 factors monthly data.
-Lets begin!
-Since we will just be learning how to download the data and not perform any analysis, we won’t need to load any libraries.
-First we will need to copy the link of the data that we are trying to download.</description>
     </item>
     
     <item>

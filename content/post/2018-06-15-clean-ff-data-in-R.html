@@ -1,0 +1,147 @@
+---
+title: "How to download and clean Fama French 3 factor model data in R"
+author: "DD"
+date: "2019-06-15"
+description: "Cleaning Fama French 3 factor Model data in R"
+output: html_document
+---
+
+
+
+<p>In the last post we learned to download the FF data. In this post we will learn to clean the data so we can use it for our analysis.</p>
+<p>First lets load the libraries and the data.</p>
+<pre class="r"><code>library(tidyquant)
+library(timetk)</code></pre>
+<pre class="r"><code>ff_url &lt;- &quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&quot;
+
+temp_file &lt;- tempfile()
+
+download.file(ff_url, temp_file)
+
+ff_data_raw &lt;- read_csv(unzip(temp_file), skip = 3)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X1&#39; [1]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   X1 = col_integer(),
+##   `Mkt-RF` = col_double(),
+##   SMB = col_double(),
+##   HML = col_double(),
+##   RF = col_double()
+## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 8 parsing failures.
+## row # A tibble: 5 x 5 col     row col    expected   actual                  file                     expected   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;                   &lt;chr&gt;                    actual 1  1115 X1     an integer Annual Factors: Januar~ &#39;./F-F_Research_Data_Fa~ file 2  1115 &lt;NA&gt;   5 columns  1 columns               &#39;./F-F_Research_Data_Fa~ row 3  1116 Mkt-RF a double   Mkt-RF                  &#39;./F-F_Research_Data_Fa~ col 4  1116 SMB    a double   SMB                     &#39;./F-F_Research_Data_Fa~ expected 5  1116 HML    a double   HML                     &#39;./F-F_Research_Data_Fa~
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
+<pre class="r"><code>head(ff_data_raw)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##       X1 `Mkt-RF`   SMB   HML    RF
+##    &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 192607     2.96 -2.3  -2.87  0.22
+## 2 192608     2.64 -1.4   4.19  0.25
+## 3 192609     0.36 -1.32  0.01  0.23
+## 4 192610    -3.24  0.04  0.51  0.32
+## 5 192611     2.53 -0.2  -0.35  0.31
+## 6 192612     2.62 -0.04 -0.02  0.28</code></pre>
+<p>Looking at the warning we can see that there was some issue with parsing row 1116. So lets check and delete unwanted data.</p>
+<pre class="r"><code>ff_data_raw[c(1114:1118),]</code></pre>
+<pre><code>## # A tibble: 5 x 5
+##       X1 `Mkt-RF`    SMB    HML    RF
+##    &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 201904     3.96  -1.69   1.99  0.21
+## 2     NA    NA     NA     NA    NA   
+## 3     NA    NA     NA     NA    NA   
+## 4   1927    29.5   -2.46  -3.75  3.12
+## 5   1928    35.4    4.2   -6.15  3.56</code></pre>
+<p>The rows after, row 1114 is not needed, so we will delete that data.</p>
+<pre class="r"><code>ff_data_raw &lt;- ff_data_raw[c(1:1114),]</code></pre>
+<p>Now lets look at the data again.</p>
+<pre class="r"><code>head(ff_data_raw)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##       X1 `Mkt-RF`   SMB   HML    RF
+##    &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 192607     2.96 -2.3  -2.87  0.22
+## 2 192608     2.64 -1.4   4.19  0.25
+## 3 192609     0.36 -1.32  0.01  0.23
+## 4 192610    -3.24  0.04  0.51  0.32
+## 5 192611     2.53 -0.2  -0.35  0.31
+## 6 192612     2.62 -0.04 -0.02  0.28</code></pre>
+<p>Lets change the column names.</p>
+<pre class="r"><code>colnames(ff_data_raw) &lt;- paste(c(&#39;date&#39;, &quot;mkt_excess&quot;, &quot;smb&quot;, &quot;hml&quot;, &quot;rf&quot;))</code></pre>
+<p>Now lets format the dates. Currently they are in the Year/month format and parsed as <code>int</code>. We want the format to be a full date, recognized by R for time series analysis.</p>
+<pre class="r"><code>ff_data_raw %&gt;%
+  mutate(date = ymd(parse_date(date, format = &quot;%Y%m&quot;)))</code></pre>
+<pre><code>## # A tibble: 1,114 x 5
+##    date       mkt_excess   smb   hml    rf
+##    &lt;date&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 1926-07-01       2.96 -2.3  -2.87  0.22
+##  2 1926-08-01       2.64 -1.4   4.19  0.25
+##  3 1926-09-01       0.36 -1.32  0.01  0.23
+##  4 1926-10-01      -3.24  0.04  0.51  0.32
+##  5 1926-11-01       2.53 -0.2  -0.35  0.31
+##  6 1926-12-01       2.62 -0.04 -0.02  0.28
+##  7 1927-01-01      -0.06 -0.56  4.83  0.25
+##  8 1927-02-01       4.18 -0.1   3.17  0.26
+##  9 1927-03-01       0.13 -1.6  -2.67  0.3 
+## 10 1927-04-01       0.46  0.43  0.6   0.25
+## # ... with 1,104 more rows</code></pre>
+<p>But since FF release their data at the end of the month, we will change the date format to last day of each month.</p>
+<pre class="r"><code>ff_data_raw %&gt;%
+  mutate(date = ymd(parse_date(date, format = &quot;%Y%m&quot;))) %&gt;%
+  mutate(date = rollback(date)) </code></pre>
+<pre><code>## # A tibble: 1,114 x 5
+##    date       mkt_excess   smb   hml    rf
+##    &lt;date&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 1926-06-30       2.96 -2.3  -2.87  0.22
+##  2 1926-07-31       2.64 -1.4   4.19  0.25
+##  3 1926-08-31       0.36 -1.32  0.01  0.23
+##  4 1926-09-30      -3.24  0.04  0.51  0.32
+##  5 1926-10-31       2.53 -0.2  -0.35  0.31
+##  6 1926-11-30       2.62 -0.04 -0.02  0.28
+##  7 1926-12-31      -0.06 -0.56  4.83  0.25
+##  8 1927-01-31       4.18 -0.1   3.17  0.26
+##  9 1927-02-28       0.13 -1.6  -2.67  0.3 
+## 10 1927-03-31       0.46  0.43  0.6   0.25
+## # ... with 1,104 more rows</code></pre>
+<p>When we use the <code>rollback()</code> function, all dates get shift up 1 month. The big downside is, that our data is not aligned correctly. If we check the tail we lost April 2019 data. TO rectify this we can add one month to our data, before rolling it back.</p>
+<pre class="r"><code>ff_data_raw &lt;- ff_data_raw %&gt;%
+  mutate(date = ymd(parse_date(date, format = &quot;%Y%m&quot;))) %&gt;%
+  mutate(date = date + months(1)) %&gt;% # Add one month
+  mutate(date = rollback(date)) 
+
+ff_data_raw</code></pre>
+<pre><code>## # A tibble: 1,114 x 5
+##    date       mkt_excess   smb   hml    rf
+##    &lt;date&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 1926-07-31       2.96 -2.3  -2.87  0.22
+##  2 1926-08-31       2.64 -1.4   4.19  0.25
+##  3 1926-09-30       0.36 -1.32  0.01  0.23
+##  4 1926-10-31      -3.24  0.04  0.51  0.32
+##  5 1926-11-30       2.53 -0.2  -0.35  0.31
+##  6 1926-12-31       2.62 -0.04 -0.02  0.28
+##  7 1927-01-31      -0.06 -0.56  4.83  0.25
+##  8 1927-02-28       4.18 -0.1   3.17  0.26
+##  9 1927-03-31       0.13 -1.6  -2.67  0.3 
+## 10 1927-04-30       0.46  0.43  0.6   0.25
+## # ... with 1,104 more rows</code></pre>
+<p>We are almost done cleaning, we need to convert the data into decimal form. We will use a quick apply function to do that. We will want to skip the date column for that.</p>
+<pre class="r"><code>ff_data_raw &lt;- ff_data_raw %&gt;%
+  mutate_at(vars(-date), function(x) x/100)
+
+ff_data_raw</code></pre>
+<pre><code>## # A tibble: 1,114 x 5
+##    date       mkt_excess     smb      hml     rf
+##    &lt;date&gt;          &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1926-07-31   0.0296   -0.023  -0.0287  0.0022
+##  2 1926-08-31   0.0264   -0.0140  0.0419  0.0025
+##  3 1926-09-30   0.0036   -0.0132  0.0001  0.0023
+##  4 1926-10-31  -0.0324    0.0004  0.0051  0.0032
+##  5 1926-11-30   0.0253   -0.002  -0.00350 0.0031
+##  6 1926-12-31   0.0262   -0.0004 -0.0002  0.0028
+##  7 1927-01-31  -0.000600 -0.0056  0.0483  0.0025
+##  8 1927-02-28   0.0418   -0.001   0.0317  0.0026
+##  9 1927-03-31   0.0013   -0.016  -0.0267  0.003 
+## 10 1927-04-30   0.0046    0.0043  0.006   0.0025
+## # ... with 1,104 more rows</code></pre>
+<p>That’s it, our Fama French factor data is ready for analysis. Next we will load our portfolio data and do some analysis. We will repeat this process again in Python next.</p>

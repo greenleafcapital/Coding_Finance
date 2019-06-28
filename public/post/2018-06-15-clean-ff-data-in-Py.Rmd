@@ -1,0 +1,149 @@
+---
+title: "How to download and clean Fama French 3 factor model data in Python"
+author: "DD"
+date: "2019-06-16"
+description: "Cleaning Fama French 3 factor Model data in Python"
+output: html_document
+---
+
+In this post we will download and clean the Fama/French 3 factors model data. First we will download the data like we did in the previous post.
+
+To keep it breif we will execute the entire code at once. 
+
+```{python}
+
+import urllib.request
+import zipfile
+
+ff_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+
+# Download the file and save it
+# We will name it fama_french.zip file
+
+urllib.request.urlretrieve(ff_url,'fama_french.zip')
+
+zip_file = zipfile.ZipFile('fama_french.zip', 'r')
+
+# Next we extact the file data
+# We will call it ff_factors.csv
+
+zip_file.extractall()
+
+# Make sure you close the file after extraction
+zip_file.close()
+
+import pandas as pd
+
+ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows = 3)
+
+print(ff_factors.head())
+
+```
+
+Now that the data has been downloaded lets look at the tail.
+
+```{pyton}
+
+print(ff_factors.tail())
+
+```
+
+So the unwanted data is still in our dataframe. Lets confirm the rows are indeed 1114 onwards.
+
+```{python}
+
+print(ff_factors.iloc[1112:1120],)
+
+```
+
+So we want to select only the first 1114 rows. Pandas as a builtin function to do that. Its called `nrows()`. This lets us select the number of rows. So lets load the data again.
+
+```{python}
+
+ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows = 3,
+nrows = 1114)
+
+print(ff_factors.tail())
+
+```
+
+We can see that the unwanted data is gone and we have April 2019 as our last data point. Next we want to use the first column as our index. So we will specify that.
+
+```{python}
+
+
+ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows = 3,
+nrows = 1114, index_col = 0)
+
+print(ff_factors.tail())
+
+
+```
+
+Next we will convert our index into a date object.
+
+```{python}
+
+ff_factors.index = pd.to_datetime(ff_factors.index, format= '%Y%m')
+
+print(ff_factors.tail())
+
+```
+
+We have the same issue as before. The data starts at the first of the month. We can change it to the last of the month using the pd.offset method.
+
+```{python}
+
+ff_factors.index = ff_factors.index + pd.offsets.MonthEnd()
+
+print(ff_factors.tail())
+
+```
+
+Now the data look much better. As our last steps lets convert the numbers into decimals. We will use a simple lambda function to that.
+
+```{python}
+
+ff_factors = ff_factors.apply(lambda x: x/ 100)
+
+ff_factors.tail()
+
+```
+
+We now have the data in the format that is useful to use. Below we will post all the steps needed to clean this data. You can write a script using the code below, which will automatically do this process for you.
+
+```{python eval = FALSE}
+
+import urllib.request
+import zipfile
+
+ff_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+
+# Download the file and save it
+# We will name it fama_french.zip file
+
+urllib.request.urlretrieve(ff_url,'fama_french.zip')
+
+zip_file = zipfile.ZipFile('fama_french.zip', 'r')
+
+# Next we extact the file data
+# We will call it ff_factors.csv
+
+zip_file.extractall()
+
+# Make sure you close the file after extraction
+zip_file.close()
+
+import pandas as pd
+
+ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows = 3, nrows = 1114, index_col = 0)
+
+ff_factors.index = pd.to_datetime(ff_factors.index, format= '%Y%m')
+
+ff_factors.index = ff_factors.index + pd.offsets.MonthEnd()
+
+ff_factors = ff_factors.apply(lambda x: x/ 100)
+
+
+```
+
