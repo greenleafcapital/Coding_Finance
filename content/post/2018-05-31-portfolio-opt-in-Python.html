@@ -1,0 +1,120 @@
+---
+title: "Portfolio Optimization in Python"
+author: "DD"
+date: "2018-05-31"
+description: "Optimization in Python"
+output: html_document
+---
+
+
+
+<p>In this post we will demonstrate how to use python to calculate the optimal portfolio and visualize the efficient frontier.</p>
+<p>In this post we will only show the code with minor explanations.</p>
+<p>Lets begin with loading the modules.</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas_datareader as web</code></pre>
+<p>Next we will get the stock tickers and the price data.</p>
+<pre class="python"><code>tick = [&#39;AMZN&#39;, &#39;AAPL&#39;, &#39;NFLX&#39;, &#39;XOM&#39;, &#39;T&#39;]
+price_data = web.get_data_yahoo(tick,
+                           start = &#39;2014-01-01&#39;,
+                           end = &#39;2018-05-31&#39;)[&#39;Adj Close&#39;]</code></pre>
+<p>Now lets calculate the log returns.</p>
+<pre class="python"><code>log_ret = np.log(price_data/price_data.shift(1))</code></pre>
+<p>Next we will calculate the covariance matrix.</p>
+<pre class="python"><code>cov_mat = log_ret.cov() * 252
+print(cov_mat)</code></pre>
+<pre><code>## Symbols      AAPL      AMZN      NFLX         T       XOM
+## Symbols                                                  
+## AAPL     0.052338  0.023844  0.026897  0.008896  0.012677
+## AMZN     0.023844  0.086810  0.048926  0.007808  0.012902
+## NFLX     0.026897  0.048926  0.175844  0.008173  0.013306
+## T        0.008896  0.007808  0.008173  0.026032  0.010989
+## XOM      0.012677  0.012902  0.013306  0.010989  0.034014</code></pre>
+<p>Next we will jump right into the for loop and simulate the portfolio returns and risk on 5000 random portfolios. If you need the further explanation, please see the code in R.</p>
+<pre class="python"><code># Simulating 5000 portfolios
+num_port = 5000
+# Creating an empty array to store portfolio weights
+all_wts = np.zeros((num_port, len(price_data.columns)))
+# Creating an empty array to store portfolio returns
+port_returns = np.zeros((num_port))
+# Creating an empty array to store portfolio risks
+port_risk = np.zeros((num_port))
+# Creating an empty array to store portfolio sharpe ratio
+sharpe_ratio = np.zeros((num_port))</code></pre>
+<p>Lets run the for loop.</p>
+<pre class="python"><code>for i in range(num_port):
+  wts = np.random.uniform(size = len(price_data.columns))
+  wts = wts/np.sum(wts)
+  
+  # saving weights in the array
+  
+  all_wts[i,:] = wts
+  
+  # Portfolio Returns
+  
+  port_ret = np.sum(log_ret.mean() * wts)
+  port_ret = (port_ret + 1) ** 252 - 1
+  
+  # Saving Portfolio returns
+  
+  port_returns[i] = port_ret
+  
+  
+  # Portfolio Risk
+  
+  port_sd = np.sqrt(np.dot(wts.T, np.dot(cov_mat, wts)))
+  
+  port_risk[i] = port_sd
+  
+  # Portfolio Sharpe Ratio
+  # Assuming 0% Risk Free Rate
+  
+  sr = port_ret / port_sd
+  sharpe_ratio[i] = sr</code></pre>
+<p>Now that all the heavy lifting has been done. We will start by getting the minimum variance portfolio and the tangency portfolio.</p>
+<pre class="python"><code>names = price_data.columns
+min_var = all_wts[port_risk.argmin()]
+print(min_var)</code></pre>
+<pre><code>## [0.1479928  0.08456108 0.01861031 0.43988479 0.30895102]</code></pre>
+<pre class="python"><code>max_sr = all_wts[sharpe_ratio.argmax()]
+print(max_sr)</code></pre>
+<pre><code>## [0.33134387 0.38121158 0.23987104 0.04371634 0.00385717]</code></pre>
+<p>Lets see the max sharpe ratio and the minimum risk for these portfolios</p>
+<pre class="python"><code>print(sharpe_ratio.max())</code></pre>
+<pre><code>## 1.5976782731708208</code></pre>
+<pre class="python"><code>print(port_risk.min())</code></pre>
+<pre><code>## 0.13362971668665094</code></pre>
+<p>Since we are only simulating 5000 portfolio, it very likely our allocations and our sharpe ratios/risk metrics will be different than what we got on the last post in R. The point of this exercise is to demonstrate the underlying process of getting optimal portfolio. If we need more accuracy then we need to use optimization packages instead of this trial and error method described in this post.</p>
+<p>Now lets visualize the weights of the portfolio. First we will visualize the minimum variance portfolio.</p>
+<pre class="python"><code>min_var = pd.Series(min_var, index=names)
+min_var = min_var.sort_values()
+fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.set_xlabel(&#39;Asset&#39;)
+ax1.set_ylabel(&quot;Weights&quot;)
+ax1.set_title(&quot;Minimum Variance Portfolio weights&quot;)
+min_var.plot(kind = &#39;bar&#39;)
+plt.show();</code></pre>
+<p><img src="/post/2018-05-31-portfolio-opt-in-Python_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Next we will visualize the max sharpe ratio portfolio.</p>
+<pre class="python"><code>max_sr = pd.Series(max_sr, index=names)
+max_sr = max_sr.sort_values()
+fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.set_xlabel(&#39;Asset&#39;)
+ax1.set_ylabel(&quot;Weights&quot;)
+ax1.set_title(&quot;Tangency Portfolio weights&quot;)
+max_sr.plot(kind = &#39;bar&#39;)
+plt.show();</code></pre>
+<p><img src="/post/2018-05-31-portfolio-opt-in-Python_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Finally we can plot all the 5000 portfolios.</p>
+<pre class="python"><code>fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.set_xlabel(&#39;Risk&#39;)
+ax1.set_ylabel(&quot;Returns&quot;)
+ax1.set_title(&quot;Portfolio optimization and Efficient Frontier&quot;)
+plt.scatter(port_risk, port_returns)
+plt.show();</code></pre>
+<p><img src="/post/2018-05-31-portfolio-opt-in-Python_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
