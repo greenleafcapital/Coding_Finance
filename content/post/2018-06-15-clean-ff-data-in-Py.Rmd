@@ -8,7 +8,7 @@ output: html_document
 
 In this post we will download and clean the Fama/French 3 factors model data. First we will download the data like we did in the previous post.
 
-To keep it breif we will execute the entire code at once. 
+To keep it brief we will execute the entire code at once. 
 
 ```{python}
 
@@ -48,7 +48,7 @@ print(ff_factors.tail())
 
 ```
 
-So the unwanted data is still in our dataframe. Lets confirm the rows are indeed 1114 onwards.
+So the unwanted data is still in our dataframe. Lets confirm the rows are indeed 1114 on wards.
 
 ```{python}
 
@@ -56,7 +56,7 @@ print(ff_factors.iloc[1112:1120],)
 
 ```
 
-So we want to select only the first 1114 rows. Pandas as a builtin function to do that. Its called `nrows()`. This lets us select the number of rows. So lets load the data again.
+So we want to select only the first 1114 rows. Pandas as a built in function to do that. Its called `nrows()`. This lets us select the number of rows. So lets load the data again.
 
 ```{python}
 
