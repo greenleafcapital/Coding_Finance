@@ -6,7 +6,7 @@ description: "Using Fama French factors to analyze mutual funds. We will first l
 output: html_document
 ---
 
-In the previous two post we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
+In the previous two posts we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
 
 But before we proceed let us understand what Fama French factor model really is.
 
@@ -14,19 +14,19 @@ The traditional asset pricing model (CAPM), used only one factor (Market returns
 
 But in this post we will look at their most famous 3 factors model to assess mutual fund managers performance.
 
-Before Fama French's research and data, most managers we evaluated based on their 5,10 or 20 years of performance. If a manager outperformed his/her benchmark they got more money to manage and a hefty fees. But such analysis will only show part of the whole picture. 
+Before Fama French's research and data, most managers were evaluated based on their 5,10 or 20 years of performance. If a manager outperformed his/her benchmark they got more money to manage and a hefty fees. But such analysis will only show part of the whole picture. 
 
-Unless we do further analysis we as wont know if the manager's performance was due to luck, or a style tilt or genuine security selection skills.
+Unless we do further analysis we wont know if the manager's performance was due to luck, or a style tilt or genuine security selection skills.
 
-To separate the wheat from the chaff, we need to regress the portfolio managers returns with common risk factors that are known to have outperformed in the past. And if the manager has a high exposure to such factors, we can replicate their portfolio at a cheaper cost using a factor based ETF.
+To separate the wheat from the chaff, we need to regress the portfolio manager's returns with common risk factors that are known to have outperformed in the past. And if the manager has a high exposure to such factors, we can replicate their portfolio at a cheaper cost using a factor based ETF.
 
 This is the current debate on Wall Street. Active managers insist they posses extraordinary skills and therefore deserve the higher fees. Investors such as pension funds and endowments, take the other side and are increasingly allocating money to passive index funds, that provide exposure to these common factors.
 
-So with this brief explanation out of the way we will analyze some mutual funds and they performance in light of Fama French 3 factors.
+So with this brief explanation out of the way we will analyze some mutual funds and their performance in light of Fama French 3 factors.
 
 We will follow the below steps to analyze our mutual fund.
 
-- Download & Clean Fama French 3 Factors data
+- Download & clean the Fama French 3 factors data
 - Download the mutual fund price data
 - Calculate the mutual fund's returns data
 - Combine both data sets & run regression analysis
@@ -41,7 +41,7 @@ library(timetk)
 
 ```
 
-# Download Fama French Data
+### Download Fama French Data
 
 Because we will be downloading and cleaning our Fama French data many times, we will automate this step and build a function. This way we won't have to repeat the steps for our analysis each time we analyze a new fund.
 
@@ -136,9 +136,11 @@ ff_data %>%
 
 ```
 
-# Download the Mutual Fund Data
+The plot confirms that the data has been downloaded correctly. We see no spikes or dips in our time series.
 
-Next lets choose a mutual fund to analyze. For this exercise we wanted to choose an active mutual fund that has been managed for a long time. The size of the mutual fund also needs to be large. So we selected the Fidelity Contrafund Fund (FCNTX).
+### Download the Mutual Fund Data
+
+Next lets choose a mutual fund to analyze. For this exercise we wanted to choose an active mutual fund that has been managed for a long time. The size of the mutual fund also needs to be large. So we selected the Fidelity Contrafund Fund (FCNTX). The fund has data going as far back as 1980.
 
 So lets download the data for the fund. Again we want to automate the process of downloading the price data for funds, this will accelerate our process and we will spend more time in analyzing the result versus downloading the data. We will build another function to do that.
 
@@ -187,6 +189,17 @@ price_data <- get_price_data(ticker, start, end)
 
 ```
 
+Again lets plot it to make sure the data has been downloaded correctly.
+
+```{r}
+
+price_data %>%
+  ggplot2::aes(date, adjusted) +
+  geom_line()
+
+```
+
+
 
 ```{r}
 
@@ -201,7 +214,7 @@ tail(price_data)
 
 # Calculate the Returns Data
 
-Next we will build another function that calculates the returns for our fund. Now we could have easily combined the function to download the price and calculate the returns together. But this is not a good programming practice. In general we want our function (automation) to do one thing only. This makes it very easy to debug our programs. 
+Next we will build another function that calculates the returns for our fund. Now we could have easily combined the function to download the price and calculate the returns together. But this is not a good programming practice. In general we want our functions (automation) to do one thing only. This makes it very easy to debug our programs. 
 
 So lets calculate the returns
 
@@ -210,7 +223,7 @@ So lets calculate the returns
 # Automating the returns calculation
 
 # We need to provide the price data table
-# And the period, by default its monthly
+# And the period, by default is monthly
 # Since FF data is monthly
 
 get_return_data <- function(closing_price, period = "monthly") {
@@ -399,7 +412,7 @@ ff_data <- get_fama_french()
 
 # Set the ticker name
 
-ticker = "VINIX"
+ticker = "FCNTX"
 
 # Set the start date
 start = "1980-01-01"
@@ -434,9 +447,9 @@ print(model_data)
 
 ```
 
-Lets first look at the Intercept. This value is the alpha. The fund appears to have generated an alpha of 0.00111 per month. This suggests an alpha of `r (model_data$estimate[1] + 1)^12 - 1` per year. However the p-value suggest that this is statistically not significant. The market factor is 0.88, most traditional equity funds have market exposure close to 1. This fund is marketed as a Large Cap growth fund. However, it appears to have some positive exposure to small cap factor, although p-value is not significant. Then finally, the fund has a negative exposure to the value factor, this makes sense since it is a large cap growth fund.
+Lets first look at the Intercept. This value is the alpha generated by fund controlling for market ,size and value factors. The fund appears to have generated an alpha of `r model_data$estimate[1]` per month. This suggests an alpha of `r ((model_data$estimate[1] + 1)^12 - 1)` per year. However the p-value suggests that this is statistically not significant. The market factor is 0.88, most traditional equity funds have market exposure close to 1. This fund is marketed as a Large Cap growth fund. However, it appears to have some positive exposure to small cap factor, although p-value is not significant. Then finally, the fund has a negative exposure to the value factor, this makes sense since it is a large cap growth fund and invests in stocks such as Amazon, SaleForce, Facebook and Netflix which are high growth stocks.
 
-This fund has generated returns above 12.5% since 1980. This is a good track record for a very long time. The expense ratio/fees are around 0.82%. Many 401K plans offer this fund as an investment option. Past returns are no guarantee for future returns and this outperformance may disappear in the future.
+This fund has generated returns above 12.5% since its inception in 1967. This is a remarkable track record for a very long time. US stocks have returns roughly 10% over that same period. The expense ratio/fees are around 0.82%, not too expensive. Many 401K plans offer this fund as an investment option. Past returns are no guarantee for future returns and this outperformance may disappear in the future.
 
 This was a simple example to demonstrate how to
 
@@ -447,7 +460,7 @@ This was a simple example to demonstrate how to
 
 Before we leave lets test all our functions on another fund.
 
-We will choose another fund to check that all our functions are running properly. Let's choose Goldman Sachs Strategic Growth A (GGRAX). This is a US Large Cap growth equity fund.
+We will choose another fund to check that all our functions are running properly. Let's choose Goldman Sachs Strategic Growth A (GGRAX). This is a US Large Cap growth equity fund and has been in business since 1999.
 
 So lets us demonstrate how we can automate our workflow in a single function.
 

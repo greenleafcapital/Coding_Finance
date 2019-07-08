@@ -17,7 +17,7 @@
       <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/2019-07-01-analyze-ff-factor-r/</guid>
-      <description>In the previous two post we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
+      <description>In the previous two posts we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
 But before we proceed let us understand what Fama French factor model really is.
 The traditional asset pricing model (CAPM), used only one factor (Market returns) to explain the returns of a portfolio or a stock. Fama &amp;amp; French concluded that CAPM model was not sufficient to explain all the sources of returns for a portfolio.</description>
     </item>

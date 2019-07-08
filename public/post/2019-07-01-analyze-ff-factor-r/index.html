@@ -26,7 +26,7 @@
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Factor Based Analysis :: Coding Finance — " />
-<meta name="twitter:description" content="In the previous two post we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
+<meta name="twitter:description" content="In the previous two posts we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
 But before we proceed let us understand what Fama French factor model really is.
 The traditional asset pricing model (CAPM), used only one factor (Market returns) to explain the returns of a portfolio or a stock. Fama &amp;amp; French concluded that CAPM model was not sufficient to explain all the sources of returns for a portfolio." />
 <meta name="twitter:site" content="" />
@@ -118,18 +118,18 @@ The traditional asset pricing model (CAPM), used only one factor (Market returns
     
 
     <div class="post-content">
-      <p>In the previous two post we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.</p>
+      <p>In the previous two posts we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.</p>
 <p>But before we proceed let us understand what Fama French factor model really is.</p>
 <p>The traditional asset pricing model (CAPM), used only one factor (Market returns) to explain the returns of a portfolio or a stock. Fama &amp; French concluded that CAPM model was not sufficient to explain all the sources of returns for a portfolio. Their <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.139.5892&amp;rep=rep1&amp;type=pdf">observation and research</a> led to the conclusion that portfolios built using small cap stocks that have a low price to book ratio (value stocks), tend to do better than market portfolios. Over time they have added many more factors such as momentum, operating profitability and conservative/aggressive portfolios.</p>
 <p>But in this post we will look at their most famous 3 factors model to assess mutual fund managers performance.</p>
-<p>Before Fama French’s research and data, most managers we evaluated based on their 5,10 or 20 years of performance. If a manager outperformed his/her benchmark they got more money to manage and a hefty fees. But such analysis will only show part of the whole picture.</p>
-<p>Unless we do further analysis we as wont know if the manager’s performance was due to luck, or a style tilt or genuine security selection skills.</p>
-<p>To separate the wheat from the chaff, we need to regress the portfolio managers returns with common risk factors that are known to have outperformed in the past. And if the manager has a high exposure to such factors, we can replicate their portfolio at a cheaper cost using a factor based ETF.</p>
+<p>Before Fama French’s research and data, most managers were evaluated based on their 5,10 or 20 years of performance. If a manager outperformed his/her benchmark they got more money to manage and a hefty fees. But such analysis will only show part of the whole picture.</p>
+<p>Unless we do further analysis we wont know if the manager’s performance was due to luck, or a style tilt or genuine security selection skills.</p>
+<p>To separate the wheat from the chaff, we need to regress the portfolio manager’s returns with common risk factors that are known to have outperformed in the past. And if the manager has a high exposure to such factors, we can replicate their portfolio at a cheaper cost using a factor based ETF.</p>
 <p>This is the current debate on Wall Street. Active managers insist they posses extraordinary skills and therefore deserve the higher fees. Investors such as pension funds and endowments, take the other side and are increasingly allocating money to passive index funds, that provide exposure to these common factors.</p>
-<p>So with this brief explanation out of the way we will analyze some mutual funds and they performance in light of Fama French 3 factors.</p>
+<p>So with this brief explanation out of the way we will analyze some mutual funds and their performance in light of Fama French 3 factors.</p>
 <p>We will follow the below steps to analyze our mutual fund.</p>
 <ul>
-<li>Download &amp; Clean Fama French 3 Factors data</li>
+<li>Download &amp; clean the Fama French 3 factors data</li>
 <li>Download the mutual fund price data</li>
 <li>Calculate the mutual fund’s returns data</li>
 <li>Combine both data sets &amp; run regression analysis</li>
@@ -138,8 +138,8 @@ The traditional asset pricing model (CAPM), used only one factor (Market returns
 <p>So lets start and load our libraries</p>
 <pre class="r"><code>library(tidyquant)
 library(timetk)</code></pre>
-<div id="download-fama-french-data" class="section level1">
-<h1>Download Fama French Data</h1>
+<div id="download-fama-french-data" class="section level3">
+<h3>Download Fama French Data</h3>
 <p>Because we will be downloading and cleaning our Fama French data many times, we will automate this step and build a function. This way we won’t have to repeat the steps for our analysis each time we analyze a new fund.</p>
 <p>So lets build our function. The steps are all similar to what we did in the past. We are just wrapping those steps in a function.</p>
 <pre class="r"><code># Automate Getting Fama French data from the website
@@ -221,10 +221,11 @@ get_fama_french &lt;- function() {
   geom_line() +
   scale_y_log10()</code></pre>
 <p><img src="/post/2019-07-01-Analyze-ff-factor-R_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The plot confirms that the data has been downloaded correctly. We see no spikes or dips in our time series.</p>
 </div>
-<div id="download-the-mutual-fund-data" class="section level1">
-<h1>Download the Mutual Fund Data</h1>
-<p>Next lets choose a mutual fund to analyze. For this exercise we wanted to choose an active mutual fund that has been managed for a long time. The size of the mutual fund also needs to be large. So we selected the Fidelity Contrafund Fund (FCNTX).</p>
+<div id="download-the-mutual-fund-data" class="section level3">
+<h3>Download the Mutual Fund Data</h3>
+<p>Next lets choose a mutual fund to analyze. For this exercise we wanted to choose an active mutual fund that has been managed for a long time. The size of the mutual fund also needs to be large. So we selected the Fidelity Contrafund Fund (FCNTX). The fund has data going as far back as 1980.</p>
 <p>So lets download the data for the fund. Again we want to automate the process of downloading the price data for funds, this will accelerate our process and we will spend more time in analyzing the result versus downloading the data. We will build another function to do that.</p>
 <pre class="r"><code># Type the ticker name
 
@@ -258,6 +259,11 @@ end &lt;- &quot;2019-05-31&quot;
 # Download the price
 
 price_data &lt;- get_price_data(ticker, start, end)</code></pre>
+<p>Again lets plot it to make sure the data has been downloaded correctly.</p>
+<pre class="r"><code>price_data %&gt;%
+  ggplot2::aes(date, adjusted) +
+  geom_line()</code></pre>
+<pre><code>## NULL</code></pre>
 <pre class="r"><code>head(price_data)</code></pre>
 <pre><code>## # A tibble: 6 x 7
 ##   date        open  high   low close volume adjusted
@@ -281,12 +287,12 @@ price_data &lt;- get_price_data(ticker, start, end)</code></pre>
 </div>
 <div id="calculate-the-returns-data" class="section level1">
 <h1>Calculate the Returns Data</h1>
-<p>Next we will build another function that calculates the returns for our fund. Now we could have easily combined the function to download the price and calculate the returns together. But this is not a good programming practice. In general we want our function (automation) to do one thing only. This makes it very easy to debug our programs.</p>
+<p>Next we will build another function that calculates the returns for our fund. Now we could have easily combined the function to download the price and calculate the returns together. But this is not a good programming practice. In general we want our functions (automation) to do one thing only. This makes it very easy to debug our programs.</p>
 <p>So lets calculate the returns</p>
 <pre class="r"><code># Automating the returns calculation
 
 # We need to provide the price data table
-# And the period, by default its monthly
+# And the period, by default is monthly
 # Since FF data is monthly
 
 get_return_data &lt;- function(closing_price, period = &quot;monthly&quot;) {
@@ -452,7 +458,7 @@ ff_data &lt;- get_fama_french()
 
 # Set the ticker name
 
-ticker = &quot;VINIX&quot;
+ticker = &quot;FCNTX&quot;
 
 # Set the start date
 start = &quot;1980-01-01&quot;
@@ -479,14 +485,14 @@ model_data &lt;- run_reg_model(ff_data = ff_data)</code></pre>
 <p>Now lets analyze the regression data</p>
 <pre class="r"><code>print(model_data)</code></pre>
 <pre><code>## # A tibble: 4 x 5
-##   term          estimate std.error statistic   p.value
-##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept) -0.0000101  0.000183   -0.0548 0.956    
-## 2 mkt_excess   0.991      0.00442   224.     0        
-## 3 smb         -0.178      0.00598   -29.7    0        
-## 4 hml          0.0274     0.00635     4.32   0.0000208</code></pre>
-<p>Lets first look at the Intercept. This value is the alpha. The fund appears to have generated an alpha of 0.00111 per month. This suggests an alpha of -1.206773210^{-4} per year. However the p-value suggest that this is statistically not significant. The market factor is 0.88, most traditional equity funds have market exposure close to 1. This fund is marketed as a Large Cap growth fund. However, it appears to have some positive exposure to small cap factor, although p-value is not significant. Then finally, the fund has a negative exposure to the value factor, this makes sense since it is a large cap growth fund.</p>
-<p>This fund has generated returns above 12.5% since 1980. This is a good track record for a very long time. The expense ratio/fees are around 0.82%. Many 401K plans offer this fund as an investment option. Past returns are no guarantee for future returns and this outperformance may disappear in the future.</p>
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)  0.00108  0.001000     1.08  0.282  
+## 2 mkt_excess   0.889    0.0234      37.9   0      
+## 3 smb          0.0304   0.0344       0.884 0.377  
+## 4 hml         -0.108    0.0357      -3.03  0.00259</code></pre>
+<p>Lets first look at the Intercept. This value is the alpha generated by fund controlling for market ,size and value factors. The fund appears to have generated an alpha of 0.0010773 per month. This suggests an alpha of 0.0130043 per year. However the p-value suggests that this is statistically not significant. The market factor is 0.88, most traditional equity funds have market exposure close to 1. This fund is marketed as a Large Cap growth fund. However, it appears to have some positive exposure to small cap factor, although p-value is not significant. Then finally, the fund has a negative exposure to the value factor, this makes sense since it is a large cap growth fund and invests in stocks such as Amazon, SaleForce, Facebook and Netflix which are high growth stocks.</p>
+<p>This fund has generated returns above 12.5% since its inception in 1967. This is a remarkable track record for a very long time. US stocks have returns roughly 10% over that same period. The expense ratio/fees are around 0.82%, not too expensive. Many 401K plans offer this fund as an investment option. Past returns are no guarantee for future returns and this outperformance may disappear in the future.</p>
 <p>This was a simple example to demonstrate how to</p>
 <ul>
 <li>Automatically download Fama French data</li>
@@ -495,7 +501,7 @@ model_data &lt;- run_reg_model(ff_data = ff_data)</code></pre>
 <li>Run regression and analyze the results</li>
 </ul>
 <p>Before we leave lets test all our functions on another fund.</p>
-<p>We will choose another fund to check that all our functions are running properly. Let’s choose Goldman Sachs Strategic Growth A (GGRAX). This is a US Large Cap growth equity fund.</p>
+<p>We will choose another fund to check that all our functions are running properly. Let’s choose Goldman Sachs Strategic Growth A (GGRAX). This is a US Large Cap growth equity fund and has been in business since 1999.</p>
 <p>So lets us demonstrate how we can automate our workflow in a single function.</p>
 <p>This function combines all our above functions. This one function will download the price, calculate the returns, join the data and run the regression analysis.</p>
 <pre class="r"><code># All data function
