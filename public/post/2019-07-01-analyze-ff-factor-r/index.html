@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Factor Based Analysis :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2019-07-01-analyze-ff-factor-r/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Factor Based Analysis :: Coding Finance — " />
+<meta name="twitter:description" content="In the previous two post we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
+But before we proceed let us understand what Fama French factor model really is.
+The traditional asset pricing model (CAPM), used only one factor (Market returns) to explain the returns of a portfolio or a stock. Fama &amp;amp; French concluded that CAPM model was not sufficient to explain all the sources of returns for a portfolio." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Factor Based Analysis :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2019-07-01-analyze-ff-factor-r/" />
+<meta property="og:site_name" content="Factor Based Analysis" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2019-07-01 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2019-07-01-analyze-ff-factor-r/">Factor Based Analysis</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        7/1/2019
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <p>In the previous two post we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.</p>
+<p>But before we proceed let us understand what Fama French factor model really is.</p>
+<p>The traditional asset pricing model (CAPM), used only one factor (Market returns) to explain the returns of a portfolio or a stock. Fama &amp; French concluded that CAPM model was not sufficient to explain all the sources of returns for a portfolio. Their <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.139.5892&amp;rep=rep1&amp;type=pdf">observation and research</a> led to the conclusion that portfolios built using small cap stocks that have a low price to book ratio (value stocks), tend to do better than market portfolios. Over time they have added many more factors such as momentum, operating profitability and conservative/aggressive portfolios.</p>
+<p>But in this post we will look at their most famous 3 factors model to assess mutual fund managers performance.</p>
+<p>Before Fama French’s research and data, most managers we evaluated based on their 5,10 or 20 years of performance. If a manager outperformed his/her benchmark they got more money to manage and a hefty fees. But such analysis will only show part of the whole picture.</p>
+<p>Unless we do further analysis we as wont know if the manager’s performance was due to luck, or a style tilt or genuine security selection skills.</p>
+<p>To separate the wheat from the chaff, we need to regress the portfolio managers returns with common risk factors that are known to have outperformed in the past. And if the manager has a high exposure to such factors, we can replicate their portfolio at a cheaper cost using a factor based ETF.</p>
+<p>This is the current debate on Wall Street. Active managers insist they posses extraordinary skills and therefore deserve the higher fees. Investors such as pension funds and endowments, take the other side and are increasingly allocating money to passive index funds, that provide exposure to these common factors.</p>
+<p>So with this brief explanation out of the way we will analyze some mutual funds and they performance in light of Fama French 3 factors.</p>
+<p>We will follow the below steps to analyze our mutual fund.</p>
+<ul>
+<li>Download &amp; Clean Fama French 3 Factors data</li>
+<li>Download the mutual fund price data</li>
+<li>Calculate the mutual fund’s returns data</li>
+<li>Combine both data sets &amp; run regression analysis</li>
+<li>Analyze the results</li>
+</ul>
+<p>So lets start and load our libraries</p>
+<pre class="r"><code>library(tidyquant)
+library(timetk)</code></pre>
+<div id="download-fama-french-data" class="section level1">
+<h1>Download Fama French Data</h1>
+<p>Because we will be downloading and cleaning our Fama French data many times, we will automate this step and build a function. This way we won’t have to repeat the steps for our analysis each time we analyze a new fund.</p>
+<p>So lets build our function. The steps are all similar to what we did in the past. We are just wrapping those steps in a function.</p>
+<pre class="r"><code># Automate Getting Fama French data from the website
+
+get_fama_french &lt;- function() {
+  
+  #This is the URL for the website
+  
+  ff_url &lt;- &quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&quot;
+  
+  # Create a temp file to store the data
+  
+  temp_file &lt;- tempfile()
+  
+  # Download the data
+  
+  download.file(ff_url, temp_file,quiet = TRUE)
+  
+  # Unzip &amp; Read the data
+  ff_data_raw &lt;- read_csv(unzip(temp_file), skip = 3)
+  
+  # This step is to delete the extra data that is not needed 
+  # We are getting the row index where the data ends
+  
+  ff_row &lt;- which(is.na(ff_data_raw$SMB))
+  ff_row &lt;- ff_row[1]
+  
+  # Selecting only the rows we need for our analysis
+  
+  ff_data_raw &lt;- ff_data_raw[c(1:(ff_row - 1)),]
+  
+  # Changing the Column names
+  
+  colnames(ff_data_raw) &lt;- paste(c(&#39;date&#39;, &quot;mkt_excess&quot;, &quot;smb&quot;, &quot;hml&quot;, &quot;rf&quot;))
+  
+  # Formatting the date column
+  # We want the end of the month dates
+  ff_data_raw &lt;- ff_data_raw %&gt;%
+    mutate(date = ymd(parse_date(date, format = &quot;%Y%m&quot;))) %&gt;%
+    mutate(date = date + months(1)) %&gt;% # Add one month
+    mutate(date = rollback(date)) # change it back to end of the month
+  
+  # Finally converting the data from percent to decimal
+  
+  ff_data_raw &lt;- ff_data_raw %&gt;%
+    mutate_at(vars(-date), function(x) x/100)
+  
+  return(ff_data_raw)
+  
+}</code></pre>
+<p>Now that we have built the function to get Fama French data automatically, lets test it.</p>
+<pre class="r"><code>ff_data &lt;- get_fama_french()</code></pre>
+<pre class="r"><code>head(ff_data)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   date       mkt_excess     smb      hml     rf
+##   &lt;date&gt;          &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1 1926-07-31     0.0296 -0.023  -0.0287  0.0022
+## 2 1926-08-31     0.0264 -0.0140  0.0419  0.0025
+## 3 1926-09-30     0.0036 -0.0132  0.0001  0.0023
+## 4 1926-10-31    -0.0324  0.0004  0.0051  0.0032
+## 5 1926-11-30     0.0253 -0.002  -0.00350 0.0031
+## 6 1926-12-31     0.0262 -0.0004 -0.0002  0.0028</code></pre>
+<pre class="r"><code>tail(ff_data)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   date       mkt_excess     smb     hml     rf
+##   &lt;date&gt;          &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1 2018-12-31    -0.0955 -0.0258 -0.0151 0.0019
+## 2 2019-01-31     0.0841  0.0302 -0.006  0.0021
+## 3 2019-02-28     0.034   0.0202 -0.0284 0.0018
+## 4 2019-03-31     0.011  -0.0315 -0.0407 0.0019
+## 5 2019-04-30     0.0396 -0.017   0.0198 0.0021
+## 6 2019-05-31    -0.0694 -0.0125 -0.0238 0.0021</code></pre>
+<p>We can see that data has been downloaded properly and just for sanity check we should plot it.</p>
+<pre class="r"><code>ff_data %&gt;%
+  gather(mkt_excess:rf, key = name, value = val) %&gt;%
+  group_by(name) %&gt;%
+  mutate(ret = cumprod(1 + val)) %&gt;%
+  ggplot(aes(x = date, y = ret, color = name)) +
+  geom_line() +
+  scale_y_log10()</code></pre>
+<p><img src="/post/2019-07-01-Analyze-ff-factor-R_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="download-the-mutual-fund-data" class="section level1">
+<h1>Download the Mutual Fund Data</h1>
+<p>Next lets choose a mutual fund to analyze. For this exercise we wanted to choose an active mutual fund that has been managed for a long time. The size of the mutual fund also needs to be large. So we selected the Fidelity Contrafund Fund (FCNTX).</p>
+<p>So lets download the data for the fund. Again we want to automate the process of downloading the price data for funds, this will accelerate our process and we will spend more time in analyzing the result versus downloading the data. We will build another function to do that.</p>
+<pre class="r"><code># Type the ticker name
+
+ticker &lt;- &quot;FCNTX&quot;
+
+# So this function requires the ticker, start and end date
+# as arguments
+
+get_price_data &lt;- function(ticker, start, end) {
+  
+  price_data &lt;- tq_get(ticker,
+                       from = start,
+                       to = end,
+                       get = &#39;stock.prices&#39;)
+  
+  return(price_data)
+  
+}</code></pre>
+<p>Now lets test our function.</p>
+<pre class="r"><code># Type the ticker name
+
+ticker &lt;- &quot;FCNTX&quot;
+
+# Start date
+start &lt;- &quot;1980-01-01&quot;
+
+# End Date since we have FF data only till May
+
+end &lt;- &quot;2019-05-31&quot;
+
+# Download the price
+
+price_data &lt;- get_price_data(ticker, start, end)</code></pre>
+<pre class="r"><code>head(price_data)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   date        open  high   low close volume adjusted
+##   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+## 1 1980-01-02  1.14  1.14  1.14  1.14      0    0.169
+## 2 1980-01-03  1.12  1.12  1.12  1.12      0    0.167
+## 3 1980-01-04  1.14  1.14  1.14  1.14      0    0.170
+## 4 1980-01-07  1.14  1.14  1.14  1.14      0    0.169
+## 5 1980-01-08  1.17  1.17  1.17  1.17      0    0.174
+## 6 1980-01-09  1.17  1.17  1.17  1.17      0    0.174</code></pre>
+<pre class="r"><code>tail(price_data)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   date        open  high   low close volume adjusted
+##   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+## 1 2019-05-22  12.8  12.8  12.8  12.8      0     12.8
+## 2 2019-05-23  12.6  12.6  12.6  12.6      0     12.6
+## 3 2019-05-24  12.6  12.6  12.6  12.6      0     12.6
+## 4 2019-05-28  12.6  12.6  12.6  12.6      0     12.6
+## 5 2019-05-29  12.5  12.5  12.5  12.5      0     12.5
+## 6 2019-05-30  12.5  12.5  12.5  12.5      0     12.5</code></pre>
+</div>
+<div id="calculate-the-returns-data" class="section level1">
+<h1>Calculate the Returns Data</h1>
+<p>Next we will build another function that calculates the returns for our fund. Now we could have easily combined the function to download the price and calculate the returns together. But this is not a good programming practice. In general we want our function (automation) to do one thing only. This makes it very easy to debug our programs.</p>
+<p>So lets calculate the returns</p>
+<pre class="r"><code># Automating the returns calculation
+
+# We need to provide the price data table
+# And the period, by default its monthly
+# Since FF data is monthly
+
+get_return_data &lt;- function(closing_price, period = &quot;monthly&quot;) {
+  
+  # This step check to see if there are more than 1 tickers
+  
+  is_symbol &lt;- &quot;symbol&quot; %in% colnames(closing_price)
+  
+  # If we have more tickers then we will use groupby()
+  if (is_symbol == TRUE) {
+    
+    ret_data &lt;- closing_price %&gt;%
+      group_by(symbol) %&gt;%
+      tq_transmute(select = adjusted,
+                   mutate_fun = periodReturn,
+                   period = period,
+                   col_rename = &#39;returns&#39;)
+    
+    return(ret_data)
+    
+    # If we have only 1 tickers, we don&#39;t use groupby()
+  } else {
+    
+    ret_data &lt;- closing_price %&gt;%
+      tq_transmute(select = adjusted,
+                   mutate_fun = periodReturn,
+                   period = period,
+                   col_rename = &#39;returns&#39;)
+    
+    return(ret_data)
+    
+  }
+  
+}</code></pre>
+<p>Lets use our function to calculate the returns</p>
+<pre class="r"><code>ret_data &lt;- get_return_data(price_data,&quot;monthly&quot;)</code></pre>
+<pre class="r"><code>head(ret_data)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   date        returns
+##   &lt;date&gt;        &lt;dbl&gt;
+## 1 1980-01-31 -0.00968
+## 2 1980-02-29 -0.0169 
+## 3 1980-03-31 -0.0894 
+## 4 1980-04-30  0.0179 
+## 5 1980-05-30  0.0789 
+## 6 1980-06-30  0.0117</code></pre>
+<pre class="r"><code>tail(ret_data)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   date       returns
+##   &lt;date&gt;       &lt;dbl&gt;
+## 1 2018-12-31 -0.0804
+## 2 2019-01-31  0.0945
+## 3 2019-02-28  0.0240
+## 4 2019-03-29  0.0221
+## 5 2019-04-30  0.0488
+## 6 2019-05-30 -0.0442</code></pre>
+</div>
+<div id="combine-the-data-and-run-regression" class="section level1">
+<h1>Combine the data and run Regression</h1>
+<p>Once again we will build a function to combine the data and then another function that runs the multiple regression model on our data.</p>
+<pre class="r"><code># We want the data to match the last day of our FF date
+
+last_month_ff &lt;- ff_data %&gt;%
+  select(date) %&gt;%
+  slice(nrow(ff_data)) %&gt;%
+  .[[1]]
+
+# Join the portfolio data with FF data
+
+join_data &lt;- function(ret_data, ff_data) {
+  
+  
+  joined_data &lt;- ret_data %&gt;%
+    filter(date &lt;= last_month_ff) %&gt;%
+    mutate(date = rollback(date, roll_to_first = TRUE)) %&gt;%
+    mutate(date = date + months(1)) %&gt;%
+    mutate(date = rollback(date)) %&gt;%
+    left_join(ff_data,by = &#39;date&#39;) %&gt;%
+    mutate(port_excess = returns - rf)
+    
+  
+  return(joined_data)
+
+}</code></pre>
+<p>Now lets see if the data was joined correctly.</p>
+<pre class="r"><code>ff_data &lt;- join_data(ret_data,ff_data)</code></pre>
+<pre class="r"><code>head(ff_data)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   date        returns mkt_excess     smb     hml      rf port_excess
+##   &lt;date&gt;        &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;
+## 1 1980-01-31 -0.00968     0.0551  0.0165  0.018  0.008      -0.0177 
+## 2 1980-02-29 -0.0169     -0.0122 -0.0182  0.0062 0.0089     -0.0258 
+## 3 1980-03-31 -0.0894     -0.129  -0.0664 -0.0106 0.0121     -0.102  
+## 4 1980-04-30  0.0179      0.0397  0.0097  0.0106 0.0126      0.00526
+## 5 1980-05-31  0.0789      0.0526  0.0216  0.0039 0.0081      0.0708 
+## 6 1980-06-30  0.0117      0.0306  0.0167 -0.0089 0.00610     0.00564</code></pre>
+<pre class="r"><code>tail(ff_data)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   date       returns mkt_excess     smb     hml     rf port_excess
+##   &lt;date&gt;       &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
+## 1 2018-12-31 -0.0804    -0.0955 -0.0258 -0.0151 0.0019     -0.0823
+## 2 2019-01-31  0.0945     0.0841  0.0302 -0.006  0.0021      0.0924
+## 3 2019-02-28  0.0240     0.034   0.0202 -0.0284 0.0018      0.0222
+## 4 2019-03-31  0.0221     0.011  -0.0315 -0.0407 0.0019      0.0202
+## 5 2019-04-30  0.0488     0.0396 -0.017   0.0198 0.0021      0.0467
+## 6 2019-05-31 -0.0442    -0.0694 -0.0125 -0.0238 0.0021     -0.0463</code></pre>
+<p>We can see that the data has been joined correctly and now the final step is to run the regression model.</p>
+<p>We will build a function to run the regression analysis.</p>
+<pre class="r"><code># We need the boom package to tidy our data
+
+library(broom)
+
+# Multiple regression Analysis
+
+run_reg_model &lt;- function(ff_data) {
+  
+  # Checks to see if we have more than 1 symbol
+  
+  is_symbol &lt;- &quot;symbol&quot; %in% colnames(ff_data)
+  
+  if (is_symbol == TRUE) {
+  
+  # Running the regression model
+    
+  model &lt;- ff_data %&gt;%
+    nest(-symbol) %&gt;% # Nesting the data and running the regression
+    mutate(model = map(data, ~lm(port_excess ~ mkt_excess + smb + hml, data = .))) %&gt;%
+    mutate(model = map(model,tidy)) %&gt;% # Cleaning the data results
+    unnest(model) %&gt;%  # Unnesting the data
+    mutate_if(is.numeric, funs(round(.,10))) # Rounding the results 
+  
+  return(model)
+  
+  # Repeating the same steps for a single ticker
+  } else {
+    
+    model &lt;- ff_data %&gt;%
+    nest() %&gt;%
+    mutate(model = map(data, ~lm(port_excess ~ mkt_excess + smb + hml, data = .))) %&gt;%
+    mutate(model = map(model,tidy)) %&gt;%
+    unnest(model) %&gt;%
+    mutate_if(is.numeric, funs(round(.,10)))
+  
+  return(model)
+    
+  }
+  
+}</code></pre>
+<p>Now lets run the regression</p>
+<pre class="r"><code>model_data &lt;- run_reg_model(ff_data)</code></pre>
+<pre class="r"><code>head(model_data)</code></pre>
+<pre><code>## # A tibble: 4 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)  0.00112   0.00100     1.12  0.265  
+## 2 mkt_excess   0.888     0.0234     37.9   0      
+## 3 smb          0.0301    0.0345      0.873 0.383  
+## 4 hml         -0.110     0.0357     -3.07  0.00227</code></pre>
+<p>We have successfully run the regression model, before we continue let us show you the steps once again in case we need to analyze another fund. This is assuming you have already built all the functions, as explained above.</p>
+<pre class="r"><code># Download the Fama French Data
+
+ff_data &lt;- get_fama_french()
+
+# Set the ticker name
+
+ticker = &quot;VINIX&quot;
+
+# Set the start date
+start = &quot;1980-01-01&quot;
+
+# Set the end Date
+end = &quot;2019-06-29&quot;
+
+# Download the price
+price_data &lt;- get_price_data(ticker, start, end)
+
+
+# Get the returns
+
+ret_data &lt;- get_return_data(price_data, period = &quot;monthly&quot;)
+
+# Join the data
+
+ff_data &lt;- join_data(ret_data = ret_data,
+                     ff_data = ff_data)
+
+# Run the regression Model
+
+model_data &lt;- run_reg_model(ff_data = ff_data)</code></pre>
+<p>Now lets analyze the regression data</p>
+<pre class="r"><code>print(model_data)</code></pre>
+<pre><code>## # A tibble: 4 x 5
+##   term          estimate std.error statistic   p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept) -0.0000101  0.000183   -0.0548 0.956    
+## 2 mkt_excess   0.991      0.00442   224.     0        
+## 3 smb         -0.178      0.00598   -29.7    0        
+## 4 hml          0.0274     0.00635     4.32   0.0000208</code></pre>
+<p>Lets first look at the Intercept. This value is the alpha. The fund appears to have generated an alpha of 0.00111 per month. This suggests an alpha of -1.206773210^{-4} per year. However the p-value suggest that this is statistically not significant. The market factor is 0.88, most traditional equity funds have market exposure close to 1. This fund is marketed as a Large Cap growth fund. However, it appears to have some positive exposure to small cap factor, although p-value is not significant. Then finally, the fund has a negative exposure to the value factor, this makes sense since it is a large cap growth fund.</p>
+<p>This fund has generated returns above 12.5% since 1980. This is a good track record for a very long time. The expense ratio/fees are around 0.82%. Many 401K plans offer this fund as an investment option. Past returns are no guarantee for future returns and this outperformance may disappear in the future.</p>
+<p>This was a simple example to demonstrate how to</p>
+<ul>
+<li>Automatically download Fama French data</li>
+<li>Get the fund data</li>
+<li>Calculate the returns</li>
+<li>Run regression and analyze the results</li>
+</ul>
+<p>Before we leave lets test all our functions on another fund.</p>
+<p>We will choose another fund to check that all our functions are running properly. Let’s choose Goldman Sachs Strategic Growth A (GGRAX). This is a US Large Cap growth equity fund.</p>
+<p>So lets us demonstrate how we can automate our workflow in a single function.</p>
+<p>This function combines all our above functions. This one function will download the price, calculate the returns, join the data and run the regression analysis.</p>
+<pre class="r"><code># All data function
+#  We need to provide the ticker and start and end date for our fund data.
+
+all_data_func &lt;- function(ticker, start,end) {
+  
+    ticker &lt;- ticker
+    
+    # Gets the FF data
+    
+    ff_data &lt;- get_fama_french()
+    
+    # Gets the Price data
+    price_data &lt;- get_price_data(ticker, start = start, end = end)
+    
+    # Calculates the returns data
+    ret_data &lt;- get_return_data(price_data, period = &quot;monthly&quot;)
+    
+    # Joins the data
+    all_data &lt;- join_data(ret_data = ret_data,
+                          ff_data = ff_data)
+    
+    # Runs the regression model
+    model &lt;- run_reg_model(all_data)
+    
+    # Return the data
+    return(model)
+
+}
+
+goldman_fund &lt;- all_data_func(&quot;GGRAX&quot;,
+                              start = &quot;1999-05-01&quot;,
+                              end = &quot;2019-06-30&quot;)</code></pre>
+<pre class="r"><code>print(goldman_fund)</code></pre>
+<pre><code>## # A tibble: 4 x 5
+##   term          estimate std.error statistic      p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+## 1 (Intercept) -0.0000967  0.000802    -0.121 0.904       
+## 2 mkt_excess   1.02       0.0188      54.3   0           
+## 3 smb         -0.187      0.0254      -7.34  0           
+## 4 hml         -0.171      0.0259      -6.58  0.0000000003</code></pre>
+<p>Great news!!! This works as expected.</p>
+<p>In the next post we will scrape mutual fund data and analyze multiple portfolios using Fama French 3 factor Models.</p>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2018-06-15-clean-ff-data-in-py/">How to download and clean Fama French 3 factor model data in Python →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

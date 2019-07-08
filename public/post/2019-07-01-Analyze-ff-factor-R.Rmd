@@ -1,0 +1,505 @@
+---
+title: "Factor Based Analysis"
+author: "DD"
+date: "2019-07-01"
+description: "Using Fama French factors to analyze mutual funds. We will first learn how to do it with one fund, then we will build a function that automates all the steps in one function"
+output: html_document
+---
+
+In the previous two post we learned how to download and clean the Fama French 3 factors data. In this post we will use those factors to analyze mutual funds performance.
+
+But before we proceed let us understand what Fama French factor model really is.
+
+The traditional asset pricing model (CAPM), used only one factor (Market returns) to explain the returns of a portfolio or a stock. Fama & French concluded that CAPM model was not sufficient to explain all the sources of returns for a portfolio. Their [observation and research](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.139.5892&rep=rep1&type=pdf) led to the conclusion that portfolios built using small cap stocks that have a low price to book ratio (value stocks), tend to do better than market portfolios. Over time they have added many more factors such as momentum, operating profitability and conservative/aggressive portfolios.
+
+But in this post we will look at their most famous 3 factors model to assess mutual fund managers performance.
+
+Before Fama French's research and data, most managers we evaluated based on their 5,10 or 20 years of performance. If a manager outperformed his/her benchmark they got more money to manage and a hefty fees. But such analysis will only show part of the whole picture. 
+
+Unless we do further analysis we as wont know if the manager's performance was due to luck, or a style tilt or genuine security selection skills.
+
+To separate the wheat from the chaff, we need to regress the portfolio managers returns with common risk factors that are known to have outperformed in the past. And if the manager has a high exposure to such factors, we can replicate their portfolio at a cheaper cost using a factor based ETF.
+
+This is the current debate on Wall Street. Active managers insist they posses extraordinary skills and therefore deserve the higher fees. Investors such as pension funds and endowments, take the other side and are increasingly allocating money to passive index funds, that provide exposure to these common factors.
+
+So with this brief explanation out of the way we will analyze some mutual funds and they performance in light of Fama French 3 factors.
+
+We will follow the below steps to analyze our mutual fund.
+
+- Download & Clean Fama French 3 Factors data
+- Download the mutual fund price data
+- Calculate the mutual fund's returns data
+- Combine both data sets & run regression analysis
+- Analyze the results
+
+So lets start and load our libraries
+
+```{r warning=FALSE,message=FALSE}
+
+library(tidyquant)
+library(timetk)
+
+```
+
+# Download Fama French Data
+
+Because we will be downloading and cleaning our Fama French data many times, we will automate this step and build a function. This way we won't have to repeat the steps for our analysis each time we analyze a new fund.
+
+So lets build our function. The steps are all similar to what we did in the past. We are just wrapping those steps in a function.
+
+```{r}
+
+# Automate Getting Fama French data from the website
+
+get_fama_french <- function() {
+  
+  #This is the URL for the website
+  
+  ff_url <- "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+  
+  # Create a temp file to store the data
+  
+  temp_file <- tempfile()
+  
+  # Download the data
+  
+  download.file(ff_url, temp_file,quiet = TRUE)
+  
+  # Unzip & Read the data
+  ff_data_raw <- read_csv(unzip(temp_file), skip = 3)
+  
+  # This step is to delete the extra data that is not needed 
+  # We are getting the row index where the data ends
+  
+  ff_row <- which(is.na(ff_data_raw$SMB))
+  ff_row <- ff_row[1]
+  
+  # Selecting only the rows we need for our analysis
+  
+  ff_data_raw <- ff_data_raw[c(1:(ff_row - 1)),]
+  
+  # Changing the Column names
+  
+  colnames(ff_data_raw) <- paste(c('date', "mkt_excess", "smb", "hml", "rf"))
+  
+  # Formatting the date column
+  # We want the end of the month dates
+  ff_data_raw <- ff_data_raw %>%
+    mutate(date = ymd(parse_date(date, format = "%Y%m"))) %>%
+    mutate(date = date + months(1)) %>% # Add one month
+    mutate(date = rollback(date)) # change it back to end of the month
+  
+  # Finally converting the data from percent to decimal
+  
+  ff_data_raw <- ff_data_raw %>%
+    mutate_at(vars(-date), function(x) x/100)
+  
+  return(ff_data_raw)
+  
+}
+
+```
+
+
+Now that we have built the function to get Fama French data automatically, lets test it.
+
+```{r, message=FALSE, warning=FALSE}
+
+ff_data <- get_fama_french()
+
+```
+
+
+```{r}
+
+head(ff_data)
+
+```
+
+```{r}
+
+tail(ff_data)
+
+```
+
+We can see that data has been downloaded properly and just for sanity check we should plot it.
+
+```{r}
+
+ff_data %>%
+  gather(mkt_excess:rf, key = name, value = val) %>%
+  group_by(name) %>%
+  mutate(ret = cumprod(1 + val)) %>%
+  ggplot(aes(x = date, y = ret, color = name)) +
+  geom_line() +
+  scale_y_log10()
+
+```
+
+# Download the Mutual Fund Data
+
+Next lets choose a mutual fund to analyze. For this exercise we wanted to choose an active mutual fund that has been managed for a long time. The size of the mutual fund also needs to be large. So we selected the Fidelity Contrafund Fund (FCNTX).
+
+So lets download the data for the fund. Again we want to automate the process of downloading the price data for funds, this will accelerate our process and we will spend more time in analyzing the result versus downloading the data. We will build another function to do that.
+
+```{r}
+
+# Type the ticker name
+
+ticker <- "FCNTX"
+
+# So this function requires the ticker, start and end date
+# as arguments
+
+get_price_data <- function(ticker, start, end) {
+  
+  price_data <- tq_get(ticker,
+                       from = start,
+                       to = end,
+                       get = 'stock.prices')
+  
+  return(price_data)
+  
+}
+
+
+
+```
+
+Now lets test our function.
+
+```{r}
+
+# Type the ticker name
+
+ticker <- "FCNTX"
+
+# Start date
+start <- "1980-01-01"
+
+# End Date since we have FF data only till May
+
+end <- "2019-05-31"
+
+# Download the price
+
+price_data <- get_price_data(ticker, start, end)
+
+```
+
+
+```{r}
+
+head(price_data)
+
+```
+
+
+```{r}
+tail(price_data)
+```
+
+# Calculate the Returns Data
+
+Next we will build another function that calculates the returns for our fund. Now we could have easily combined the function to download the price and calculate the returns together. But this is not a good programming practice. In general we want our function (automation) to do one thing only. This makes it very easy to debug our programs. 
+
+So lets calculate the returns
+
+```{r}
+
+# Automating the returns calculation
+
+# We need to provide the price data table
+# And the period, by default its monthly
+# Since FF data is monthly
+
+get_return_data <- function(closing_price, period = "monthly") {
+  
+  # This step check to see if there are more than 1 tickers
+  
+  is_symbol <- "symbol" %in% colnames(closing_price)
+  
+  # If we have more tickers then we will use groupby()
+  if (is_symbol == TRUE) {
+    
+    ret_data <- closing_price %>%
+      group_by(symbol) %>%
+      tq_transmute(select = adjusted,
+                   mutate_fun = periodReturn,
+                   period = period,
+                   col_rename = 'returns')
+    
+    return(ret_data)
+    
+    # If we have only 1 tickers, we don't use groupby()
+  } else {
+    
+    ret_data <- closing_price %>%
+      tq_transmute(select = adjusted,
+                   mutate_fun = periodReturn,
+                   period = period,
+                   col_rename = 'returns')
+    
+    return(ret_data)
+    
+  }
+  
+}
+
+```
+
+
+Lets use our function to calculate the returns
+
+```{r}
+
+ret_data <- get_return_data(price_data,"monthly")
+
+
+```
+
+```{r}
+
+head(ret_data)
+
+```
+
+
+```{r}
+
+tail(ret_data)
+
+```
+
+# Combine the data and run Regression
+
+Once again we will build a function to combine the data and then another function that runs the multiple regression model on our data.
+
+```{r}
+
+# We want the data to match the last day of our FF date
+
+last_month_ff <- ff_data %>%
+  select(date) %>%
+  slice(nrow(ff_data)) %>%
+  .[[1]]
+
+# Join the portfolio data with FF data
+
+join_data <- function(ret_data, ff_data) {
+  
+  
+  joined_data <- ret_data %>%
+    filter(date <= last_month_ff) %>%
+    mutate(date = rollback(date, roll_to_first = TRUE)) %>%
+    mutate(date = date + months(1)) %>%
+    mutate(date = rollback(date)) %>%
+    left_join(ff_data,by = 'date') %>%
+    mutate(port_excess = returns - rf)
+    
+  
+  return(joined_data)
+
+}
+
+```
+
+Now lets see if the data was joined correctly.
+
+```{r}
+
+ff_data <- join_data(ret_data,ff_data)
+
+```
+
+
+```{r}
+
+head(ff_data)
+
+```
+
+```{r}
+
+tail(ff_data)
+
+```
+
+We can see that the data has been joined correctly and now the final step is to run the regression model.
+
+We will build a function to run the regression analysis.
+
+```{r message=FALSE, warning=FALSE}
+
+# We need the boom package to tidy our data
+
+library(broom)
+
+# Multiple regression Analysis
+
+run_reg_model <- function(ff_data) {
+  
+  # Checks to see if we have more than 1 symbol
+  
+  is_symbol <- "symbol" %in% colnames(ff_data)
+  
+  if (is_symbol == TRUE) {
+  
+  # Running the regression model
+    
+  model <- ff_data %>%
+    nest(-symbol) %>% # Nesting the data and running the regression
+    mutate(model = map(data, ~lm(port_excess ~ mkt_excess + smb + hml, data = .))) %>%
+    mutate(model = map(model,tidy)) %>% # Cleaning the data results
+    unnest(model) %>%  # Unnesting the data
+    mutate_if(is.numeric, funs(round(.,10))) # Rounding the results 
+  
+  return(model)
+  
+  # Repeating the same steps for a single ticker
+  } else {
+    
+    model <- ff_data %>%
+    nest() %>%
+    mutate(model = map(data, ~lm(port_excess ~ mkt_excess + smb + hml, data = .))) %>%
+    mutate(model = map(model,tidy)) %>%
+    unnest(model) %>%
+    mutate_if(is.numeric, funs(round(.,10)))
+  
+  return(model)
+    
+  }
+  
+}
+
+```
+
+Now lets run the regression
+
+```{r}
+
+model_data <- run_reg_model(ff_data)
+
+```
+
+
+```{r}
+
+head(model_data)
+
+```
+
+We have successfully run the regression model, before we continue let us show you the steps once again in case we need to analyze another fund. This is assuming you have already built all the functions, as explained above.
+
+```{r message=FALSE, warning=FALSE}
+
+# Download the Fama French Data
+
+ff_data <- get_fama_french()
+
+# Set the ticker name
+
+ticker = "VINIX"
+
+# Set the start date
+start = "1980-01-01"
+
+# Set the end Date
+end = "2019-06-29"
+
+# Download the price
+price_data <- get_price_data(ticker, start, end)
+
+
+# Get the returns
+
+ret_data <- get_return_data(price_data, period = "monthly")
+
+# Join the data
+
+ff_data <- join_data(ret_data = ret_data,
+                     ff_data = ff_data)
+
+# Run the regression Model
+
+model_data <- run_reg_model(ff_data = ff_data)
+
+```
+
+Now lets analyze the regression data
+
+```{r}
+
+print(model_data)
+
+```
+
+Lets first look at the Intercept. This value is the alpha. The fund appears to have generated an alpha of 0.00111 per month. This suggests an alpha of `r (model_data$estimate[1] + 1)^12 - 1` per year. However the p-value suggest that this is statistically not significant. The market factor is 0.88, most traditional equity funds have market exposure close to 1. This fund is marketed as a Large Cap growth fund. However, it appears to have some positive exposure to small cap factor, although p-value is not significant. Then finally, the fund has a negative exposure to the value factor, this makes sense since it is a large cap growth fund.
+
+This fund has generated returns above 12.5% since 1980. This is a good track record for a very long time. The expense ratio/fees are around 0.82%. Many 401K plans offer this fund as an investment option. Past returns are no guarantee for future returns and this outperformance may disappear in the future.
+
+This was a simple example to demonstrate how to
+
+- Automatically download Fama French data
+- Get the fund data
+- Calculate the returns
+- Run regression and analyze the results
+
+Before we leave lets test all our functions on another fund.
+
+We will choose another fund to check that all our functions are running properly. Let's choose Goldman Sachs Strategic Growth A (GGRAX). This is a US Large Cap growth equity fund.
+
+So lets us demonstrate how we can automate our workflow in a single function.
+
+This function combines all our above functions. This one function will download the price, calculate the returns, join the data and run the regression analysis.
+
+```{r message=FALSE, warning=FALSE}
+
+# All data function
+#  We need to provide the ticker and start and end date for our fund data.
+
+all_data_func <- function(ticker, start,end) {
+  
+    ticker <- ticker
+    
+    # Gets the FF data
+    
+    ff_data <- get_fama_french()
+    
+    # Gets the Price data
+    price_data <- get_price_data(ticker, start = start, end = end)
+    
+    # Calculates the returns data
+    ret_data <- get_return_data(price_data, period = "monthly")
+    
+    # Joins the data
+    all_data <- join_data(ret_data = ret_data,
+                          ff_data = ff_data)
+    
+    # Runs the regression model
+    model <- run_reg_model(all_data)
+    
+    # Return the data
+    return(model)
+
+}
+
+goldman_fund <- all_data_func("GGRAX",
+                              start = "1999-05-01",
+                              end = "2019-06-30")
+
+```
+
+```{r}
+
+print(goldman_fund)
+
+```
+
+Great news!!! This works as expected.
+
+In the next post we will scrape mutual fund data and analyze multiple portfolios using Fama French 3 factor Models.
+
+
+
+
