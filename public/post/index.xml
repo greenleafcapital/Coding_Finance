@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Factor Based Analysis in Python</title>
+      <link>/post/2019-07-01-analyze-ff-factor-python/</link>
+      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019-07-01-analyze-ff-factor-python/</guid>
+      <description>In the last post we performed several steps in downloading and analyzing the fund performance data. We used the Fama French’s 3 factor model to analyze Fidelity Contrafund Fund (FCNTX). In this post we will repeat the same steps without all the explanation. We will try to make things clear using the comments in our code. So lets begin by loading all the modules we will need to run our analysis.</description>
+    </item>
     
     <item>
       <title>Factor Based Analysis</title>
