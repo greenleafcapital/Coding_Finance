@@ -17,7 +17,8 @@ Plotting S&P 500 etf (SPY) price data since March 1, 2019. We will use the below
 ```{r}
 
 spy_price <- tq_get('SPY',
-                    from = '2019-03-01',
+                    from = '2018-03-01',
+                    to = "2018-05-15",
                     get = 'stock.prices')
 
 spy_price %>%

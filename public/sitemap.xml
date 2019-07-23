@@ -63,6 +63,11 @@
   </url>
   
   <url>
+    <loc>/post/2018-05-15-candlestick-chart-in-python/</loc>
+    <lastmod>2018-05-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/2018-05-15-candlestick-chart-in-r/</loc>
     <lastmod>2018-05-15T00:00:00+00:00</lastmod>
   </url>
@@ -185,6 +190,10 @@
   <url>
     <loc>/post/2018-03-18-tvm/</loc>
     <lastmod>2018-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/candlestick/</loc>
   </url>
   
   <url>

@@ -1,0 +1,82 @@
+---
+title: "Creating Candlestick charts in Python"
+author: "DD"
+date: "2018-05-15"
+description: "Creating Candlestick charts in Python using the Bokeh Module"
+output: html_document
+---
+
+In this post we will show you how to generate a candlestick chart in Python using the Bokeh module. To install the Bokeh module you will need to in type `pip install bokeh` in your command line on a PC or the Mac terminal. Once you have installed the package you can use the below code to generate a candlestick chart using Bokeh.
+
+First import the packages
+
+```{python}
+#Import the packages
+
+import pandas as pd
+import pandas_datareader as web
+from bokeh.plotting import figure, show, output_file
+
+```
+
+Next download the price data for the SPY etf. Our start date is March 1, 2018.
+
+```{python}
+
+spy_price = web.get_data_yahoo("SPY",start = "2018-03-01", end = "2018-05-15")
+
+```
+
+```{python}
+
+spy_price['date'] = pd.to_datetime(spy_price.index)
+
+# This is to color the red and green bars for Down and up days
+
+increase = spy_price['Close'] > spy_price["Open"]
+decrease = spy_price['Open'] > spy_price["Close"]
+
+# w is used to specify the width of each bar
+
+w = 12*60*60*1000
+
+# Tools we want on our chart such as zoom, save etc
+
+tools = "pan,box_zoom,reset,save"
+
+# p is our figure or plot
+
+p = figure(x_axis_type = "datetime", tools = tools, plot_width = 1000, title = "SPY CandleStick Chart")
+
+# Shows the grid line traperency
+
+p.grid.grid_line_alpha=0.3
+
+# Adding Vertical lines on the cheart each day
+
+p.segment(spy_price.date, spy_price.High, spy_price.date, spy_price.Low, color="black")
+
+# Adding the bars on each line and specifying the width as w
+
+# Coloring up days as Green
+p.vbar(spy_price.date[increase], w, spy_price.Open[increase], spy_price.Close[increase], fill_color="#D5E1DD", line_color="black")
+
+# Coloring down days as Red
+p.vbar(spy_price.date[decrease], w, spy_price.Open[decrease], spy_price.Close[decrease], fill_color="#F2583E", line_color="black")
+
+# Saving the file as candlestick.html
+output_file("candlestick.html", title="candlestick.py example")
+
+show(p) 
+
+
+```
+
+Once we have generated the chart we can use the show(p) to show the chart
+
+```{r echo=FALSE}
+
+htmltools::includeHTML("candlestick.html")
+
+```
+
