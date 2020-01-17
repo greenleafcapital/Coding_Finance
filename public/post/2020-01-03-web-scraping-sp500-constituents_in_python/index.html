@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Webscraping with Python :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2020-01-03-web-scraping-sp500-constituents_in_python/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Webscraping with Python :: Coding Finance — " />
+<meta name="twitter:description" content="Web scraping is an essential skill that is required for data exploration and analysis. In this post we will learn how to get the data from a website in Python for further research.
+Suppose we want to get all the S&amp;amp;P 500 constituents for our portfolio research. This information is easily available on Wikipedia.com. Using the the below code we can download the tickers and other relevant data from wikipedia." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Webscraping with Python :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2020-01-03-web-scraping-sp500-constituents_in_python/" />
+<meta property="og:site_name" content="Webscraping with Python" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2020-01-03 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2020-01-03-web-scraping-sp500-constituents_in_python/">Webscraping with Python</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        1/3/2020
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <p>Web scraping is an essential skill that is required for data exploration and analysis. In this post we will learn how to get the data from a website in Python for further research.</p>
+<p>Suppose we want to get all the S&amp;P 500 constituents for our portfolio research. This information is easily available on Wikipedia.com. Using the the below code we can download the tickers and other relevant data from wikipedia.</p>
+<p>First lets load the libraries</p>
+<pre class="python"><code>import pandas as pd
+import matplotlib.pyplot as plt
+from bs4 import BeautifulSoup
+from urllib.request import urlopen</code></pre>
+<p>Next we will write our code to get the Wikipedia table.</p>
+<pre class="python"><code># Go to the website and read the html page
+url = urlopen(&quot;https://en.wikipedia.org/wiki/List_of_S%26P_500_companies&quot;)
+# Parse the webpage using the BeautifulSoup Library
+# We will save it to the soup variable
+soup = BeautifulSoup(url.read(), &#39;lxml&#39;)
+# Get the correct data table, 
+# We want the table which has
+# the constituents
+tbody = soup.tbody
+tr = tbody.find_all(&#39;tr&#39;)
+# After getting the correct data
+# We will need to iterate over it to
+# extract just the text
+# We will save it to the empty data list
+data = []
+for t in tr:
+    data.append(t.text.split(&#39;\n&#39;))
+# Convert the list into a DataFrame
+raw_df = pd.DataFrame(data)
+# Change the column names to First Column
+raw_df.columns = raw_df.iloc[0,:]
+# Delete the first row data
+raw_df = raw_df.iloc[1:,:]
+# Read the head of the data table
+print(raw_df.head())</code></pre>
+<pre><code>## 0   Symbol               Security  ...       Founded     NaN   NaN
+## 1      MMM             3M Company  ...          1902    None  None
+## 2      ABT    Abbott Laboratories  ...          1888    None  None
+## 3     ABBV            AbbVie Inc.  ...   2013 (1888)    None  None
+## 4     ABMD            ABIOMED Inc  ...          1981    None  None
+## 5      ACN          Accenture plc  ...          1989    None  None
+## 
+## [5 rows x 14 columns]</code></pre>
+<p>We have successfully downloaded the data and now lets plot it.</p>
+<p>We will plot the number of constituents in each sector.</p>
+<pre class="python"><code>sectors = raw_df.groupby(&#39;GICS Sector&#39;).count().iloc[:,0].sort_values().plot(kind=&#39;bar&#39;)
+plt.ylabel(&#39;Number of Constituents&#39;)
+plt.title(&#39;Sector Constituents in S&amp;P 500 as of 2019&#39;)
+plt.show()</code></pre>
+<p><img src="/post/2020-01-03-Web-Scraping-SP500-constituents_in_Python_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<br>
+<br>
+<br></p>
+<p>From the above chart we can quickly learn that Information Technology and Communication Services together dominate todays markets. Energy sector on the other hand has fewer constituents than Real Estate sector.</p>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2020-01-03-web-scraping-sp500-constituents/">Webscraping with R →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

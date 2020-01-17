@@ -1,0 +1,62 @@
+---
+title: "Webscraping with Python"
+author: "DD"
+date: "2020-01-03"
+description: "Scraping S&P 500 tickers"
+output: html_document
+---
+
+
+
+<p>Web scraping is an essential skill that is required for data exploration and analysis. In this post we will learn how to get the data from a website in Python for further research.</p>
+<p>Suppose we want to get all the S&amp;P 500 constituents for our portfolio research. This information is easily available on Wikipedia.com. Using the the below code we can download the tickers and other relevant data from wikipedia.</p>
+<p>First lets load the libraries</p>
+<pre class="python"><code>import pandas as pd
+import matplotlib.pyplot as plt
+from bs4 import BeautifulSoup
+from urllib.request import urlopen</code></pre>
+<p>Next we will write our code to get the Wikipedia table.</p>
+<pre class="python"><code># Go to the website and read the html page
+url = urlopen(&quot;https://en.wikipedia.org/wiki/List_of_S%26P_500_companies&quot;)
+# Parse the webpage using the BeautifulSoup Library
+# We will save it to the soup variable
+soup = BeautifulSoup(url.read(), &#39;lxml&#39;)
+# Get the correct data table, 
+# We want the table which has
+# the constituents
+tbody = soup.tbody
+tr = tbody.find_all(&#39;tr&#39;)
+# After getting the correct data
+# We will need to iterate over it to
+# extract just the text
+# We will save it to the empty data list
+data = []
+for t in tr:
+    data.append(t.text.split(&#39;\n&#39;))
+# Convert the list into a DataFrame
+raw_df = pd.DataFrame(data)
+# Change the column names to First Column
+raw_df.columns = raw_df.iloc[0,:]
+# Delete the first row data
+raw_df = raw_df.iloc[1:,:]
+# Read the head of the data table
+print(raw_df.head())</code></pre>
+<pre><code>## 0   Symbol               Security  ...       Founded     NaN   NaN
+## 1      MMM             3M Company  ...          1902    None  None
+## 2      ABT    Abbott Laboratories  ...          1888    None  None
+## 3     ABBV            AbbVie Inc.  ...   2013 (1888)    None  None
+## 4     ABMD            ABIOMED Inc  ...          1981    None  None
+## 5      ACN          Accenture plc  ...          1989    None  None
+## 
+## [5 rows x 14 columns]</code></pre>
+<p>We have successfully downloaded the data and now lets plot it.</p>
+<p>We will plot the number of constituents in each sector.</p>
+<pre class="python"><code>sectors = raw_df.groupby(&#39;GICS Sector&#39;).count().iloc[:,0].sort_values().plot(kind=&#39;bar&#39;)
+plt.ylabel(&#39;Number of Constituents&#39;)
+plt.title(&#39;Sector Constituents in S&amp;P 500 as of 2019&#39;)
+plt.show()</code></pre>
+<p><img src="/post/2020-01-03-Web-Scraping-SP500-constituents_in_Python_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<br>
+<br>
+<br></p>
+<p>From the above chart we can quickly learn that Information Technology and Communication Services together dominate todays markets. Energy sector on the other hand has fewer constituents than Real Estate sector.</p>
