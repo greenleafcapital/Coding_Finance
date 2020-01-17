@@ -40,15 +40,20 @@ raw_df.columns = raw_df.iloc[0,:]
 # Delete the first row data
 raw_df = raw_df.iloc[1:,:]
 # Read the head of the data table
-print(raw_df.head())</code></pre>
-<pre><code>## 0   Symbol               Security  ...       Founded     NaN   NaN
-## 1      MMM             3M Company  ...          1902    None  None
-## 2      ABT    Abbott Laboratories  ...          1888    None  None
-## 3     ABBV            AbbVie Inc.  ...   2013 (1888)    None  None
-## 4     ABMD            ABIOMED Inc  ...          1981    None  None
-## 5      ACN          Accenture plc  ...          1989    None  None
+print(raw_df.head(10))</code></pre>
+<pre><code>## 0    Symbol                      Security  ...       Founded     NaN   NaN
+## 1       MMM                    3M Company  ...          1902    None  None
+## 2       ABT           Abbott Laboratories  ...          1888    None  None
+## 3      ABBV                   AbbVie Inc.  ...   2013 (1888)    None  None
+## 4      ABMD                   ABIOMED Inc  ...          1981    None  None
+## 5       ACN                 Accenture plc  ...          1989    None  None
+## 6      ATVI           Activision Blizzard  ...          2008    None  None
+## 7      ADBE             Adobe Systems Inc  ...          1982    None  None
+## 8       AMD    Advanced Micro Devices Inc  ...          1969    None  None
+## 9       AAP            Advance Auto Parts  ...          1932    None  None
+## 10      AES                      AES Corp  ...          1981    None  None
 ## 
-## [5 rows x 14 columns]</code></pre>
+## [10 rows x 14 columns]</code></pre>
 <p>We have successfully downloaded the data and now lets plot it.</p>
 <p>We will plot the number of constituents in each sector.</p>
 <pre class="python"><code>sectors = raw_df.groupby(&#39;GICS Sector&#39;).count().iloc[:,0].sort_values().plot(kind=&#39;bar&#39;)

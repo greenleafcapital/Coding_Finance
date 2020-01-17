@@ -65,7 +65,7 @@ raw_df = raw_df.iloc[1:,:]
 
 # Read the head of the data table
 
-print(raw_df.head())
+print(raw_df.head(10))
 
 ```
 
