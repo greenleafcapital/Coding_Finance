@@ -1,0 +1,132 @@
+---
+title: "Webscraping with R"
+author: "DD"
+date: "2020-01-03"
+description: "Scraping S&P 500 tickers"
+output: html_document
+---
+
+Web scraping is an essential skill that is required for data exploration and analysis. In this post we will learn how to get the data from a website in R for further research.
+
+Suppose we want to get all the S&P 500 constituents for our portfolio research. This information is easily available on Wikipedia.com. Using the the below code we can download the tickers and other relevant data from wikipedia.
+
+First lets load the libraries
+
+```{r load_lib,message=FALSE,warning=FALSE}
+
+library(tidyverse)
+library(timetk)
+library(rvest) # required for web scraping
+
+```
+
+Next we will write our code to get the Wikipedia table.
+
+```{r get_table, message=FALSE,warning=FALSE}
+
+# Go to the website and read the html page
+url <- "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+url <- read_html(url)
+
+# Get the correct data table, 
+# We want the table which has
+# the constituents
+raw_data <- url %>%
+  html_nodes("#constituents td") %>%
+  html_text()
+
+# After getting the data
+# Convert the vector into a matrix
+
+raw_data <- matrix(raw_data, ncol = 9, byrow = TRUE)
+
+# Convert the matrix into a tibble
+raw_data <- data.frame(raw_data, stringsAsFactors = FALSE) %>%
+  tk_tbl()
+  
+# Read the head of the data table
+
+head(raw_data)
+
+```
+
+We have successfully downloaded the data and now we need to do some cleaning.
+
+```{r col_names,message=FALSE,warning=FALSE}
+
+# Change the column names
+
+colnames(raw_data) <- c('symbol', 'name', 'sec_report', 'GICS_Sector', 'GICS_SubIndustry', 'headquarters', 'date_first_added', 'CIK', 'year_founded')
+
+head(raw_data)
+
+```
+
+Next we will remove the `\n` new line from the ticker and the year founded columns and delete the sec_report column.
+
+```{r del_sec,message=FALSE,warning=FALSE}
+
+raw_data <- raw_data %>%
+  select(-sec_report) %>%
+  mutate(symbol = str_remove(.$symbol, '\n')) %>%
+  mutate(year_founded = str_remove(.$year_founded, '\n'))
+
+```
+
+Finally lets convert the date first added and year founded to correct date format.
+
+```{r chnage_date_format, message=FALSE,warning=FALSE}
+# Load the lubridate package
+# For date formatting
+
+library(lubridate)
+
+raw_data <- raw_data %>%
+  mutate(date_first_added = ymd(date_first_added))
+
+# Since we are given just the year for
+# the founding, we will assume 
+# Founding day/month as 1st Jan
+
+raw_data <- raw_data %>%
+  mutate(year_founded = str_sub(.$year_founded,start = 1,end = 4)) %>%
+  mutate(year_founded = make_date(year = year_founded,month = 1,day = 1))
+
+# Saving it into a new table
+
+sp_constituents <- raw_data
+
+sp_constituents
+
+# Use the below code to save this into a csv file
+# We have commented the code so that you dont
+# download the data if you dont want it.
+
+# sp_constituents %>%
+#   write.csv('SP500_tickers.csv', row.names = FALSE)
+
+```
+
+Now lets plot the number of constituents in each sector.
+
+```{r plot,message=FALSE,warning=FALSE}
+
+# Load package for themes
+
+library(ggthemes)
+
+sp_constituents %>%
+  mutate(GICS_Sector = str_remove(.$GICS_Sector,'\n')) %>%
+  mutate(GICS_Sector = as_factor(GICS_Sector)) %>%
+  ggplot(aes(x = GICS_Sector)) +
+  geom_histogram(stat = 'count') +
+  theme_economist() +
+  theme(axis.title.x = element_text(face="bold", size=10),
+           axis.text.x  = element_text(angle=90, vjust=0.5, size=8),
+        axis.title.y = element_text(face="bold", size=10)) +
+  labs(x = "Sectors", y = "Number of Constituents",
+       title = "Number of Constituents in each sector")
+
+```
+
+From the above chart we can quickly learn that Information Technology and Communication Services together dominate todays markets. Energy sector on the other hand has fewer constituents than Real Estate sector.

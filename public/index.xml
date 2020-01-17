@@ -6,10 +6,20 @@
     <description>Recent content on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 03 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Webscraping with R</title>
+      <link>/post/2020-01-03-web-scraping-sp500-constituents/</link>
+      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-01-03-web-scraping-sp500-constituents/</guid>
+      <description>Web scraping is an essential skill that is required for data exploration and analysis. In this post we will learn how to get the data from a website in R for further research.
+Suppose we want to get all the S&amp;amp;P 500 constituents for our portfolio research. This information is easily available on Wikipedia.com. Using the the below code we can download the tickers and other relevant data from wikipedia.</description>
+    </item>
     
     <item>
       <title>Factor Based Analysis in Python</title>

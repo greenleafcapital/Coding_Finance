@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Webscraping with R :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2020-01-03-web-scraping-sp500-constituents/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Webscraping with R :: Coding Finance — " />
+<meta name="twitter:description" content="Web scraping is an essential skill that is required for data exploration and analysis. In this post we will learn how to get the data from a website in R for further research.
+Suppose we want to get all the S&amp;amp;P 500 constituents for our portfolio research. This information is easily available on Wikipedia.com. Using the the below code we can download the tickers and other relevant data from wikipedia." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Webscraping with R :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2020-01-03-web-scraping-sp500-constituents/" />
+<meta property="og:site_name" content="Webscraping with R" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2020-01-03 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2020-01-03-web-scraping-sp500-constituents/">Webscraping with R</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        1/3/2020
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      <p>Web scraping is an essential skill that is required for data exploration and analysis. In this post we will learn how to get the data from a website in R for further research.</p>
+<p>Suppose we want to get all the S&amp;P 500 constituents for our portfolio research. This information is easily available on Wikipedia.com. Using the the below code we can download the tickers and other relevant data from wikipedia.</p>
+<p>First lets load the libraries</p>
+<pre class="r"><code>library(tidyverse)
+library(timetk)
+library(rvest) # required for web scraping</code></pre>
+<p>Next we will write our code to get the Wikipedia table.</p>
+<pre class="r"><code># Go to the website and read the html page
+url &lt;- &quot;https://en.wikipedia.org/wiki/List_of_S%26P_500_companies&quot;
+url &lt;- read_html(url)
+
+# Get the correct data table, 
+# We want the table which has
+# the constituents
+raw_data &lt;- url %&gt;%
+  html_nodes(&quot;#constituents td&quot;) %&gt;%
+  html_text()
+
+# After getting the data
+# Convert the vector into a matrix
+
+raw_data &lt;- matrix(raw_data, ncol = 9, byrow = TRUE)
+
+# Convert the matrix into a tibble
+raw_data &lt;- data.frame(raw_data, stringsAsFactors = FALSE) %&gt;%
+  tk_tbl()
+  
+# Read the head of the data table
+
+head(raw_data)</code></pre>
+<pre><code>## # A tibble: 6 x 9
+##   X1     X2       X3     X4        X5         X6        X7    X8    X9    
+##   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; 
+## 1 &quot;MMM\~ 3M Comp~ repor~ Industri~ Industria~ St. Paul~ &quot;&quot;    0000~ &quot;1902~
+## 2 &quot;ABT\~ Abbott ~ repor~ Health C~ Health Ca~ North Ch~ 1964~ 0000~ &quot;1888~
+## 3 &quot;ABBV~ AbbVie ~ repor~ Health C~ Pharmaceu~ North Ch~ 2012~ 0001~ &quot;2013~
+## 4 &quot;ABMD~ ABIOMED~ repor~ Health C~ Health Ca~ Danvers,~ 2018~ 0000~ &quot;1981~
+## 5 &quot;ACN\~ Accentu~ repor~ Informat~ IT Consul~ Dublin, ~ 2011~ 0001~ &quot;1989~
+## 6 &quot;ATVI~ Activis~ repor~ Communic~ Interacti~ Santa Mo~ 2015~ 0000~ &quot;2008~</code></pre>
+<p>We have successfully downloaded the data and now we need to do some cleaning.</p>
+<pre class="r"><code># Change the column names
+
+colnames(raw_data) &lt;- c(&#39;symbol&#39;, &#39;name&#39;, &#39;sec_report&#39;, &#39;GICS_Sector&#39;, &#39;GICS_SubIndustry&#39;, &#39;headquarters&#39;, &#39;date_first_added&#39;, &#39;CIK&#39;, &#39;year_founded&#39;)
+
+head(raw_data)</code></pre>
+<pre><code>## # A tibble: 6 x 9
+##   symbol name  sec_report GICS_Sector GICS_SubIndustry headquarters
+##   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;       
+## 1 &quot;MMM\~ 3M C~ reports    Industrials Industrial Cong~ St. Paul, M~
+## 2 &quot;ABT\~ Abbo~ reports    Health Care Health Care Equ~ North Chica~
+## 3 &quot;ABBV~ AbbV~ reports    Health Care Pharmaceuticals  North Chica~
+## 4 &quot;ABMD~ ABIO~ reports    Health Care Health Care Equ~ Danvers, Ma~
+## 5 &quot;ACN\~ Acce~ reports    Informatio~ IT Consulting &amp;~ Dublin, Ire~
+## 6 &quot;ATVI~ Acti~ reports    Communicat~ Interactive Hom~ Santa Monic~
+## # ... with 3 more variables: date_first_added &lt;chr&gt;, CIK &lt;chr&gt;,
+## #   year_founded &lt;chr&gt;</code></pre>
+<p>Next we will remove the <code>\n</code> new line from the ticker and the year founded columns and delete the sec_report column.</p>
+<pre class="r"><code>raw_data &lt;- raw_data %&gt;%
+  select(-sec_report) %&gt;%
+  mutate(symbol = str_remove(.$symbol, &#39;\n&#39;)) %&gt;%
+  mutate(year_founded = str_remove(.$year_founded, &#39;\n&#39;))</code></pre>
+<p>Finally lets convert the date first added and year founded to correct date format.</p>
+<pre class="r"><code># Load the lubridate package
+# For date formatting
+
+library(lubridate)
+
+raw_data &lt;- raw_data %&gt;%
+  mutate(date_first_added = ymd(date_first_added))
+
+# Since we are given just the year for
+# the founding, we will assume 
+# Founding day/month as 1st Jan
+
+raw_data &lt;- raw_data %&gt;%
+  mutate(year_founded = str_sub(.$year_founded,start = 1,end = 4)) %&gt;%
+  mutate(year_founded = make_date(year = year_founded,month = 1,day = 1))
+
+# Saving it into a new table
+
+sp_constituents &lt;- raw_data
+
+sp_constituents</code></pre>
+<pre><code>## # A tibble: 505 x 8
+##    symbol name  GICS_Sector GICS_SubIndustry headquarters date_first_added
+##    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;        &lt;date&gt;          
+##  1 MMM    3M C~ Industrials Industrial Cong~ St. Paul, M~ NA              
+##  2 ABT    Abbo~ Health Care Health Care Equ~ North Chica~ 1964-03-31      
+##  3 ABBV   AbbV~ Health Care Pharmaceuticals  North Chica~ 2012-12-31      
+##  4 ABMD   ABIO~ Health Care Health Care Equ~ Danvers, Ma~ 2018-05-31      
+##  5 ACN    Acce~ Informatio~ IT Consulting &amp;~ Dublin, Ire~ 2011-07-06      
+##  6 ATVI   Acti~ Communicat~ Interactive Hom~ Santa Monic~ 2015-08-31      
+##  7 ADBE   Adob~ Informatio~ Application Sof~ San Jose, C~ 1997-05-05      
+##  8 AMD    Adva~ Informatio~ Semiconductors   Santa Clara~ 2017-03-20      
+##  9 AAP    Adva~ Consumer D~ Automotive Reta~ Raleigh, No~ 2015-07-09      
+## 10 AES    AES ~ Utilities   Independent Pow~ Arlington, ~ 1998-10-02      
+## # ... with 495 more rows, and 2 more variables: CIK &lt;chr&gt;,
+## #   year_founded &lt;date&gt;</code></pre>
+<pre class="r"><code># Use the below code to save this into a csv file
+# We have commented the code so that you dont
+# download the data if you dont want it.
+
+# sp_constituents %&gt;%
+#   write.csv(&#39;SP500_tickers.csv&#39;, row.names = FALSE)</code></pre>
+<p>Now lets plot the number of constituents in each sector.</p>
+<pre class="r"><code># Load package for themes
+
+library(ggthemes)
+
+sp_constituents %&gt;%
+  mutate(GICS_Sector = str_remove(.$GICS_Sector,&#39;\n&#39;)) %&gt;%
+  mutate(GICS_Sector = as_factor(GICS_Sector)) %&gt;%
+  ggplot(aes(x = GICS_Sector)) +
+  geom_histogram(stat = &#39;count&#39;) +
+  theme_economist() +
+  theme(axis.title.x = element_text(face=&quot;bold&quot;, size=10),
+           axis.text.x  = element_text(angle=90, vjust=0.5, size=8),
+        axis.title.y = element_text(face=&quot;bold&quot;, size=10)) +
+  labs(x = &quot;Sectors&quot;, y = &quot;Number of Constituents&quot;,
+       title = &quot;Number of Constituents in each sector&quot;)</code></pre>
+<p><img src="/post/2020-01-03-Web-Scraping-SP500-constituents_files/figure-html/plot-1.png" width="672" /></p>
+<p>From the above chart we can quickly learn that Information Technology and Communication Services together dominate todays markets. Energy sector on the other hand has fewer constituents than Real Estate sector.</p>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2019-07-01-analyze-ff-factor-python/">Factor Based Analysis in Python →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>
