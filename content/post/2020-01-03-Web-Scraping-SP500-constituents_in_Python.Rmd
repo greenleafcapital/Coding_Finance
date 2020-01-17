@@ -73,10 +73,12 @@ We have successfully downloaded the data and now lets plot it.
 
 We will plot the number of constituents in each sector.
 
-```{python, fig.width = 7, fig.height = 7}
+```{python, fig.out='1000in', fig.align='center', fig.width=10, fig.height=15}
 
-sectors = raw_df.groupby('GICS Sector').count().iloc[:,0].sort_values().plot(kind='bar')
+sectors = raw_df.groupby('GICS Sector').count().iloc[:,0].sort_values()
+sectors.plot(kind='bar')
 plt.ylabel('Number of Constituents')
+plt.xlabel('Sectors', fontsize=2)
 plt.title('Sector Constituents in S&P 500 as of 2019')
 plt.show()
 

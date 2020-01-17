@@ -56,11 +56,13 @@ print(raw_df.head(10))</code></pre>
 ## [10 rows x 14 columns]</code></pre>
 <p>We have successfully downloaded the data and now lets plot it.</p>
 <p>We will plot the number of constituents in each sector.</p>
-<pre class="python"><code>sectors = raw_df.groupby(&#39;GICS Sector&#39;).count().iloc[:,0].sort_values().plot(kind=&#39;bar&#39;)
+<pre class="python"><code>sectors = raw_df.groupby(&#39;GICS Sector&#39;).count().iloc[:,0].sort_values()
+sectors.plot(kind=&#39;bar&#39;)
 plt.ylabel(&#39;Number of Constituents&#39;)
+plt.xlabel(&#39;Sectors&#39;, fontsize=2)
 plt.title(&#39;Sector Constituents in S&amp;P 500 as of 2019&#39;)
 plt.show()</code></pre>
-<p><img src="/post/2020-01-03-Web-Scraping-SP500-constituents_in_Python_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<p><img src="/post/2020-01-03-Web-Scraping-SP500-constituents_in_Python_files/figure-html/unnamed-chunk-3-1.png" width="960" style="display: block; margin: auto;" />
 <br>
 <br>
 <br></p>
