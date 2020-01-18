@@ -1,0 +1,405 @@
+---
+title: "Scraping dataroma.com"
+author: "DD"
+date: "2020-01-06"
+description: "Looking at Warren Buffett's portfolio"
+output: html_document
+---
+
+
+
+<p>An import task for many investors is to keep up with what other prominent investors are buying or selling. Such information is not very easily available. One needs to check the 13F filings and parse the data out. Fortunately, there are several websites that display such data in a nice tabular format.</p>
+<p>One such website is <code>https://www.dataroma.com</code>.</p>
+<p>This website lists the updated portfolio of many prominent investors. In this post we will try to get the data for Warren Buffett’s portfolio.</p>
+<div id="get-data-for-all-investors" class="section level3">
+<h3>Get data for all investors</h3>
+<p>Lets start.</p>
+<p>First we will load the libraries.</p>
+<pre class="r"><code>library(rvest)
+library(tidyverse)
+library(lubridate)</code></pre>
+<p>Next we will get the webpage we are interested in.</p>
+<pre class="r"><code>url &lt;- &quot;https://www.dataroma.com/m/home.php&quot;
+# Read the html page
+url &lt;- read_html(url)</code></pre>
+<p>We will check to see if the webpage was correctly downloaded.</p>
+<pre class="r"><code>print(url)</code></pre>
+<pre><code>## {xml_document}
+## &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset= ...
+## [2] &lt;body&gt;\n&lt;div id=&quot;mb&quot;&gt;\n&lt;div id=&quot;logo&quot; unselectable=&quot;on&quot;&gt;\nDATAROMA\n ...</code></pre>
+<p>This page contains a lot of html information that is not useful for us. We are interested in the the names of all the investors and the urls that lead us to their portfolios.</p>
+<p>So lets just parse our the relevant data. We will also print the first few names.</p>
+<pre class="r"><code>investor_names &lt;- url %&gt;%
+  html_nodes(&#39;#port_body li&#39;) %&gt;%
+  html_text()
+
+investor_names[1:15]</code></pre>
+<pre><code>##  [1] &quot;Guy Spier - Aquamarine Capital Updated 17 Jan 2020 &quot;               
+##  [2] &quot;Sam Peters - ClearBridge Value Trust Updated 16 Jan 2020 &quot;         
+##  [3] &quot;Dodge &amp; Cox Updated 15 Jan 2020 &quot;                                  
+##  [4] &quot;Richard Pzena - Hancock Classic Value Updated 15 Jan 2020 &quot;        
+##  [5] &quot;Mairs &amp; Power - Mairs &amp; Power Growth Updated 15 Jan 2020 &quot;         
+##  [6] &quot;Steven Romick - FPA Crescent Fund Updated 13 Jan 2020 &quot;            
+##  [7] &quot;FPA - Capital Fund Updated 13 Jan 2020 &quot;                           
+##  [8] &quot;Mark Hillman - Hillman Fund Updated 10 Jan 2020 &quot;                  
+##  [9] &quot;John Rogers - Ariel Appreciation Updated 08 Jan 2020 &quot;             
+## [10] &quot;Charles Bobrinskoy - Ariel Focus Updated 08 Jan 2020 &quot;             
+## [11] &quot;Robert Zagunis - Jensen Updated 05 Jan 2020 &quot;                      
+## [12] &quot;Charlie Munger - Daily Journal Corp. Updated 03 Jan 2020 &quot;         
+## [13] &quot;Jean-Marie Eveillard - First Eagle U.S. Value Updated 31 Dec 2019 &quot;
+## [14] &quot;Ruane, Cunniff &amp; Goldfarb - Sequoia Updated 17 Dec 2019 &quot;          
+## [15] &quot;Meridian Funds - Meridian Contrarian Fund Updated 17 Dec 2019 &quot;</code></pre>
+<p>As expected we have the investor/fund names. Next lets get the relevant url for all the investors.</p>
+<pre class="r"><code>investor_url &lt;- url %&gt;%
+  html_nodes(&#39;#port_body a&#39;) %&gt;%
+  html_attr(&quot;href&quot;)
+
+investor_url[1:15]</code></pre>
+<pre><code>##  [1] &quot;/m/holdings.php?m=aq&quot;    &quot;/m/holdings.php?m=lmvtx&quot;
+##  [3] &quot;/m/holdings.php?m=DODGX&quot; &quot;/m/holdings.php?m=pzfvx&quot;
+##  [5] &quot;/m/holdings.php?m=MPGFX&quot; &quot;/m/holdings.php?m=FPACX&quot;
+##  [7] &quot;/m/holdings.php?m=FPPTX&quot; &quot;/m/holdings.php?m=hcmax&quot;
+##  [9] &quot;/m/holdings.php?m=CAAPX&quot; &quot;/m/holdings.php?m=ARFFX&quot;
+## [11] &quot;/m/holdings.php?m=jensx&quot; &quot;/m/holdings.php?m=DJCO&quot; 
+## [13] &quot;/m/holdings.php?m=FEVAX&quot; &quot;/m/holdings.php?m=SEQUX&quot;
+## [15] &quot;/m/holdings.php?m=MVALX&quot;</code></pre>
+<p>This looks good. We now have both the Manager names and the url. Lets combine them into a nice table/dataframe.</p>
+<pre class="r"><code>investor_df &lt;- tibble(investor = investor_names,
+                      url = investor_url)
+head(investor_df)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   investor                                             url                
+##   &lt;chr&gt;                                                &lt;chr&gt;              
+## 1 &quot;Guy Spier - Aquamarine Capital Updated 17 Jan 2020~ /m/holdings.php?m=~
+## 2 &quot;Sam Peters - ClearBridge Value Trust Updated 16 Ja~ /m/holdings.php?m=~
+## 3 &quot;Dodge &amp; Cox Updated 15 Jan 2020 &quot;                   /m/holdings.php?m=~
+## 4 &quot;Richard Pzena - Hancock Classic Value Updated 15 J~ /m/holdings.php?m=~
+## 5 &quot;Mairs &amp; Power - Mairs &amp; Power Growth Updated 15 Ja~ /m/holdings.php?m=~
+## 6 &quot;Steven Romick - FPA Crescent Fund Updated 13 Jan 2~ /m/holdings.php?m=~</code></pre>
+<p>Next lets separate the investor column into two. We want to remove the <code>Updated xxxx</code> and form the investor name and move to a separate column. So we will end with two columns with the name and the date updated.</p>
+<p>We will also add the <code>https://www.dataroma.com</code> to the url column.</p>
+<pre class="r"><code>investor_df &lt;- investor_df %&gt;%
+  separate(investor,into = c(&#39;investor&#39;, &#39;update_date&#39;), sep = &#39;Updated&#39;) %&gt;%
+  mutate_all(.funs = str_trim) %&gt;%
+  mutate(update_date = dmy(update_date)) %&gt;%
+  mutate(url = str_c(&#39;https://www.dataroma.com&#39;, url))
+
+head(investor_df)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   investor                    update_date url                             
+##   &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;                           
+## 1 Guy Spier - Aquamarine Cap~ 2020-01-17  https://www.dataroma.com/m/hold~
+## 2 Sam Peters - ClearBridge V~ 2020-01-16  https://www.dataroma.com/m/hold~
+## 3 Dodge &amp; Cox                 2020-01-15  https://www.dataroma.com/m/hold~
+## 4 Richard Pzena - Hancock Cl~ 2020-01-15  https://www.dataroma.com/m/hold~
+## 5 Mairs &amp; Power - Mairs &amp; Po~ 2020-01-15  https://www.dataroma.com/m/hold~
+## 6 Steven Romick - FPA Cresce~ 2020-01-13  https://www.dataroma.com/m/hold~</code></pre>
+<p>It looks like our dataframe is complete. Now on to the next task to get Warren Buffett’s portfolio. We need to first select the link to Warren Buffetts’s portfolio. So lets see how we can do that.</p>
+</div>
+<div id="getting-data-for-a-specific-investor" class="section level3">
+<h3>Getting data for a specific investor</h3>
+<pre class="r"><code>investor_df %&gt;%
+  filter(str_detect(investor,pattern = &#39;Warren&#39;))</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##   investor                    update_date url                             
+##   &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;                           
+## 1 Warren Buffett - Berkshire~ 2019-11-14  https://www.dataroma.com/m/hold~</code></pre>
+<p>We now have the row with Warren Buffett’s information.</p>
+<p>Next just select the url and get his portfolio information.</p>
+<pre class="r"><code>warren_url &lt;- investor_df %&gt;%
+  filter(str_detect(investor,pattern = &#39;Warren&#39;)) %&gt;%
+  select(url) %&gt;%
+  .[[1]]
+
+print(warren_url)</code></pre>
+<pre><code>## [1] &quot;https://www.dataroma.com/m/holdings.php?m=BRK&quot;</code></pre>
+<p>Great, we have the correct url for the portfolio. Next we will repeat the above scraping process to get his portfolio. We will first store the text in a place holder variable called <code>text</code>. Next we will convert that into a dataframe.</p>
+<pre class="r"><code>warren_url &lt;- read_html(warren_url)
+
+# First store all the data in the &#39;text&#39; variable
+
+text &lt;- warren_url %&gt;%
+  html_nodes(&#39;#grid td&#39;) %&gt;%
+  html_text()</code></pre>
+<p>Now lets see the first few values of the <code>text</code> variable and also the length of the variable.</p>
+<pre class="r"><code>text[1:30]</code></pre>
+<pre><code>##  [1] &quot;History&quot;                     &quot;Stock&quot;                      
+##  [3] &quot;% of portfolio&quot;              &quot;Shares&quot;                     
+##  [5] &quot;Recent activity&quot;             &quot;Reported Price*&quot;            
+##  [7] &quot;Value&quot;                       &quot;=&quot;                          
+##  [9] &quot;AAPL - Apple Inc.&quot;           &quot;25.96&quot;                      
+## [11] &quot;248,838,679&quot;                 &quot;Reduce 0.30%&quot;               
+## [13] &quot;$223.97&quot;                     &quot;$55,732,400,000&quot;            
+## [15] &quot;=&quot;                           &quot;BAC - Bank of America Corp.&quot;
+## [17] &quot;12.60&quot;                       &quot;927,248,600&quot;                
+## [19] &quot; &quot;                           &quot;$29.17&quot;                     
+## [21] &quot;$27,047,843,000&quot;             &quot;=&quot;                          
+## [23] &quot;KO - Coca Cola Co.&quot;          &quot;10.14&quot;                      
+## [25] &quot;400,000,000&quot;                 &quot; &quot;                          
+## [27] &quot;$54.44&quot;                      &quot;$21,776,000,000&quot;            
+## [29] &quot;=&quot;                           &quot;WFC - Wells Fargo&quot;</code></pre>
+<pre class="r"><code>length(text)</code></pre>
+<pre><code>## [1] 343</code></pre>
+<p>We can see that the length of the <code>text</code> variable is 343 and we have the data that we were looking for. Next we will convert this 343 length vector into a table of 7 columns and <code>343/7</code> or 49 rows</p>
+<pre class="r"><code># load the timetk library
+library(timetk)
+# First create a matrix
+
+warren_mat &lt;- matrix(text, ncol = 7, byrow = TRUE)
+
+warren_df &lt;- as.data.frame(warren_mat, stringsAsFactors = FALSE)
+
+warren_df &lt;- tk_tbl(warren_df, silent = TRUE)
+
+warren_df</code></pre>
+<pre><code>## # A tibble: 49 x 7
+##    V1     V2              V3        V4       V5        V6        V7       
+##    &lt;chr&gt;  &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    
+##  1 Histo~ Stock           % of por~ Shares   Recent a~ Reported~ Value    
+##  2 =      AAPL - Apple I~ 25.96     248,838~ Reduce 0~ $223.97   $55,732,~
+##  3 =      BAC - Bank of ~ 12.60     927,248~ &quot; &quot;       $29.17    $27,047,~
+##  4 =      KO - Coca Cola~ 10.14     400,000~ &quot; &quot;       $54.44    $21,776,~
+##  5 =      WFC - Wells Fa~ 8.89      378,369~ Reduce 7~ $50.44    $19,084,~
+##  6 =      AXP - American~ 8.35      151,610~ &quot; &quot;       $118.28   $17,932,~
+##  7 =      KHC - Kraft He~ 4.24      325,634~ &quot; &quot;       $27.94    $9,096,6~
+##  8 =      USB - U.S. Ban~ 3.41      132,459~ &quot; &quot;       $55.34    $7,330,3~
+##  9 =      JPM - JPMorgan~ 3.26      59,514,~ &quot; &quot;       $117.69   $7,004,3~
+## 10 =      MCO - Moody&#39;s ~ 2.35      24,669,~ &quot; &quot;       $204.83   $5,053,1~
+## # ... with 39 more rows</code></pre>
+<p>We have successfully downloaded the data. Next we need to do some cleanup.</p>
+<p>We will do the following.</p>
+<ul>
+<li>Use the first row as column names</li>
+<li>Delete the first row</li>
+<li>Delete the unnecessary columns</li>
+<li>Change the column names</li>
+<li>Separate the <code>stock</code> column into <code>symbol</code> and <code>name</code></li>
+<li>Convert the numbers into percent and remove the <code>$</code> and <code>,</code> sign from columns</li>
+</ul>
+<p>So lets do it.</p>
+<pre class="r"><code># Change column names
+colnames(warren_df) &lt;- warren_df[1,]
+
+# Delete the first row
+warren_df &lt;- warren_df[-1,]
+
+warren_df &lt;- warren_df %&gt;%
+  select(-c(History,`Recent activity`)) %&gt;%
+  `colnames&lt;-`(c(&#39;stock&#39;,&#39;portfolio_weight&#39;, &#39;shares&#39;,&#39;cost_price&#39;, &#39;value&#39;)) %&gt;%
+  separate(stock, into = c(&#39;symbol&#39;, &#39;name&#39;), sep = &#39;-&#39;) %&gt;%
+  mutate_all(.funs = str_trim) %&gt;%
+  mutate_at(.vars = c(&#39;shares&#39;,&#39;cost_price&#39;,&#39;value&#39;), .funs = parse_number) %&gt;%
+  mutate(portfolio_weight = parse_number(portfolio_weight)/100)
+
+warren_df</code></pre>
+<pre><code>## # A tibble: 48 x 6
+##    symbol name              portfolio_weight   shares cost_price     value
+##    &lt;chr&gt;  &lt;chr&gt;                        &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+##  1 AAPL   Apple Inc.                  0.260    2.49e8      224.    5.57e10
+##  2 BAC    Bank of America ~           0.126    9.27e8       29.2   2.70e10
+##  3 KO     Coca Cola Co.               0.101    4.00e8       54.4   2.18e10
+##  4 WFC    Wells Fargo                 0.0889   3.78e8       50.4   1.91e10
+##  5 AXP    American Express            0.0835   1.52e8      118.    1.79e10
+##  6 KHC    Kraft Heinz Co.             0.0424   3.26e8       27.9   9.10e 9
+##  7 USB    U.S. Bancorp                0.0341   1.32e8       55.3   7.33e 9
+##  8 JPM    JPMorgan Chase &amp;~           0.0326   5.95e7      118.    7.00e 9
+##  9 MCO    Moody&#39;s Corp.               0.0235   2.47e7      205.    5.05e 9
+## 10 DAL    Delta Air Lines ~           0.019    7.09e7       57.6   4.08e 9
+## # ... with 38 more rows</code></pre>
+<p>We now have the table in the desired form. We can now use it for our analysis.</p>
+</div>
+<div id="what-about-other-investors" class="section level3">
+<h3>What about other investors?</h3>
+<p>But a thought may pop in your head, that this is a lot of work and what if we need to download the data for another investor. Do we repeat this process again?</p>
+<p>No. We do not need to repeat this process again, if we build a function to do this for us automatically.</p>
+<p>So lets do that. We will build two functions. First gets the Names and urls of all the investors. The second gets the portfolio of the investor we are interested in.</p>
+<p>So lets build our first function</p>
+<pre class="r"><code>get_all_investors &lt;- function() {
+  
+  library(rvest)
+  library(lubridate)
+  library(tidyverse)
+  
+  url &lt;- &quot;https://www.dataroma.com/m/home.php&quot;
+  # Read the html page
+  url &lt;- read_html(url)
+  
+  # Get the investor names
+  investor_names &lt;- url %&gt;%
+    html_nodes(&#39;#port_body li&#39;) %&gt;%
+    html_text()
+  
+  # Get the investor url
+  
+  investor_url &lt;- url %&gt;%
+    html_nodes(&#39;#port_body a&#39;) %&gt;%
+    html_attr(&quot;href&quot;)
+  
+  # Build the dataframe
+  
+  investor_df &lt;- tibble(investor = investor_names,
+                        url = investor_url)
+  
+  
+  # Cleanup the table
+  
+  investor_df &lt;- investor_df %&gt;%
+    separate(investor,into = c(&#39;investor&#39;, &#39;update_date&#39;), sep = &#39;Updated&#39;) %&gt;%
+    mutate_all(.funs = str_trim) %&gt;%
+    mutate(update_date = dmy(update_date)) %&gt;%
+    mutate(url = str_c(&#39;https://www.dataroma.com&#39;, url))
+  
+  # Return the values
+  return(investor_df)
+}</code></pre>
+<p>Lets test it.</p>
+<pre class="r"><code>all_investors &lt;- get_all_investors()
+
+all_investors</code></pre>
+<pre><code>## # A tibble: 64 x 3
+##    investor                    update_date url                            
+##    &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;                          
+##  1 Guy Spier - Aquamarine Cap~ 2020-01-17  https://www.dataroma.com/m/hol~
+##  2 Sam Peters - ClearBridge V~ 2020-01-16  https://www.dataroma.com/m/hol~
+##  3 Dodge &amp; Cox                 2020-01-15  https://www.dataroma.com/m/hol~
+##  4 Richard Pzena - Hancock Cl~ 2020-01-15  https://www.dataroma.com/m/hol~
+##  5 Mairs &amp; Power - Mairs &amp; Po~ 2020-01-15  https://www.dataroma.com/m/hol~
+##  6 Steven Romick - FPA Cresce~ 2020-01-13  https://www.dataroma.com/m/hol~
+##  7 FPA - Capital Fund          2020-01-13  https://www.dataroma.com/m/hol~
+##  8 Mark Hillman - Hillman Fund 2020-01-10  https://www.dataroma.com/m/hol~
+##  9 John Rogers - Ariel Apprec~ 2020-01-08  https://www.dataroma.com/m/hol~
+## 10 Charles Bobrinskoy - Ariel~ 2020-01-08  https://www.dataroma.com/m/hol~
+## # ... with 54 more rows</code></pre>
+<p>Great that function works. Next we build our portfolio function.</p>
+<pre class="r"><code>get_investor_portfolio &lt;- function(name = &#39;Warren&#39;) {
+  
+  # First get all the investors
+  all_investors &lt;- get_all_investors()
+  
+  # Sometime users can type a lower case name
+  name = str_to_lower(name)
+  name = str_to_title(name)
+  
+  # This is to catch any errors
+  tryCatch(
+    
+    expr = {
+      
+      # Get specific url
+      url &lt;- all_investors %&gt;%
+        filter(str_detect(investor,pattern = name)) %&gt;%
+        select(url) %&gt;%
+        .[[1]]
+      
+      # Read the html
+      
+      url &lt;- read_html(url)
+    # get the data into &#39;text&#39; variable  
+      
+      text &lt;- url %&gt;%
+        html_nodes(&#39;#grid td&#39;) %&gt;%
+        html_text()
+      
+  # Load timetk for table conversion
+  library(timetk)
+      
+  # First create a matrix
+  investor_mat &lt;- matrix(text, ncol = 7, byrow = TRUE)
+  
+  # Convert to data frame
+  investor_df &lt;- as.data.frame(investor_mat, stringsAsFactors = FALSE)
+  
+  # Convert to tibble
+  investor_df &lt;- tk_tbl(investor_df, silent = TRUE)
+  
+  # Change column names
+  colnames(investor_df) &lt;- investor_df[1,]
+  
+  # Delete the first row
+  investor_df &lt;- investor_df[-1,]
+  
+  # Final Table
+  investor_df &lt;- investor_df %&gt;%
+    select(-c(History,`Recent activity`)) %&gt;%
+    `colnames&lt;-`(c(&#39;stock&#39;,&#39;portfolio_weight&#39;, &#39;shares&#39;,&#39;cost_price&#39;, &#39;value&#39;)) %&gt;%
+    separate(stock, into = c(&#39;symbol&#39;, &#39;name&#39;), sep = &#39;-&#39;) %&gt;%
+    mutate_all(.funs = str_trim) %&gt;%
+    mutate_at(.vars = c(&#39;shares&#39;,&#39;cost_price&#39;,&#39;value&#39;), .funs = parse_number) %&gt;%
+    mutate(portfolio_weight = parse_number(portfolio_weight)/100)
+  
+  # Return the table
+  return(investor_df)
+  
+    },
+  
+  # Igonore this
+  # This is execuated when we get an error
+  error = function(e) {
+    
+    message(&#39;This investor does not exist. Make sure this investor is listed on the www.dataroma.com website&#39;)
+    print(e)
+  }
+  
+  )
+  
+}</code></pre>
+<p>That is a big function, but it will help us get any manager’s portfolio that is listed on the <code>www.dataroma.com</code>. So lets give it a try.</p>
+<p>Lets try an get Bill Ackman’s portfolio</p>
+<pre class="r"><code>ackman &lt;- get_investor_portfolio(&quot;Ackman&quot;)
+
+ackman</code></pre>
+<pre><code>## # A tibble: 8 x 6
+##   symbol name                 portfolio_weight  shares cost_price    value
+##   &lt;chr&gt;  &lt;chr&gt;                           &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+## 1 CMG    Chipotle Mexican Gr~           0.223   1.72e6      840.    1.45e9
+## 2 QSR    Restaurant Brands I~           0.165   1.51e7       71.1   1.07e9
+## 3 HLT    Hilton Worldwide Ho~           0.152   1.06e7       93.1   9.83e8
+## 4 LOW    Lowe&#39;s Cos.                    0.146   8.61e6      110.    9.47e8
+## 5 BRK.B  Berkshire Hathaway ~           0.129   4.02e6      208.    8.35e8
+## 6 SBUX   Starbucks Corp.                0.127   9.31e6       88.4   8.24e8
+## 7 A      Agilent Technologies           0.0344  2.92e6       76.6   2.23e8
+## 8 HHC    Howard Hughes Corp.            0.0239  1.19e6      130.    1.55e8</code></pre>
+<p>And now we can plot Ackman’s Portfolio.</p>
+<pre class="r"><code># For themes
+library(ggthemes)
+
+ackman %&gt;%
+  ggplot(aes(x = fct_reorder(factor(symbol),portfolio_weight), y = portfolio_weight)) +
+  geom_bar(stat = &#39;identity&#39;) +
+  labs(x = &#39;Symbol&#39;,
+       y = &#39;Portfolio Weight&#39;, title = &#39;Bill Ackmans Portfolio Holdings&#39;) +
+  theme_fivethirtyeight() +
+  scale_y_continuous(labels = scales::percent)</code></pre>
+<p><img src="/post/2020-01-06-Web-Scraping-dataroma_R_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Lets try one more investor - Daniel Loeb.</p>
+<pre class="r"><code>loeb &lt;- get_investor_portfolio(&#39;Loeb&#39;)
+
+loeb</code></pre>
+<pre><code>## # A tibble: 39 x 6
+##    symbol name                 portfolio_weight  shares cost_price   value
+##    &lt;chr&gt;  &lt;chr&gt;                           &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+##  1 BAX    Baxter Internationa~           0.175   1.68e7       87.5  1.47e9
+##  2 UTX    United Technologies            0.0974  6.00e6      137.   8.19e8
+##  3 CPB    Campbell Soup                  0.0948  1.70e7       46.9  7.98e8
+##  4 AGN    Allergan Plc                   0.072   3.60e6      168.   6.06e8
+##  5 DHR    Danaher Corp.                  0.0637  3.71e6      144.   5.36e8
+##  6 BID    Sotheby&#39;s                      0.0451  6.66e6       57.0  3.80e8
+##  7 CRM    Salesforce.com                 0.0441  2.50e6      148.   3.71e8
+##  8 FIS    Fidelity National I~           0.0394  2.50e6      133.   3.32e8
+##  9 BURL   Burlington Stores I~           0.0356  1.50e6      200.   3.00e8
+## 10 IQV    IQVIA Holdings Inc.            0.0355  2.00e6      149.   2.99e8
+## # ... with 29 more rows</code></pre>
+<p>Compared to Bill Ackman, Loeb’s portfolio contains more positions. We will only look at positions above 2% weight.</p>
+<pre class="r"><code>loeb %&gt;%
+  filter(portfolio_weight &gt; 0.02) %&gt;%
+  ggplot(aes(x = fct_reorder(factor(symbol),portfolio_weight), y = portfolio_weight)) +
+  geom_bar(stat = &#39;identity&#39;) +
+  labs(x = &#39;Symbol&#39;,
+       y = &#39;Portfolio Weight&#39;, title = &#39;Daniel Loeb\&#39;s Portfolio Holdings&#39;) +
+  theme_fivethirtyeight() +
+  scale_y_continuous(labels = scales::percent,
+                     breaks = seq(0,0.25,0.03))</code></pre>
+<p><img src="/post/2020-01-06-Web-Scraping-dataroma_R_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>That’s it. We have successfully automated our function to get portfolio data from the internet. We use this data to plot a simple portfolio position chart.</p>
+</div>

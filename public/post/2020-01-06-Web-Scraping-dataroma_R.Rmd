@@ -1,0 +1,404 @@
+---
+title: "Scraping dataroma.com"
+author: "DD"
+date: "2020-01-06"
+description: "Looking at Warren Buffett's portfolio"
+output: html_document
+---
+
+An import task for many investors is to keep up with what other prominent investors are buying or selling. Such information is not very easily available. One needs to check the 13F filings and parse the data out. Fortunately, there are several websites that display such data in a nice tabular format.
+
+One such website is `https://www.dataroma.com`.
+
+This website lists the updated portfolio of many prominent investors. In this post we will try to get the data for Warren Buffett's portfolio.
+
+### Get data for all investors
+
+Lets start.
+
+First we will load the libraries.
+
+```{r message=FALSE,warning=FALSE}
+
+library(rvest)
+library(tidyverse)
+library(lubridate)
+
+```
+
+Next we will get the webpage we are interested in.
+
+```{r message=FALSE,warning=FALSE}
+
+url <- "https://www.dataroma.com/m/home.php"
+# Read the html page
+url <- read_html(url)
+
+```
+
+We will check to see if the webpage was correctly downloaded.
+
+```{r}
+print(url)
+```
+
+This page contains a lot of html information that is not useful for us. We are interested in the the names of all the investors and the urls that lead us to their portfolios.
+
+So lets just parse our the relevant data. We will also print the first few names.
+
+```{r}
+
+investor_names <- url %>%
+  html_nodes('#port_body li') %>%
+  html_text()
+
+investor_names[1:15]
+
+```
+
+As expected we have the investor/fund names. Next lets get the relevant url for all the investors.
+
+```{r}
+
+investor_url <- url %>%
+  html_nodes('#port_body a') %>%
+  html_attr("href")
+
+investor_url[1:15]
+
+```
+
+This looks good. We now have both the Manager names and the url. Lets combine them into a nice table/dataframe.
+
+```{r}
+
+investor_df <- tibble(investor = investor_names,
+                      url = investor_url)
+head(investor_df)
+
+```
+
+Next lets separate the investor column into two. We want to remove the `Updated xxxx` and form the investor name and move to a separate column. So we will end with two columns with the name and the date updated.
+
+We will also add the `https://www.dataroma.com` to the url column.
+
+```{r}
+
+investor_df <- investor_df %>%
+  separate(investor,into = c('investor', 'update_date'), sep = 'Updated') %>%
+  mutate_all(.funs = str_trim) %>%
+  mutate(update_date = dmy(update_date)) %>%
+  mutate(url = str_c('https://www.dataroma.com', url))
+
+head(investor_df)
+
+```
+
+It looks like our dataframe is complete. Now on to the next task to get Warren Buffett's portfolio. We need to first select the link to Warren Buffetts's portfolio. So lets see how we can do that.
+
+### Getting data for a specific investor
+
+```{r}
+
+investor_df %>%
+  filter(str_detect(investor,pattern = 'Warren'))
+
+```
+We now have the row with Warren Buffett's information.
+
+Next just select the url and get his portfolio information.
+
+```{r}
+
+warren_url <- investor_df %>%
+  filter(str_detect(investor,pattern = 'Warren')) %>%
+  select(url) %>%
+  .[[1]]
+
+print(warren_url)
+
+```
+
+Great, we have the correct url for the portfolio. Next we will repeat the above scraping process to get his portfolio. We will first store the text in a place holder variable called `text`. Next we will convert that into a dataframe.
+
+```{r}
+
+warren_url <- read_html(warren_url)
+
+# First store all the data in the 'text' variable
+
+text <- warren_url %>%
+  html_nodes('#grid td') %>%
+  html_text()
+
+```
+
+Now lets see the first few values of the `text` variable and also the length of the variable.
+
+```{r}
+
+text[1:30]
+
+```
+
+```{r}
+
+length(text)
+
+```
+
+We can see that the length of the `text` variable is 343 and we have the data that we were looking for. Next we will convert this 343 length vector into a table of 7 columns and `343/7` or 49 rows
+
+```{r}
+# load the timetk library
+library(timetk)
+# First create a matrix
+
+warren_mat <- matrix(text, ncol = 7, byrow = TRUE)
+
+warren_df <- as.data.frame(warren_mat, stringsAsFactors = FALSE)
+
+warren_df <- tk_tbl(warren_df, silent = TRUE)
+
+warren_df
+
+```
+
+We have successfully downloaded the data. Next we need to do some cleanup.
+
+We will do the following.
+
+- Use the first row as column names
+- Delete the first row
+- Delete the unnecessary columns 
+- Change the column names
+- Separate the `stock` column into `symbol` and `name`
+- Convert the numbers into percent and remove the `$` and `,` sign from columns
+
+So lets do it.
+
+```{r}
+# Change column names
+colnames(warren_df) <- warren_df[1,]
+
+# Delete the first row
+warren_df <- warren_df[-1,]
+
+warren_df <- warren_df %>%
+  select(-c(History,`Recent activity`)) %>%
+  `colnames<-`(c('stock','portfolio_weight', 'shares','cost_price', 'value')) %>%
+  separate(stock, into = c('symbol', 'name'), sep = '-') %>%
+  mutate_all(.funs = str_trim) %>%
+  mutate_at(.vars = c('shares','cost_price','value'), .funs = parse_number) %>%
+  mutate(portfolio_weight = parse_number(portfolio_weight)/100)
+
+warren_df
+
+
+```
+
+We now have the table in the desired form. We can now use it for our analysis. 
+
+### What about other investors?
+
+But a thought may pop in your head, that this is a lot of work and what if we need to download the data for another investor. Do we repeat this process again?
+
+No. We do not need to repeat this process again, if we build a function to do this for us automatically.
+
+So lets do that. We will build two functions. First gets the Names and urls of all the investors. The second gets the portfolio of the investor we are interested in.
+
+So lets build our first function
+
+```{r message=FALSE,warning=FALSE}
+
+get_all_investors <- function() {
+  
+  library(rvest)
+  library(lubridate)
+  library(tidyverse)
+  
+  url <- "https://www.dataroma.com/m/home.php"
+  # Read the html page
+  url <- read_html(url)
+  
+  # Get the investor names
+  investor_names <- url %>%
+    html_nodes('#port_body li') %>%
+    html_text()
+  
+  # Get the investor url
+  
+  investor_url <- url %>%
+    html_nodes('#port_body a') %>%
+    html_attr("href")
+  
+  # Build the dataframe
+  
+  investor_df <- tibble(investor = investor_names,
+                        url = investor_url)
+  
+  
+  # Cleanup the table
+  
+  investor_df <- investor_df %>%
+    separate(investor,into = c('investor', 'update_date'), sep = 'Updated') %>%
+    mutate_all(.funs = str_trim) %>%
+    mutate(update_date = dmy(update_date)) %>%
+    mutate(url = str_c('https://www.dataroma.com', url))
+  
+  # Return the values
+  return(investor_df)
+}
+
+
+
+```
+
+Lets test it.
+
+```{r message=FALSE,warning=FALSE}
+
+all_investors <- get_all_investors()
+
+all_investors
+
+```
+
+Great that function works. Next we build our portfolio function.
+
+```{r message=FALSE,warning=FALSE}
+
+get_investor_portfolio <- function(name = 'Warren') {
+  
+  # First get all the investors
+  all_investors <- get_all_investors()
+  
+  # Sometime users can type a lower case name
+  name = str_to_lower(name)
+  name = str_to_title(name)
+  
+  # This is to catch any errors
+  tryCatch(
+    
+    expr = {
+      
+      # Get specific url
+      url <- all_investors %>%
+        filter(str_detect(investor,pattern = name)) %>%
+        select(url) %>%
+        .[[1]]
+      
+      # Read the html
+      
+      url <- read_html(url)
+    # get the data into 'text' variable  
+      
+      text <- url %>%
+        html_nodes('#grid td') %>%
+        html_text()
+      
+  # Load timetk for table conversion
+  library(timetk)
+      
+  # First create a matrix
+  investor_mat <- matrix(text, ncol = 7, byrow = TRUE)
+  
+  # Convert to data frame
+  investor_df <- as.data.frame(investor_mat, stringsAsFactors = FALSE)
+  
+  # Convert to tibble
+  investor_df <- tk_tbl(investor_df, silent = TRUE)
+  
+  # Change column names
+  colnames(investor_df) <- investor_df[1,]
+  
+  # Delete the first row
+  investor_df <- investor_df[-1,]
+  
+  # Final Table
+  investor_df <- investor_df %>%
+    select(-c(History,`Recent activity`)) %>%
+    `colnames<-`(c('stock','portfolio_weight', 'shares','cost_price', 'value')) %>%
+    separate(stock, into = c('symbol', 'name'), sep = '-') %>%
+    mutate_all(.funs = str_trim) %>%
+    mutate_at(.vars = c('shares','cost_price','value'), .funs = parse_number) %>%
+    mutate(portfolio_weight = parse_number(portfolio_weight)/100)
+  
+  # Return the table
+  return(investor_df)
+  
+    },
+  
+  # Igonore this
+  # This is execuated when we get an error
+  error = function(e) {
+    
+    message('This investor does not exist. Make sure this investor is listed on the www.dataroma.com website')
+    print(e)
+  }
+  
+  )
+  
+}
+
+```
+
+That is a big function, but it will help us get any manager's portfolio that is listed on the `www.dataroma.com`. So lets give it a try.
+
+Lets try an get Bill Ackman's portfolio
+
+```{r message=FALSE,warning=FALSE}
+
+ackman <- get_investor_portfolio("Ackman")
+
+ackman
+
+```
+
+And now we can plot Ackman's Portfolio.
+
+```{r}
+
+# For themes
+library(ggthemes)
+
+ackman %>%
+  ggplot(aes(x = fct_reorder(factor(symbol),portfolio_weight), y = portfolio_weight)) +
+  geom_bar(stat = 'identity') +
+  labs(x = 'Symbol',
+       y = 'Portfolio Weight', title = 'Bill Ackmans Portfolio Holdings') +
+  theme_fivethirtyeight() +
+  scale_y_continuous(labels = scales::percent)
+
+```
+
+Lets try one more investor - Daniel Loeb. 
+
+```{r message=FALSE,warning=FALSE}
+
+loeb <- get_investor_portfolio('Loeb')
+
+loeb
+
+```
+
+Compared to Bill Ackman, Loeb's portfolio contains more positions. We will only look at positions above 2% weight.
+
+```{r}
+
+loeb %>%
+  filter(portfolio_weight > 0.02) %>%
+  ggplot(aes(x = fct_reorder(factor(symbol),portfolio_weight), y = portfolio_weight)) +
+  geom_bar(stat = 'identity') +
+  labs(x = 'Symbol',
+       y = 'Portfolio Weight', title = 'Daniel Loeb\'s Portfolio Holdings') +
+  theme_fivethirtyeight() +
+  scale_y_continuous(labels = scales::percent,
+                     breaks = seq(0,0.25,0.03))
+
+```
+
+
+That's it. We have successfully automated our function to get portfolio data from the internet. We use this data to plot a simple portfolio position chart.
+
+
