@@ -1,5 +1,6 @@
 {{ define "main" }}
   <div class="posts">
+    {{ $paginator := .Paginate (where .Data.Pages "Type" "post") }}
     {{ $pages := .Pages }}
     {{ if .IsHome }}{{ $pages = .Site.RegularPages }}{{ end }}
     {{ range (where $pages "Section" "!=" "") }}
@@ -39,5 +40,3 @@
     {{ partial "pagination.html" . }}
   </div>
 {{ end }}
-
-
