@@ -139,8 +139,8 @@ url &lt;- read_html(url)</code></pre>
 <pre class="r"><code>print(url)</code></pre>
 <pre><code>## {xml_document}
 ## &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot;&gt;
-## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset= ...
-## [2] &lt;body&gt;\n&lt;div id=&quot;mb&quot;&gt;\n&lt;div id=&quot;logo&quot; unselectable=&quot;on&quot;&gt;\nDATAROMA\n ...</code></pre>
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8 ...
+## [2] &lt;body&gt;\n&lt;div id=&quot;mb&quot;&gt;\n&lt;div id=&quot;logo&quot; unselectable=&quot;on&quot;&gt;\nDATAROMA\n&lt;/div ...</code></pre>
 <p>This page contains a lot of html information that is not useful for us. We are interested in the the names of all the investors and the urls that lead us to their portfolios.</p>
 <p>So lets just parse our the relevant data. We will also print the first few names.</p>
 <pre class="r"><code>investor_names &lt;- url %&gt;%
@@ -148,48 +148,48 @@ url &lt;- read_html(url)</code></pre>
   html_text()
 
 investor_names[1:15]</code></pre>
-<pre><code>##  [1] &quot;Guy Spier - Aquamarine Capital Updated 17 Jan 2020 &quot;               
-##  [2] &quot;Sam Peters - ClearBridge Value Trust Updated 16 Jan 2020 &quot;         
-##  [3] &quot;Dodge &amp; Cox Updated 15 Jan 2020 &quot;                                  
-##  [4] &quot;Richard Pzena - Hancock Classic Value Updated 15 Jan 2020 &quot;        
-##  [5] &quot;Mairs &amp; Power - Mairs &amp; Power Growth Updated 15 Jan 2020 &quot;         
-##  [6] &quot;Steven Romick - FPA Crescent Fund Updated 13 Jan 2020 &quot;            
-##  [7] &quot;FPA - Capital Fund Updated 13 Jan 2020 &quot;                           
-##  [8] &quot;Mark Hillman - Hillman Fund Updated 10 Jan 2020 &quot;                  
-##  [9] &quot;John Rogers - Ariel Appreciation Updated 08 Jan 2020 &quot;             
-## [10] &quot;Charles Bobrinskoy - Ariel Focus Updated 08 Jan 2020 &quot;             
-## [11] &quot;Robert Zagunis - Jensen Updated 05 Jan 2020 &quot;                      
-## [12] &quot;Charlie Munger - Daily Journal Corp. Updated 03 Jan 2020 &quot;         
-## [13] &quot;Jean-Marie Eveillard - First Eagle U.S. Value Updated 31 Dec 2019 &quot;
-## [14] &quot;Ruane, Cunniff &amp; Goldfarb - Sequoia Updated 17 Dec 2019 &quot;          
-## [15] &quot;Meridian Funds - Meridian Contrarian Fund Updated 17 Dec 2019 &quot;</code></pre>
+<pre><code>##  [1] &quot;Thomas Gayner - Markel Asset Management Updated 07 Feb 2020 &quot;             
+##  [2] &quot;William Von Mueffling - Cantillon Capital Management Updated 07 Feb 2020 &quot;
+##  [3] &quot;Kahn Brothers Advisors - Kahn Brothers Group Updated 27 Jan 2020 &quot;        
+##  [4] &quot;Wallace Weitz - Weitz Value Updated 22 Jan 2020 &quot;                         
+##  [5] &quot;Tweedy Browne Co. - Tweedy Browne Value Updated 21 Jan 2020 &quot;             
+##  [6] &quot;Guy Spier - Aquamarine Capital Updated 17 Jan 2020 &quot;                      
+##  [7] &quot;Sam Peters - ClearBridge Value Trust Updated 16 Jan 2020 &quot;                
+##  [8] &quot;Dodge &amp; Cox Updated 15 Jan 2020 &quot;                                         
+##  [9] &quot;Richard Pzena - Hancock Classic Value Updated 15 Jan 2020 &quot;               
+## [10] &quot;Mairs &amp; Power - Mairs &amp; Power Growth Updated 15 Jan 2020 &quot;                
+## [11] &quot;Steven Romick - FPA Crescent Fund Updated 13 Jan 2020 &quot;                   
+## [12] &quot;FPA - Capital Fund Updated 13 Jan 2020 &quot;                                  
+## [13] &quot;Mark Hillman - Hillman Fund Updated 10 Jan 2020 &quot;                         
+## [14] &quot;John Rogers - Ariel Appreciation Updated 08 Jan 2020 &quot;                    
+## [15] &quot;Charles Bobrinskoy - Ariel Focus Updated 08 Jan 2020 &quot;</code></pre>
 <p>As expected we have the investor/fund names. Next lets get the relevant url for all the investors.</p>
 <pre class="r"><code>investor_url &lt;- url %&gt;%
   html_nodes(&#39;#port_body a&#39;) %&gt;%
   html_attr(&quot;href&quot;)
 
 investor_url[1:15]</code></pre>
-<pre><code>##  [1] &quot;/m/holdings.php?m=aq&quot;    &quot;/m/holdings.php?m=lmvtx&quot;
-##  [3] &quot;/m/holdings.php?m=DODGX&quot; &quot;/m/holdings.php?m=pzfvx&quot;
-##  [5] &quot;/m/holdings.php?m=MPGFX&quot; &quot;/m/holdings.php?m=FPACX&quot;
-##  [7] &quot;/m/holdings.php?m=FPPTX&quot; &quot;/m/holdings.php?m=hcmax&quot;
-##  [9] &quot;/m/holdings.php?m=CAAPX&quot; &quot;/m/holdings.php?m=ARFFX&quot;
-## [11] &quot;/m/holdings.php?m=jensx&quot; &quot;/m/holdings.php?m=DJCO&quot; 
-## [13] &quot;/m/holdings.php?m=FEVAX&quot; &quot;/m/holdings.php?m=SEQUX&quot;
-## [15] &quot;/m/holdings.php?m=MVALX&quot;</code></pre>
+<pre><code>##  [1] &quot;/m/holdings.php?m=MKL&quot;   &quot;/m/holdings.php?m=cc&quot;   
+##  [3] &quot;/m/holdings.php?m=KB&quot;    &quot;/m/holdings.php?m=WVALX&quot;
+##  [5] &quot;/m/holdings.php?m=TWEBX&quot; &quot;/m/holdings.php?m=aq&quot;   
+##  [7] &quot;/m/holdings.php?m=lmvtx&quot; &quot;/m/holdings.php?m=DODGX&quot;
+##  [9] &quot;/m/holdings.php?m=pzfvx&quot; &quot;/m/holdings.php?m=MPGFX&quot;
+## [11] &quot;/m/holdings.php?m=FPACX&quot; &quot;/m/holdings.php?m=FPPTX&quot;
+## [13] &quot;/m/holdings.php?m=hcmax&quot; &quot;/m/holdings.php?m=CAAPX&quot;
+## [15] &quot;/m/holdings.php?m=ARFFX&quot;</code></pre>
 <p>This looks good. We now have both the Manager names and the url. Lets combine them into a nice table/dataframe.</p>
 <pre class="r"><code>investor_df &lt;- tibble(investor = investor_names,
                       url = investor_url)
 head(investor_df)</code></pre>
 <pre><code>## # A tibble: 6 x 2
-##   investor                                             url                
-##   &lt;chr&gt;                                                &lt;chr&gt;              
-## 1 &quot;Guy Spier - Aquamarine Capital Updated 17 Jan 2020~ /m/holdings.php?m=~
-## 2 &quot;Sam Peters - ClearBridge Value Trust Updated 16 Ja~ /m/holdings.php?m=~
-## 3 &quot;Dodge &amp; Cox Updated 15 Jan 2020 &quot;                   /m/holdings.php?m=~
-## 4 &quot;Richard Pzena - Hancock Classic Value Updated 15 J~ /m/holdings.php?m=~
-## 5 &quot;Mairs &amp; Power - Mairs &amp; Power Growth Updated 15 Ja~ /m/holdings.php?m=~
-## 6 &quot;Steven Romick - FPA Crescent Fund Updated 13 Jan 2~ /m/holdings.php?m=~</code></pre>
+##   investor                                                   url               
+##   &lt;chr&gt;                                                      &lt;chr&gt;             
+## 1 &quot;Thomas Gayner - Markel Asset Management Updated 07 Feb 2~ /m/holdings.php?m~
+## 2 &quot;William Von Mueffling - Cantillon Capital Management Upd~ /m/holdings.php?m~
+## 3 &quot;Kahn Brothers Advisors - Kahn Brothers Group Updated 27 ~ /m/holdings.php?m~
+## 4 &quot;Wallace Weitz - Weitz Value Updated 22 Jan 2020 &quot;         /m/holdings.php?m~
+## 5 &quot;Tweedy Browne Co. - Tweedy Browne Value Updated 21 Jan 2~ /m/holdings.php?m~
+## 6 &quot;Guy Spier - Aquamarine Capital Updated 17 Jan 2020 &quot;      /m/holdings.php?m~</code></pre>
 <p>Next lets separate the investor column into two. We want to remove the <code>Updated xxxx</code> and form the investor name and move to a separate column. So we will end with two columns with the name and the date updated.</p>
 <p>We will also add the <code>https://www.dataroma.com</code> to the url column.</p>
 <pre class="r"><code>investor_df &lt;- investor_df %&gt;%
@@ -200,14 +200,14 @@ head(investor_df)</code></pre>
 
 head(investor_df)</code></pre>
 <pre><code>## # A tibble: 6 x 3
-##   investor                    update_date url                             
-##   &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;                           
-## 1 Guy Spier - Aquamarine Cap~ 2020-01-17  https://www.dataroma.com/m/hold~
-## 2 Sam Peters - ClearBridge V~ 2020-01-16  https://www.dataroma.com/m/hold~
-## 3 Dodge &amp; Cox                 2020-01-15  https://www.dataroma.com/m/hold~
-## 4 Richard Pzena - Hancock Cl~ 2020-01-15  https://www.dataroma.com/m/hold~
-## 5 Mairs &amp; Power - Mairs &amp; Po~ 2020-01-15  https://www.dataroma.com/m/hold~
-## 6 Steven Romick - FPA Cresce~ 2020-01-13  https://www.dataroma.com/m/hold~</code></pre>
+##   investor                            update_date url                          
+##   &lt;chr&gt;                               &lt;date&gt;      &lt;chr&gt;                        
+## 1 Thomas Gayner - Markel Asset Manag~ 2020-02-07  https://www.dataroma.com/m/h~
+## 2 William Von Mueffling - Cantillon ~ 2020-02-07  https://www.dataroma.com/m/h~
+## 3 Kahn Brothers Advisors - Kahn Brot~ 2020-01-27  https://www.dataroma.com/m/h~
+## 4 Wallace Weitz - Weitz Value         2020-01-22  https://www.dataroma.com/m/h~
+## 5 Tweedy Browne Co. - Tweedy Browne ~ 2020-01-21  https://www.dataroma.com/m/h~
+## 6 Guy Spier - Aquamarine Capital      2020-01-17  https://www.dataroma.com/m/h~</code></pre>
 <p>It looks like our dataframe is complete. Now on to the next task to get Warren Buffett’s portfolio. We need to first select the link to Warren Buffetts’s portfolio. So lets see how we can do that.</p>
 </div>
 <div id="getting-data-for-a-specific-investor" class="section level3">
@@ -215,9 +215,9 @@ head(investor_df)</code></pre>
 <pre class="r"><code>investor_df %&gt;%
   filter(str_detect(investor,pattern = &#39;Warren&#39;))</code></pre>
 <pre><code>## # A tibble: 1 x 3
-##   investor                    update_date url                             
-##   &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;                           
-## 1 Warren Buffett - Berkshire~ 2019-11-14  https://www.dataroma.com/m/hold~</code></pre>
+##   investor                      update_date url                                
+##   &lt;chr&gt;                         &lt;date&gt;      &lt;chr&gt;                              
+## 1 Warren Buffett - Berkshire H~ 2019-11-14  https://www.dataroma.com/m/holding~</code></pre>
 <p>We now have the row with Warren Buffett’s information.</p>
 <p>Next just select the url and get his portfolio information.</p>
 <pre class="r"><code>warren_url &lt;- investor_df %&gt;%
@@ -267,18 +267,18 @@ warren_df &lt;- tk_tbl(warren_df, silent = TRUE)
 
 warren_df</code></pre>
 <pre><code>## # A tibble: 49 x 7
-##    V1     V2              V3        V4       V5        V6        V7       
-##    &lt;chr&gt;  &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    
-##  1 Histo~ Stock           % of por~ Shares   Recent a~ Reported~ Value    
-##  2 =      AAPL - Apple I~ 25.96     248,838~ Reduce 0~ $223.97   $55,732,~
-##  3 =      BAC - Bank of ~ 12.60     927,248~ &quot; &quot;       $29.17    $27,047,~
-##  4 =      KO - Coca Cola~ 10.14     400,000~ &quot; &quot;       $54.44    $21,776,~
-##  5 =      WFC - Wells Fa~ 8.89      378,369~ Reduce 7~ $50.44    $19,084,~
-##  6 =      AXP - American~ 8.35      151,610~ &quot; &quot;       $118.28   $17,932,~
-##  7 =      KHC - Kraft He~ 4.24      325,634~ &quot; &quot;       $27.94    $9,096,6~
-##  8 =      USB - U.S. Ban~ 3.41      132,459~ &quot; &quot;       $55.34    $7,330,3~
-##  9 =      JPM - JPMorgan~ 3.26      59,514,~ &quot; &quot;       $117.69   $7,004,3~
-## 10 =      MCO - Moody&#39;s ~ 2.35      24,669,~ &quot; &quot;       $204.83   $5,053,1~
+##    V1      V2               V3        V4       V5         V6         V7        
+##    &lt;chr&gt;   &lt;chr&gt;            &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;     
+##  1 History Stock            % of por~ Shares   Recent ac~ Reported ~ Value     
+##  2 =       AAPL - Apple In~ 25.96     248,838~ Reduce 0.~ $223.97    $55,732,4~
+##  3 =       BAC - Bank of A~ 12.60     927,248~ &quot; &quot;        $29.17     $27,047,8~
+##  4 =       KO - Coca Cola ~ 10.14     400,000~ &quot; &quot;        $54.44     $21,776,0~
+##  5 =       WFC - Wells Far~ 8.89      378,369~ Reduce 7.~ $50.44     $19,084,9~
+##  6 =       AXP - American ~ 8.35      151,610~ &quot; &quot;        $118.28    $17,932,5~
+##  7 =       KHC - Kraft Hei~ 4.24      325,634~ &quot; &quot;        $27.94     $9,096,60~
+##  8 =       USB - U.S. Banc~ 3.41      132,459~ &quot; &quot;        $55.34     $7,330,31~
+##  9 =       JPM - JPMorgan ~ 3.26      59,514,~ &quot; &quot;        $117.69    $7,004,31~
+## 10 =       MCO - Moody&#39;s C~ 2.35      24,669,~ &quot; &quot;        $204.83    $5,053,11~
 ## # ... with 39 more rows</code></pre>
 <p>We have successfully downloaded the data. Next we need to do some cleanup.</p>
 <p>We will do the following.</p>
@@ -307,18 +307,18 @@ warren_df &lt;- warren_df %&gt;%
 
 warren_df</code></pre>
 <pre><code>## # A tibble: 48 x 6
-##    symbol name              portfolio_weight   shares cost_price     value
-##    &lt;chr&gt;  &lt;chr&gt;                        &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-##  1 AAPL   Apple Inc.                  0.260    2.49e8      224.    5.57e10
-##  2 BAC    Bank of America ~           0.126    9.27e8       29.2   2.70e10
-##  3 KO     Coca Cola Co.               0.101    4.00e8       54.4   2.18e10
-##  4 WFC    Wells Fargo                 0.0889   3.78e8       50.4   1.91e10
-##  5 AXP    American Express            0.0835   1.52e8      118.    1.79e10
-##  6 KHC    Kraft Heinz Co.             0.0424   3.26e8       27.9   9.10e 9
-##  7 USB    U.S. Bancorp                0.0341   1.32e8       55.3   7.33e 9
-##  8 JPM    JPMorgan Chase &amp;~           0.0326   5.95e7      118.    7.00e 9
-##  9 MCO    Moody&#39;s Corp.               0.0235   2.47e7      205.    5.05e 9
-## 10 DAL    Delta Air Lines ~           0.019    7.09e7       57.6   4.08e 9
+##    symbol name                 portfolio_weight    shares cost_price      value
+##    &lt;chr&gt;  &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1 AAPL   Apple Inc.                     0.260  248838679      224.     5.57e10
+##  2 BAC    Bank of America Cor~           0.126  927248600       29.2    2.70e10
+##  3 KO     Coca Cola Co.                  0.101  400000000       54.4    2.18e10
+##  4 WFC    Wells Fargo                    0.0889 378369018       50.4    1.91e10
+##  5 AXP    American Express               0.0835 151610700      118.     1.79e10
+##  6 KHC    Kraft Heinz Co.                0.0424 325634818       27.9    9.10e 9
+##  7 USB    U.S. Bancorp                   0.0341 132459618       55.3    7.33e 9
+##  8 JPM    JPMorgan Chase &amp; Co.           0.0326  59514932      118.     7.00e 9
+##  9 MCO    Moody&#39;s Corp.                  0.0235  24669778      205.     5.05e 9
+## 10 DAL    Delta Air Lines Inc.           0.019   70910456       57.6    4.08e 9
 ## # ... with 38 more rows</code></pre>
 <p>We now have the table in the desired form. We can now use it for our analysis.</p>
 </div>
@@ -371,18 +371,18 @@ warren_df</code></pre>
 
 all_investors</code></pre>
 <pre><code>## # A tibble: 64 x 3
-##    investor                    update_date url                            
-##    &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;                          
-##  1 Guy Spier - Aquamarine Cap~ 2020-01-17  https://www.dataroma.com/m/hol~
-##  2 Sam Peters - ClearBridge V~ 2020-01-16  https://www.dataroma.com/m/hol~
-##  3 Dodge &amp; Cox                 2020-01-15  https://www.dataroma.com/m/hol~
-##  4 Richard Pzena - Hancock Cl~ 2020-01-15  https://www.dataroma.com/m/hol~
-##  5 Mairs &amp; Power - Mairs &amp; Po~ 2020-01-15  https://www.dataroma.com/m/hol~
-##  6 Steven Romick - FPA Cresce~ 2020-01-13  https://www.dataroma.com/m/hol~
-##  7 FPA - Capital Fund          2020-01-13  https://www.dataroma.com/m/hol~
-##  8 Mark Hillman - Hillman Fund 2020-01-10  https://www.dataroma.com/m/hol~
-##  9 John Rogers - Ariel Apprec~ 2020-01-08  https://www.dataroma.com/m/hol~
-## 10 Charles Bobrinskoy - Ariel~ 2020-01-08  https://www.dataroma.com/m/hol~
+##    investor                           update_date url                          
+##    &lt;chr&gt;                              &lt;date&gt;      &lt;chr&gt;                        
+##  1 Thomas Gayner - Markel Asset Mana~ 2020-02-07  https://www.dataroma.com/m/h~
+##  2 William Von Mueffling - Cantillon~ 2020-02-07  https://www.dataroma.com/m/h~
+##  3 Kahn Brothers Advisors - Kahn Bro~ 2020-01-27  https://www.dataroma.com/m/h~
+##  4 Wallace Weitz - Weitz Value        2020-01-22  https://www.dataroma.com/m/h~
+##  5 Tweedy Browne Co. - Tweedy Browne~ 2020-01-21  https://www.dataroma.com/m/h~
+##  6 Guy Spier - Aquamarine Capital     2020-01-17  https://www.dataroma.com/m/h~
+##  7 Sam Peters - ClearBridge Value Tr~ 2020-01-16  https://www.dataroma.com/m/h~
+##  8 Dodge &amp; Cox                        2020-01-15  https://www.dataroma.com/m/h~
+##  9 Richard Pzena - Hancock Classic V~ 2020-01-15  https://www.dataroma.com/m/h~
+## 10 Mairs &amp; Power - Mairs &amp; Power Gro~ 2020-01-15  https://www.dataroma.com/m/h~
 ## # ... with 54 more rows</code></pre>
 <p>Great that function works. Next we build our portfolio function.</p>
 <pre class="r"><code>get_investor_portfolio &lt;- function(name = &#39;Warren&#39;) {
@@ -463,16 +463,16 @@ all_investors</code></pre>
 
 ackman</code></pre>
 <pre><code>## # A tibble: 8 x 6
-##   symbol name                 portfolio_weight  shares cost_price    value
-##   &lt;chr&gt;  &lt;chr&gt;                           &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1 CMG    Chipotle Mexican Gr~           0.223   1.72e6      840.    1.45e9
-## 2 QSR    Restaurant Brands I~           0.165   1.51e7       71.1   1.07e9
-## 3 HLT    Hilton Worldwide Ho~           0.152   1.06e7       93.1   9.83e8
-## 4 LOW    Lowe&#39;s Cos.                    0.146   8.61e6      110.    9.47e8
-## 5 BRK.B  Berkshire Hathaway ~           0.129   4.02e6      208.    8.35e8
-## 6 SBUX   Starbucks Corp.                0.127   9.31e6       88.4   8.24e8
-## 7 A      Agilent Technologies           0.0344  2.92e6       76.6   2.23e8
-## 8 HHC    Howard Hughes Corp.            0.0239  1.19e6      130.    1.55e8</code></pre>
+##   symbol name                     portfolio_weight   shares cost_price    value
+##   &lt;chr&gt;  &lt;chr&gt;                               &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+## 1 CMG    Chipotle Mexican Grill ~           0.223   1724310      840.    1.45e9
+## 2 QSR    Restaurant Brands Inter~           0.165  15084304       71.1   1.07e9
+## 3 HLT    Hilton Worldwide Holdin~           0.152  10556805       93.1   9.83e8
+## 4 LOW    Lowe&#39;s Cos.                        0.146   8613212      110.    9.47e8
+## 5 BRK.B  Berkshire Hathaway CL B            0.129   4015594      208.    8.35e8
+## 6 SBUX   Starbucks Corp.                    0.127   9313890       88.4   8.24e8
+## 7 A      Agilent Technologies               0.0344  2916103       76.6   2.23e8
+## 8 HHC    Howard Hughes Corp.                0.0239  1194793      130.    1.55e8</code></pre>
 <p>And now we can plot Ackman’s Portfolio.</p>
 <pre class="r"><code># For themes
 library(ggthemes)
@@ -490,18 +490,18 @@ ackman %&gt;%
 
 loeb</code></pre>
 <pre><code>## # A tibble: 39 x 6
-##    symbol name                 portfolio_weight  shares cost_price   value
-##    &lt;chr&gt;  &lt;chr&gt;                           &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
-##  1 BAX    Baxter Internationa~           0.175   1.68e7       87.5  1.47e9
-##  2 UTX    United Technologies            0.0974  6.00e6      137.   8.19e8
-##  3 CPB    Campbell Soup                  0.0948  1.70e7       46.9  7.98e8
-##  4 AGN    Allergan Plc                   0.072   3.60e6      168.   6.06e8
-##  5 DHR    Danaher Corp.                  0.0637  3.71e6      144.   5.36e8
-##  6 BID    Sotheby&#39;s                      0.0451  6.66e6       57.0  3.80e8
-##  7 CRM    Salesforce.com                 0.0441  2.50e6      148.   3.71e8
-##  8 FIS    Fidelity National I~           0.0394  2.50e6      133.   3.32e8
-##  9 BURL   Burlington Stores I~           0.0356  1.50e6      200.   3.00e8
-## 10 IQV    IQVIA Holdings Inc.            0.0355  2.00e6      149.   2.99e8
+##    symbol name                     portfolio_weight  shares cost_price    value
+##    &lt;chr&gt;  &lt;chr&gt;                               &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+##  1 BAX    Baxter International In~           0.175   1.68e7       87.5   1.47e9
+##  2 UTX    United Technologies                0.0974  6.00e6      137.    8.19e8
+##  3 CPB    Campbell Soup                      0.0948  1.70e7       46.9   7.98e8
+##  4 AGN    Allergan Plc                       0.072   3.60e6      168.    6.06e8
+##  5 DHR    Danaher Corp.                      0.0637  3.71e6      144.    5.36e8
+##  6 BID    Sotheby&#39;s                          0.0451  6.66e6       57.0   3.80e8
+##  7 CRM    Salesforce.com                     0.0441  2.50e6      148.    3.71e8
+##  8 FIS    Fidelity National Infor~           0.0394  2.50e6      133.    3.32e8
+##  9 BURL   Burlington Stores Inc.             0.0356  1.50e6      200.    3.00e8
+## 10 IQV    IQVIA Holdings Inc.                0.0355  2.00e6      149.    2.99e8
 ## # ... with 29 more rows</code></pre>
 <p>Compared to Bill Ackman, Loeb’s portfolio contains more positions. We will only look at positions above 2% weight.</p>
 <pre class="r"><code>loeb %&gt;%

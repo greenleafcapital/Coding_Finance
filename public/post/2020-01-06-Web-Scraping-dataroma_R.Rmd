@@ -3,7 +3,10 @@ title: "Scraping dataroma.com"
 author: "DD"
 date: "2020-01-06"
 description: "Looking at Warren Buffett's portfolio"
-output: html_document
+output: 
+  html_document:
+      highlight: tango
+      df_print: paged
 ---
 
 An import task for many investors is to keep up with what other prominent investors are buying or selling. Such information is not very easily available. One needs to check the 13F filings and parse the data out. Fortunately, there are several websites that display such data in a nice tabular format.
