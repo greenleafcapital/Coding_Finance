@@ -6,16 +6,12 @@ description: "Scraping historical returns data from 1972 to 2020 for several ass
 output: html_document
 ---
 
-The above quote is often repeated in the finance world. Past results in investing don't usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past. 
-
-The above quote is often repeated in the finance world. Past results in investing don't usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past. 
-
-The above quote is often repeated in the finance world. Past results in investing don't usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past. 
-
 > "History doesn't repeat itself,
 >  but it often rhymes"
 >
 > `--- Mark Twain`
+
+The above quote is often repeated in the finance world. Past results in investing don't usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past.
 
 Unfortunately the long term returns from the past are not easily available for free. Often one requires a subcription to expensive data providers such as Bloomberg or Reuters. 
 
