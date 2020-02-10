@@ -1,0 +1,150 @@
+---
+title: "How to get historical asset class returns in Python"
+author: "DD"
+date: "2020-02-06"
+description: "Scraping historical returns data from 1972 to 2020 for several asset classes."
+output: html_document
+---
+
+The above quote is often repeated in the finance world. Past results in investing don't usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past. 
+
+The above quote is often repeated in the finance world. Past results in investing don't usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past. 
+
+The above quote is often repeated in the finance world. Past results in investing don't usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past. 
+
+> "History doesn't repeat itself,
+>  but it often rhymes"
+>
+> `--- Mark Twain`
+
+Unfortunately the long term returns from the past are not easily available for free. Often one requires a subcription to expensive data providers such as Bloomberg or Reuters. 
+
+We have found one website that provides the returns for free and in this post we will demonstrate how to scrape that data for our analysis.
+
+The website is `https://www.portfoliovisualizer.com/historical-asset-class-returns` and they provide a great source of yearly returns going back all the way to 1972 for several asset classes.
+
+Lets begin.<br>
+First we import our libraries.
+
+```{python}
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+
+```
+
+```{python}
+# load our url
+
+my_url = urlopen('https://www.portfoliovisualizer.com/historical-asset-class-returns')
+
+# Read the url into BeautifulSoup
+
+soup = BeautifulSoup(my_url.read(), 'lxml')
+
+
+
+```
+
+The below code saves all the column names.
+
+```{python}
+
+# Select just the column names
+col_names = soup.tr
+
+
+# Split Column names
+col_names = col_names.text.split('\n')
+
+# Delete any empty or None values
+col_names = list(filter(None,col_names))
+
+
+```
+
+The below code will get all the returns data and save it as a list.
+
+```{python}
+
+data = []
+for t in soup.find_all('td'):
+    data.append(t.text)
+
+```
+
+The `data` list contains unwanted entry located at the very end. So we will delete it.
+
+```{python}
+
+del data[-1]
+
+
+```
+
+Finally build our data frame.
+
+```{python}
+
+# Create data frame from 
+df_returns = pd.DataFrame(np.array(data).reshape(49,40), columns=col_names)
+
+# Set Year column as the index
+df_returns.set_index('Year', inplace=True)
+
+# print the first few rows
+
+print(df_returns.head())
+
+```
+
+Great! Our data seems to have been correctly scraped. Below you will find the entire code in one block, so you can easily copy and paste it for your own use.
+
+```{python}
+
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+
+
+
+my_url = urlopen('https://www.portfoliovisualizer.com/historical-asset-class-returns')
+
+# Read the url into BeautifulSoup
+
+soup = BeautifulSoup(my_url.read(), 'lxml')
+
+
+
+# Select just the column names
+col_names = soup.tr
+
+
+# Split Column names
+col_names = col_names.text.split('\n')
+
+# Delete any empty or None values
+col_names = list(filter(None,col_names))
+
+data = []
+for t in soup.find_all('td'):
+    data.append(t.text)
+    
+del data[-1]
+
+# Create data frame from 
+df_returns = pd.DataFrame(np.array(data).reshape(49,40), columns=col_names)
+
+# Set Year column as the index
+df_returns.set_index('Year', inplace=True)
+
+# print the first few rows
+
+print(df_returns.head())
+
+```
+

@@ -1,0 +1,94 @@
+---
+title: "How to get historical asset class returns in Python"
+author: "DD"
+date: "2020-02-06"
+description: "Scraping historical returns data from 1972 to 2020 for several asset classes."
+output: html_document
+---
+
+
+
+<p>The above quote is often repeated in the finance world. Past results in investing don’t usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past.</p>
+<p>The above quote is often repeated in the finance world. Past results in investing don’t usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past.</p>
+<p>The above quote is often repeated in the finance world. Past results in investing don’t usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past.</p>
+<blockquote>
+<p>“History doesn’t repeat itself,
+but it often rhymes”</p>
+<p><code>--- Mark Twain</code></p>
+</blockquote>
+<p>Unfortunately the long term returns from the past are not easily available for free. Often one requires a subcription to expensive data providers such as Bloomberg or Reuters.</p>
+<p>We have found one website that provides the returns for free and in this post we will demonstrate how to scrape that data for our analysis.</p>
+<p>The website is <code>https://www.portfoliovisualizer.com/historical-asset-class-returns</code> and they provide a great source of yearly returns going back all the way to 1972 for several asset classes.</p>
+<p>Lets begin.<br>
+First we import our libraries.</p>
+<pre class="python"><code>from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np</code></pre>
+<pre class="python"><code># load our url
+my_url = urlopen(&#39;https://www.portfoliovisualizer.com/historical-asset-class-returns&#39;)
+# Read the url into BeautifulSoup
+soup = BeautifulSoup(my_url.read(), &#39;lxml&#39;)</code></pre>
+<p>The below code saves all the column names.</p>
+<pre class="python"><code># Select just the column names
+col_names = soup.tr
+# Split Column names
+col_names = col_names.text.split(&#39;\n&#39;)
+# Delete any empty or None values
+col_names = list(filter(None,col_names))</code></pre>
+<p>The below code will get all the returns data and save it as a list.</p>
+<pre class="python"><code>data = []
+for t in soup.find_all(&#39;td&#39;):
+    data.append(t.text)</code></pre>
+<p>The <code>data</code> list contains unwanted entry located at the very end. So we will delete it.</p>
+<pre class="python"><code>del data[-1]</code></pre>
+<p>Finally build our data frame.</p>
+<pre class="python"><code># Create data frame from 
+df_returns = pd.DataFrame(np.array(data).reshape(49,40), columns=col_names)
+# Set Year column as the index
+df_returns.set_index(&#39;Year&#39;, inplace=True)
+# print the first few rows
+print(df_returns.head())</code></pre>
+<pre><code>##      Inflation US Stock Market     ...     Precious Metals Commodities
+## Year                               ...                                
+## 1972     3.41%          17.62%     ...                 N/A         N/A
+## 1973     8.71%         -18.18%     ...                 N/A         N/A
+## 1974    12.34%         -27.81%     ...                 N/A         N/A
+## 1975     6.94%          37.82%     ...                 N/A         N/A
+## 1976     4.86%          26.47%     ...                 N/A         N/A
+## 
+## [5 rows x 39 columns]</code></pre>
+<p>Great! Our data seems to have been correctly scraped. Below you will find the entire code in one block, so you can easily copy and paste it for your own use.</p>
+<pre class="python"><code>from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+my_url = urlopen(&#39;https://www.portfoliovisualizer.com/historical-asset-class-returns&#39;)
+# Read the url into BeautifulSoup
+soup = BeautifulSoup(my_url.read(), &#39;lxml&#39;)
+# Select just the column names
+col_names = soup.tr
+# Split Column names
+col_names = col_names.text.split(&#39;\n&#39;)
+# Delete any empty or None values
+col_names = list(filter(None,col_names))
+data = []
+for t in soup.find_all(&#39;td&#39;):
+    data.append(t.text)
+    
+del data[-1]
+# Create data frame from 
+df_returns = pd.DataFrame(np.array(data).reshape(49,40), columns=col_names)
+# Set Year column as the index
+df_returns.set_index(&#39;Year&#39;, inplace=True)
+# print the first few rows
+print(df_returns.head())</code></pre>
+<pre><code>##      Inflation US Stock Market     ...     Precious Metals Commodities
+## Year                               ...                                
+## 1972     3.41%          17.62%     ...                 N/A         N/A
+## 1973     8.71%         -18.18%     ...                 N/A         N/A
+## 1974    12.34%         -27.81%     ...                 N/A         N/A
+## 1975     6.94%          37.82%     ...                 N/A         N/A
+## 1976     4.86%          26.47%     ...                 N/A         N/A
+## 
+## [5 rows x 39 columns]</code></pre>
