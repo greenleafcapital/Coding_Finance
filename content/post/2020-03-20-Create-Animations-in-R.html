@@ -1,0 +1,72 @@
+---
+title: "How to create animated plot in R"
+author: "DD"
+date: "2020-03-20"
+description: "Creating time series animations in R."
+output:
+  html_document:
+    highlight: tango
+---
+
+
+
+<p>Static charts are great for visualization, but there are times when we want to “wow” the audience with chart animations for dramatic effect. Lucky for us R has a great package that can help us create animated charts.</p>
+<p>We will use the <code>gganimate</code> package to create animated charts.</p>
+<p>You can install this by using the following command.</p>
+<p><code>install.packages("gganimate")</code></p>
+<p>We have already downloaded it so we will just run it below.</p>
+<p>We will plot the stock market returns since the 2016 elections. So lets get our data first and create our “boring” static chart.</p>
+<p>Lets load the libraries.</p>
+<pre class="r"><code>library(tidyquant)
+library(tidyverse)</code></pre>
+<pre class="r"><code>price_df &lt;- tq_get(c(&#39;DIA&#39;, &#39;SPY&#39;, &#39;QQQ&#39;, &#39;IWM&#39;),
+                   from = &quot;2016-11-1&quot;,
+                   get = &quot;stock.prices&quot;)
+
+ret_df &lt;- price_df %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select = adjusted,
+               mutate_fun = periodReturn,
+               period = &quot;monthly&quot;,
+               col_rename = &#39;ret&#39;) %&gt;%
+  mutate(ret = if_else(row_number() == 1, 0, ret)) %&gt;%
+  mutate(cr = cumprod(1 + ret) - 1)</code></pre>
+<p>Now lets plot our static chart.</p>
+<pre class="r"><code>price_df %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select = adjusted,
+               mutate_fun = periodReturn,
+               period = &quot;monthly&quot;,
+               col_rename = &#39;ret&#39;) %&gt;%
+  mutate(ret = if_else(row_number() == 1, 0, ret)) %&gt;%
+  mutate(cr = cumprod(1 + ret) - 1) %&gt;%
+  ggplot(aes(x = date, y = cr, group = symbol, color = symbol)) +
+  geom_line() +
+  geom_point() +
+  geom_point(size = 2) + 
+  scale_y_continuous(breaks = seq(-0.35,1, 0.1),
+                     labels = scales::percent) +
+  coord_cartesian(clip = &#39;off&#39;) + 
+  labs(title = &#39;Major Index Returns since Trump\&#39;s Elections in 2016&#39;, y = &#39;Returns (%)&#39;) + 
+  theme_minimal() </code></pre>
+<p><img src="/post/2020-03-20-Create-Animations-in-R_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Now lets see how the charts look when we use the <code>gganimate</code> package.</p>
+<pre class="r"><code>library(gganimate)
+
+p &lt;- ret_df %&gt;%
+  ggplot(aes(x = date, y = cr, group = symbol)) +
+  geom_line() +
+  geom_segment(aes(xend = ymd(&quot;2020-03-25&quot;), yend = cr), linetype = 2, colour = &#39;grey&#39;) + 
+  geom_point(size = 2) + 
+  geom_text(aes(x = ymd(&quot;2020-03-26&quot;), label = symbol), hjust = 0) +
+  scale_y_continuous(breaks = seq(-0.35,1, 0.1),
+                     labels = scales::percent) +
+  transition_reveal(date) +
+  coord_cartesian(clip = &#39;off&#39;) + 
+  labs(title = &#39;Major Index Returns since Trump\&#39;s Elections in 2016&#39;, x = &quot;Date&quot;, y = &#39;Returns (%)&#39;) + 
+  theme_minimal() 
+
+animate(p, nframe = 200, end_pause = 20)</code></pre>
+<p><img src="/post/2020-03-20-Create-Animations-in-R_files/figure-html/unnamed-chunk-4-1.gif" /><!-- --></p>
+<p>To save this chart use the following code.</p>
+<p><code>anim_save("index_since_Trump_election.gif")</code></p>

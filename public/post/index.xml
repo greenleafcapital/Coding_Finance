@@ -6,10 +6,23 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to create animated plot in R</title>
+      <link>/post/2020-03-20-create-animations-in-r/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-03-20-create-animations-in-r/</guid>
+      <description>Static charts are great for visualization, but there are times when we want to “wow” the audience with chart animations for dramatic effect. Lucky for us R has a great package that can help us create animated charts.
+We will use the gganimate package to create animated charts.
+You can install this by using the following command.
+install.packages(&#34;gganimate&#34;)
+We have already downloaded it so we will just run it below.</description>
+    </item>
     
     <item>
       <title>How to get historical asset class returns in Python</title>
