@@ -1,0 +1,42 @@
+---
+title: "Quantitative Investment Analysis in R and Python"
+author: "DD"
+date: "2020-04-20"
+description: "Practice Problems from the Quantitative Investment Analysis"
+output:
+  html_document:
+    highlight: tango
+---
+
+The CFA Institute conducts yearly exams which are taken by thousands of participants around the world. The passing rates for these exams is [very low](https://www.cfainstitute.org/en/programs/cfa/exam/results-info). Upon successfully completing the exam, candidates are given the title of a CFA Charterholder. The CFA charter is great and covers many topics, but the exams are conducted using pencil and a calculator. It is our opinion, that a modern analyst must be comfortable to solve the problems using a computer programs (Excel, Python or R). 
+
+In the following few posts we will try to address this issue. We will try to solve the practice problems using Python or R (mostly R). We assume that the student has access to the course materials. If you have a CFA membership you can access the course materials on [CFA's](https://www.cfainstitute.org/en/about/universities/professors/teaching-materials/quantitative-investment-analysis) website and then simply search for the topics we discuss.
+
+We will be solving the practice problems from the excellent book [Quantitative Investment Analysis](https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X)
+
+The chapters from this book are as follows
+
+- Chapter 1: The Time Value of Money
+
+- Chapter 2: Discounted Cash Flow Applications
+
+- Chapter 3: Statistical Concepts and Market Returns
+
+- Chapter 4: Probability Concepts 
+
+- Chapter 5: Common Probability Distributions
+
+- Chapter 6: Sampling and Estimation
+
+- Chapter 7: Hypothesis Testing
+
+- Chapter 8: Correlation and Regression
+
+- Chapter 9: Multiple Regression and Issues in Regression Analysis
+
+- Chapter 10: Time-Series Analysis
+
+- Chapter 11: Portfolio Concepts
+
+
+

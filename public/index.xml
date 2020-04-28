@@ -6,10 +6,19 @@
     <description>Recent content on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 20 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quantitative Investment Analysis in R and Python</title>
+      <link>/post/2020-04-20-cfa-investment-analysis/</link>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-04-20-cfa-investment-analysis/</guid>
+      <description>The CFA Institute conducts yearly exams which are taken by thousands of participants around the world. The passing rates for these exams is very low. Upon successfully completing the exam, candidates are given the title of a CFA Charterholder. The CFA charter is great and covers many topics, but the exams are conducted using pencil and a calculator. It is our opinion, that a modern analyst must be comfortable to solve the problems using a computer programs (Excel, Python or R).</description>
+    </item>
     
     <item>
       <title>How to create animated plot in R</title>
@@ -30,9 +39,9 @@ We have already downloaded it so we will just run it below.</description>
       <pubDate>Thu, 06 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/2020-02-06-web-scraping-asset_class_returns_python/</guid>
-      <description>“History doesn’t repeat itself,but it often rhymes”
+      <description>“History doesn’t repeat itself, but it often rhymes”
 --- Mark Twain
-The above quote is often repeated in the finance world. Past results in investing don’t usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past.
+ The above quote is often repeated in the finance world. Past results in investing don’t usually repeat, but they often provide a resonable estimation of future returns. For that reason its important to learn how different asset classes have behaved in the past.
 Unfortunately the long term returns from the past are not easily available for free.</description>
     </item>
     
@@ -95,7 +104,7 @@ The traditional asset pricing model (CAPM), used only one factor (Market returns
       <guid>/post/2018-06-15-clean-ff-data-in-py/</guid>
       <description>In this post we will download and clean the Fama/French 3 factors model data. First we will download the data like we did in the previous post.
 To keep it brief we will execute the entire code at once.
-import urllib.requestimport zipfileff_url = &amp;quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&amp;quot;# Download the file and save it# We will name it fama_french.zip fileurllib.request.urlretrieve(ff_url,&amp;#39;fama_french.zip&amp;#39;)zip_file = zipfile.ZipFile(&amp;#39;fama_french.zip&amp;#39;, &amp;#39;r&amp;#39;)# Next we extact the file data# We will call it ff_factors.</description>
+import urllib.request import zipfile ff_url = &amp;quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&amp;quot; # Download the file and save it # We will name it fama_french.zip file urllib.request.urlretrieve(ff_url,&amp;#39;fama_french.zip&amp;#39;) zip_file = zipfile.ZipFile(&amp;#39;fama_french.zip&amp;#39;, &amp;#39;r&amp;#39;) # Next we extact the file data # We will call it ff_factors.</description>
     </item>
     
     <item>
@@ -106,7 +115,7 @@ import urllib.requestimport zipfileff_url = &amp;quot;https://mba.tuck.dartmou
       <guid>/post/2018-06-15-clean-ff-data-in-r/</guid>
       <description>In the last post we learned to download the FF data. In this post we will learn to clean the data so we can use it for our analysis.
 First lets load the libraries and the data.
-library(tidyquant)library(timetk)ff_url &amp;lt;- &amp;quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&amp;quot;temp_file &amp;lt;- tempfile()download.file(ff_url, temp_file)ff_data_raw &amp;lt;- read_csv(unzip(temp_file), skip = 3)## Warning: Missing column names filled in: &amp;#39;X1&amp;#39; [1]## Parsed with column specification:## cols(## X1 = col_integer(),## `Mkt-RF` = col_double(),## SMB = col_double(),## HML = col_double(),## RF = col_double()## )## Warning in rbind(names(probs), probs_f): number of columns of result is not## a multiple of vector length (arg 1)## Warning: 8 parsing failures.</description>
+library(tidyquant) library(timetk) ff_url &amp;lt;- &amp;quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip&amp;quot; temp_file &amp;lt;- tempfile() download.file(ff_url, temp_file) ff_data_raw &amp;lt;- read_csv(unzip(temp_file), skip = 3) ## Warning: Missing column names filled in: &amp;#39;X1&amp;#39; [1] ## Parsed with column specification: ## cols( ## X1 = col_integer(), ## `Mkt-RF` = col_double(), ## SMB = col_double(), ## HML = col_double(), ## RF = col_double() ## ) ## Warning in rbind(names(probs), probs_f): number of columns of result is not ## a multiple of vector length (arg 1) ## Warning: 8 parsing failures.</description>
     </item>
     
     <item>
@@ -116,7 +125,7 @@ library(tidyquant)library(timetk)ff_url &amp;lt;- &amp;quot;https://mba.tuck.d
       
       <guid>/post/2018-06-10-download-ff-data-in-py/</guid>
       <description>We will perform the same step as we did in the last post. This time we will do it in Python. We will need a few libraries to download our data. We will use the urllib.request for downloading the file and zipfile to extract the content of the zip file.
-import urllib.requestimport zipfileOnce we have imported the modules, we are ready to download the files from the website.</description>
+import urllib.request import zipfile Once we have imported the modules, we are ready to download the files from the website.</description>
     </item>
     
     <item>
@@ -177,8 +186,8 @@ First we will need to copy the link of the data that we are trying to download.<
       <description>In this post we will demonstrate how to use python to calculate the optimal portfolio and visualize the efficient frontier.
 In this post we will only show the code with minor explanations.
 Lets begin with loading the modules.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webNext we will get the stock tickers and the price data.
-tick = [&amp;#39;AMZN&amp;#39;, &amp;#39;AAPL&amp;#39;, &amp;#39;NFLX&amp;#39;, &amp;#39;XOM&amp;#39;, &amp;#39;T&amp;#39;]price_data = web.</description>
+import pandas as pd import numpy as np import matplotlib.pyplot as plt import pandas_datareader as web Next we will get the stock tickers and the price data.
+tick = [&amp;#39;AMZN&amp;#39;, &amp;#39;AAPL&amp;#39;, &amp;#39;NFLX&amp;#39;, &amp;#39;XOM&amp;#39;, &amp;#39;T&amp;#39;] price_data = web.</description>
     </item>
     
     <item>
@@ -189,7 +198,7 @@ tick = [&amp;#39;AMZN&amp;#39;, &amp;#39;AAPL&amp;#39;, &amp;#39;NFLX&amp;#39;, 
       <guid>/post/2018-05-31-portfolio-opt-in-r/</guid>
       <description>Portfolio optimization is an important topic in Finance. Modern portfolio theory (MPT) states that investors are risk averse and given a level of risk, they will choose the portfolios that offer the most return. To do that we need to optimize the portfolios.
 To perform the optimization we will need
-To download the price data of the assetsCalculate the mean returns for the time periodAssign random weights to the assets and then use those to build an efficient frontierSo lets begin</description>
+ To download the price data of the assets Calculate the mean returns for the time period Assign random weights to the assets and then use those to build an efficient frontier  So lets begin</description>
     </item>
     
     <item>
@@ -200,7 +209,7 @@ To perform the optimization we will need
       <guid>/post/2018-05-15-candlestick-chart-in-python/</guid>
       <description>In this post we will show you how to generate a candlestick chart in Python using the Bokeh module. To install the Bokeh module you will need to in type pip install bokeh in your command line on a PC or the Mac terminal. Once you have installed the package you can use the below code to generate a candlestick chart using Bokeh.
 First import the packages
-#Import the packagesimport pandas as pdimport pandas_datareader as webfrom bokeh.</description>
+#Import the packages import pandas as pd import pandas_datareader as web from bokeh.</description>
     </item>
     
     <item>
@@ -209,8 +218,8 @@ First import the packages
       <pubDate>Tue, 15 May 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-05-15-candlestick-chart-in-r/</guid>
-      <description>library(tidyquant)library(plotly)Plotting S&amp;amp;P 500 etf (SPY) price data since March 1, 2019. We will use the below code to plot the chart using plotly.
-spy_price &amp;lt;- tq_get(&amp;#39;SPY&amp;#39;,from = &amp;#39;2018-03-01&amp;#39;,to = &amp;quot;2018-05-15&amp;quot;,get = &amp;#39;stock.prices&amp;#39;)spy_price %&amp;gt;%plot_ly(x = ~date,type = &amp;#39;candlestick&amp;#39;,open = ~open,close = ~close,high = ~high,low = ~low) %&amp;gt;%layout(title = &amp;#39;SPY Price since March 2019&amp;#39;,xaxis = list(rangeslider = list(visible = F))){&#34;</description>
+      <description>library(tidyquant) library(plotly) Plotting S&amp;amp;P 500 etf (SPY) price data since March 1, 2019. We will use the below code to plot the chart using plotly.
+spy_price &amp;lt;- tq_get(&amp;#39;SPY&amp;#39;, from = &amp;#39;2018-03-01&amp;#39;, to = &amp;quot;2018-05-15&amp;quot;, get = &amp;#39;stock.prices&amp;#39;) spy_price %&amp;gt;% plot_ly(x = ~date, type = &amp;#39;candlestick&amp;#39;, open = ~open, close = ~close, high = ~high, low = ~low) %&amp;gt;% layout(title = &amp;#39;SPY Price since March 2019&amp;#39;, xaxis = list(rangeslider = list(visible = F)))  {&#34;</description>
     </item>
     
     <item>
@@ -221,8 +230,8 @@ spy_price &amp;lt;- tq_get(&amp;#39;SPY&amp;#39;,from = &amp;#39;2018-03-01&amp
       <guid>/post/2018-04-25-portfolio-beta-py/</guid>
       <description>In this post we will calculate the portfolio beta
 As usual we will start with loading our libraries.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webfrom scipy import statsimport seaborn as snsWe will use the same assets from the last post to build our portfolio.
-# Create a list of tickers and weightstickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;]wts = [0.</description>
+import pandas as pd import numpy as np import matplotlib.pyplot as plt import pandas_datareader as web from scipy import stats import seaborn as sns We will use the same assets from the last post to build our portfolio.
+# Create a list of tickers and weights tickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;] wts = [0.</description>
     </item>
     
     <item>
@@ -233,9 +242,9 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
       <guid>/post/2018-04-25-portfolio-beta/</guid>
       <description>In this post we will calculate the portfolio beta
 As usual we will start with loading our libraries.
-library(tidyquant)library(timetk)We will use the same assets from the last post to build our portfolio.
-# Create the tickers and weights vectortickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;)wts = c(0.1,0.2,0.25,0.25,0.2)Next lets download the price data from yahoo finance.
-price_data &amp;lt;- tq_get(tickers,from = &amp;#39;2013-01-01&amp;#39;,to = &amp;#39;2018-03-01&amp;#39;,get = &amp;#39;stock.</description>
+library(tidyquant) library(timetk) We will use the same assets from the last post to build our portfolio.
+# Create the tickers and weights vector tickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;) wts = c(0.1,0.2,0.25,0.25,0.2) Next lets download the price data from yahoo finance.
+price_data &amp;lt;- tq_get(tickers, from = &amp;#39;2013-01-01&amp;#39;, to = &amp;#39;2018-03-01&amp;#39;, get = &amp;#39;stock.</description>
     </item>
     
     <item>
@@ -245,9 +254,9 @@ price_data &amp;lt;- tq_get(tickers,from = &amp;#39;2013-01-01&amp;#39;,to = &
       
       <guid>/post/2018-04-20-portfolio-stats-py/</guid>
       <description>In this post we will calculate the following portfolio statistics using Python.
-Portfolio average returnsPortfolio standard deviationPortfolio Sharpe ratioAs usual we will start with loading our libraries.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webWe will use the same assets from the last post to build our portfolio.
-# Create a list of tickers and weightstickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;]wts = [0.</description>
+ Portfolio average returns Portfolio standard deviation Portfolio Sharpe ratio  As usual we will start with loading our libraries.
+import pandas as pd import numpy as np import matplotlib.pyplot as plt import pandas_datareader as web We will use the same assets from the last post to build our portfolio.
+# Create a list of tickers and weights tickers = [&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;] wts = [0.</description>
     </item>
     
     <item>
@@ -257,9 +266,9 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
       
       <guid>/post/2018-04-20-portfolio-stats/</guid>
       <description>In this post we will calculate the following portfolio statistics using R.
-Portfolio average returnsPortfolio standard deviationPortfolio Sharpe ratioAs usual we will start with loading our libraries.
-library(tidyquant)library(timetk)We will use the same assets from the last post to build our portfolio.
-# Create the tickers and weights vectortickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;)wts = c(0.1,0.2,0.25,0.25,0.2)Next lets download the price data from yahoo finance.</description>
+ Portfolio average returns Portfolio standard deviation Portfolio Sharpe ratio  As usual we will start with loading our libraries.
+library(tidyquant) library(timetk) We will use the same assets from the last post to build our portfolio.
+# Create the tickers and weights vector tickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;) wts = c(0.1,0.2,0.25,0.25,0.2) Next lets download the price data from yahoo finance.</description>
     </item>
     
     <item>
@@ -268,9 +277,9 @@ library(tidyquant)library(timetk)We will use the same assets from the last pos
       <pubDate>Tue, 10 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-04-10-cumulative-portfolio-returns-py/</guid>
-      <description>Calculating Cumulative portfolio returns in PythonIn the last post we learned how to construct a portfolio in python. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.
+      <description>Calculating Cumulative portfolio returns in Python In the last post we learned how to construct a portfolio in python. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.
 First lets load the library.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pandas_datareader as webThen lets load the ticker symbols for our assets that we will include in our portfolio.</description>
+import pandas as pd import numpy as np import matplotlib.pyplot as plt import pandas_datareader as web Then lets load the ticker symbols for our assets that we will include in our portfolio.</description>
     </item>
     
     <item>
@@ -279,10 +288,10 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltimport pa
       <pubDate>Tue, 10 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-04-10-cumulative-portfolio-returns/</guid>
-      <description>Calculating Cumulative portfolio returns in RIn the last post we learned how to construct a portfolio in R. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.
+      <description>Calculating Cumulative portfolio returns in R In the last post we learned how to construct a portfolio in R. We also learned how to calculate the daily portfolio returns. In this post we will learn how to calculate portfolio cumulative returns.
 First lets load the library.
-library(tidyquant)Then lets load the ticker symbols for our assets that we will include in our portfolio.
-# Asset tickerstickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;)We will also create a vector for our asset weights.</description>
+library(tidyquant) Then lets load the ticker symbols for our assets that we will include in our portfolio.
+# Asset tickers tickers = c(&amp;#39;BND&amp;#39;, &amp;#39;VB&amp;#39;, &amp;#39;VEA&amp;#39;, &amp;#39;VOO&amp;#39;, &amp;#39;VWO&amp;#39;) We will also create a vector for our asset weights.</description>
     </item>
     
     <item>
@@ -291,10 +300,10 @@ library(tidyquant)Then lets load the ticker symbols for our assets that we will
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-04-05-portfolio-returns-py/</guid>
-      <description>Calculating portfolio returns in PythonIn this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.
-Calculating portfolio returns using the formulaA portfolio return is the weighted average of individual assets in the portfolio.
+      <description>Calculating portfolio returns in Python In this post we will learn to calculate the portfolio returns in Python. Since we are not aware of any modules that perform such calculations we will perform this calculation manually.
+Calculating portfolio returns using the formula A portfolio return is the weighted average of individual assets in the portfolio.
 Here is what we need
-Asset symbols that make up our portfolioPrice data for the assetsweights of assetsCalculating the weighted average of our assets returnsAdding them to get the portfolio returnsLets first load the modules</description>
+ Asset symbols that make up our portfolio Price data for the assets weights of assets Calculating the weighted average of our assets returns Adding them to get the portfolio returns  Lets first load the modules</description>
     </item>
     
     <item>
@@ -303,10 +312,10 @@ Here is what we need
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-04-05-portfolio-returns/</guid>
-      <description>Calculating portfolio returns in RIn this post we will learn to calculate portfolio returns using R. Initially we will do this manually and then use the tidyquant package to calculate the portfolio returns for our purpose.
-Calculating portfolio returns using the formulaA portfolio return is the weighted average of individual assets in the portfolio.
+      <description>Calculating portfolio returns in R In this post we will learn to calculate portfolio returns using R. Initially we will do this manually and then use the tidyquant package to calculate the portfolio returns for our purpose.
+Calculating portfolio returns using the formula A portfolio return is the weighted average of individual assets in the portfolio.
 Here is what we need
-Asset symbols that make up our portfolioPrice data for the assetsweights of assetsCalculating the weighted average of our assets returnsAdding them to get the portfolio returnsLets first load the packages</description>
+ Asset symbols that make up our portfolio Price data for the assets weights of assets Calculating the weighted average of our assets returns Adding them to get the portfolio returns  Lets first load the packages</description>
     </item>
     
     <item>
@@ -315,7 +324,7 @@ Here is what we need
       <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-04-03-calc-returns-py/</guid>
-      <description>Calculating financial returns in PythonOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. In python we can do this using the pandas-datareader module.
+      <description>Calculating financial returns in Python One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. In python we can do this using the pandas-datareader module.
 In this post we will:</description>
     </item>
     
@@ -325,9 +334,9 @@ In this post we will:</description>
       <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-04-03-calc-returns/</guid>
-      <description>Calculating financial returns in ROne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website.
+      <description>Calculating financial returns in R One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website.
 In this post we will:
-Download pricesCalculate ReturnsCalculate mean and standard deviation of returnsLets load the libraries first.</description>
+Download prices Calculate Returns Calculate mean and standard deviation of returns  Lets load the libraries first.</description>
     </item>
     
     <item>
@@ -336,7 +345,7 @@ Download pricesCalculate ReturnsCalculate mean and standard deviation of retur
       <pubDate>Mon, 02 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-download-price-py/</guid>
-      <description>Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API.</description>
+      <description>Getting stock prices from Yahoo Finance One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API.</description>
     </item>
     
     <item>
@@ -345,7 +354,7 @@ Download pricesCalculate ReturnsCalculate mean and standard deviation of retur
       <pubDate>Mon, 02 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-download-price/</guid>
-      <description>Getting stock prices from Yahoo FinanceOne of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API.</description>
+      <description>Getting stock prices from Yahoo Finance One of the most important tasks in financial markets is to analyze historical returns on various investments. To perform this analysis we need historical data for the assets. There are many data providers, some are free most are paid. In this chapter we will use the data from Yahoo’s finance website. Since Yahoo was bought by Verizon, there have been several changes with their API.</description>
     </item>
     
     <item>
@@ -354,7 +363,7 @@ Download pricesCalculate ReturnsCalculate mean and standard deviation of retur
       <pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-retirement-py/</guid>
-      <description>Retirement problemIn the previous posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
+      <description>Retirement problem In the previous posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
 Suppose we have an individual Jack who is currently 55 years old and intends to retire at 60 (5 years to retirement). Jack expects to live only 10 years after his retirement.</description>
     </item>
     
@@ -364,7 +373,7 @@ Suppose we have an individual Jack who is currently 55 years old and intends to 
       <pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-27-retirement/</guid>
-      <description>Retirement problemIn the previous posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
+      <description>Retirement problem In the previous posts and examples we saw how saving at different age/time period can affect the amount one has in retirement. Now lets go up a notch in complexity. In this example we look at the similar problem but from another angle.
 Suppose we have an individual Jack who is currently 55 years old and intends to retire at 60 (5 years to retirement). Jack expects to live only 10 years after his retirement.</description>
     </item>
     
@@ -374,7 +383,7 @@ Suppose we have an individual Jack who is currently 55 years old and intends to 
       <pubDate>Sun, 25 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-23-future-value-py/</guid>
-      <description>Calculating the potential future value of Bitcoin InvestmentThe year 2017 was a great year for cryptocurrencies and in particular for the crypto leader Bitcoin. Many people called crypotcurrencies the future of money, but so far 2018 has been lousy. The crypto currency advocates argue that the value of will increase in the future. We have seen many claims, from $50000 to $1000000 per bitcoin. We take no sides and the Market will decide the future.</description>
+      <description>Calculating the potential future value of Bitcoin Investment The year 2017 was a great year for cryptocurrencies and in particular for the crypto leader Bitcoin. Many people called crypotcurrencies the future of money, but so far 2018 has been lousy. The crypto currency advocates argue that the value of will increase in the future. We have seen many claims, from $50000 to $1000000 per bitcoin. We take no sides and the Market will decide the future.</description>
     </item>
     
     <item>
@@ -383,7 +392,7 @@ Suppose we have an individual Jack who is currently 55 years old and intends to 
       <pubDate>Sun, 25 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-23-future-value/</guid>
-      <description>Calculating the potential future value of Bitcoin InvestmentThe year 2017 was a great year for cryptocurrencies and in particular for the crypto leader Bitcoin. Many people called crypotcurrencies the future of money, but so far 2018 has been lousy. The crypto currency advocates argue that the value of will increase in the future. We have seen many claims, from $50000 to $1000000 per bitcoin.</description>
+      <description>Calculating the potential future value of Bitcoin Investment The year 2017 was a great year for cryptocurrencies and in particular for the crypto leader Bitcoin. Many people called crypotcurrencies the future of money, but so far 2018 has been lousy. The crypto currency advocates argue that the value of will increase in the future. We have seen many claims, from $50000 to $1000000 per bitcoin.</description>
     </item>
     
     <item>
@@ -392,9 +401,9 @@ Suppose we have an individual Jack who is currently 55 years old and intends to 
       <pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-23-car-payment-py/</guid>
-      <description>Calculating the car loan paymentsLet’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
+      <description>Calculating the car loan payments Let’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
 Here is what we know
-Car price $15000Loan amount $10000Interest rates 7% per yearDuration 5 yearsPayments ? - We need to solve for this.</description>
+ Car price $15000 Loan amount $10000 Interest rates 7% per year Duration 5 years Payments ? - We need to solve for this.</description>
     </item>
     
     <item>
@@ -403,9 +412,9 @@ Here is what we know
       <pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-23-car-payment/</guid>
-      <description>Calculating the car loan paymentsLet’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
+      <description>Calculating the car loan payments Let’s say that you want to purchase a car for $15000. You only have $5000. A bank offers you $10000 at 7% interest which you have to pay back in 5 years. What is your yearly payment for the car?
 Here is what we know
-Car price $15000Loan amount $10000Interest rates 7% per yearDuration 5 yearsPayments ? - We need to solve for this.</description>
+ Car price $15000 Loan amount $10000 Interest rates 7% per year Duration 5 years Payments ? - We need to solve for this.</description>
     </item>
     
     <item>
@@ -414,8 +423,8 @@ Here is what we know
       <pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-22-billboard-py/</guid>
-      <description>Investment opportunity in advertising billboard.You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
-You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you don’t want to bother with that.</description>
+      <description>Investment opportunity in advertising billboard. You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
+You are required to pay $70000 today The investment is for 5 years The billboard pays an annual rent of $10000 Current interest rates are 5% After five years the billboard needs upgrades, but you don’t want to bother with that.</description>
     </item>
     
     <item>
@@ -424,8 +433,8 @@ You are required to pay $70000 todayThe investment is for 5 yearsThe billboard
       <pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-22-billboard/</guid>
-      <description>Investment opportunity in advertising billboard.You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
-You are required to pay $70000 todayThe investment is for 5 yearsThe billboard pays an annual rent of $10000Current interest rates are 5%After five years the billboard needs upgrades, but you don’t want to bother with that and you hope to sell it.</description>
+      <description>Investment opportunity in advertising billboard. You are a rich investor, and somebody comes to you with an investment opportunity to invest in an advertising billboard at a busy junction. The offer is as follows :
+You are required to pay $70000 today The investment is for 5 years The billboard pays an annual rent of $10000 Current interest rates are 5% After five years the billboard needs upgrades, but you don’t want to bother with that and you hope to sell it.</description>
     </item>
     
     <item>
@@ -434,7 +443,7 @@ You are required to pay $70000 todayThe investment is for 5 yearsThe billboard
       <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-20-irr-py/</guid>
-      <description>Calculating IRR in PythonCalculation of IRR in Python is easy with the numpy module.
+      <description>Calculating IRR in Python Calculation of IRR in Python is easy with the numpy module.
 Why do we need to calculate the IRR or Internal rate of returns?
 Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:
 Project 1 requires $800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.</description>
@@ -446,7 +455,7 @@ Project 1 requires $800 million in investment today, but it will pay 200,250,300
       <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/2018-03-20-irr/</guid>
-      <description>Calculating IRR in RCalculation of IRR in R is easy with the package called jrvFinance. You can install this package with the command install.packages(&#34;jrvFinance&#34;).
+      <description>Calculating IRR in R Calculation of IRR in R is easy with the package called jrvFinance. You can install this package with the command install.packages(&#34;jrvFinance&#34;).
 Why do we need to calculate the IRR or Internal rate of returns?
 Let us suppose a manager has an opportunity to invest in two projects, but can only choose one project. The projects are:
 Project 1 requires $800 million in investment today, but it will pay 200,250,300,350,400 million in payments each year for the next 5 years.</description>
@@ -459,8 +468,8 @@ Project 1 requires $800 million in investment today, but it will pay 200,250,300
       
       <guid>/post/2018-03-19-tvm_py/</guid>
       <description>In this article we will perform the same time value of money calculations using Python. First let us import the necessary modules/libraries.
-import pandas as pdimport numpy as npimport matplotlib.pyplot as pltCreating a pandas dataframe.
-# Setting interest rate to 5%r = 0.05cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5], &amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]})cf[&amp;quot;pv&amp;quot;] = cf[&amp;#39;cash_flow&amp;#39;] / (1.0 + r)**cf[&amp;#39;Year&amp;#39;]npv = cf[&amp;quot;pv&amp;quot;].sum()print(cf)## Year cash_flow pv## 0 1 100 95.</description>
+import pandas as pd import numpy as np import matplotlib.pyplot as plt Creating a pandas dataframe.
+# Setting interest rate to 5% r = 0.05 cf = pd.DataFrame({&amp;#39;Year&amp;#39;:[1,2,3,4,5], &amp;quot;cash_flow&amp;quot;:[100,100,100,100,100]}) cf[&amp;quot;pv&amp;quot;] = cf[&amp;#39;cash_flow&amp;#39;] / (1.0 + r)**cf[&amp;#39;Year&amp;#39;] npv = cf[&amp;quot;pv&amp;quot;].sum() print(cf) ## Year cash_flow pv ## 0 1 100 95.</description>
     </item>
     
     <item>
@@ -470,16 +479,7 @@ import pandas as pdimport numpy as npimport matplotlib.pyplot as pltCreating 
       
       <guid>/post/2018-03-18-tvm/</guid>
       <description>In this article we will perform basic financial calculations in R.
-Calculating the Net Present Value (NPV)Financial problems such as valuing an asset can be solved by calculating its net present value. The underlying principle in the calculation is that a dollar today is worth more than a dollar a year from now. This principle was well known to our ancestors thousands of year ago.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/post/candlestick/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/post/candlestick/</guid>
-      <description></description>
+Calculating the Net Present Value (NPV) Financial problems such as valuing an asset can be solved by calculating its net present value. The underlying principle in the calculation is that a dollar today is worth more than a dollar a year from now. This principle was well known to our ancestors thousands of year ago.</description>
     </item>
     
   </channel>
