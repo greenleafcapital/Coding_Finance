@@ -1,0 +1,92 @@
+---
+title: "Quantitative Investment Analysis - Chapter 1"
+author: "DD"
+date: "2020-04-21"
+description: "Chapter 1: The Time Value of Money"
+output:
+  html_document:
+    highlight: tango
+---
+
+In this post we will solve the end of the chapter practice problems from chapter 1 of the book.
+
+Here are the first 4 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_1_to_4.png)
+
+### Problem 1A
+
+Investment 1 and 2 have the same maturity and default risks. However investment 2 has low liquidity and therefore investment 2 has a higher interest rate of 0.5% to compensate for the liquidity risk. This is the liquidity risk premium.
+
+### Problem 1B
+
+Investment 4 and 5 have the same maturity (8 years). We know from problem 1 the liquidity risk premiums is 0.5%. The interest rate difference between Investment 4 and 5, is 2.5%. Investment 5 has low liquidity and high default risk therefore it has a higher interest rate. Since we know 0.5% is the liquidity premium, we can attribute 2.5% - 0.5% = 2% as default risk premium.
+
+### Problem 1C
+
+Investment 2 and 3 has the same liquidity and default risk, but investment 3 has a higher maturity hence it should have atleast 2.5% as the lower bound. Investment 3 and 4 has low default risk. But investment 3 has a lower maturity and lower liquidity. We know the liquidity premium is 0.5%, but we don't know the compensation for extra year of maturity. Therefore we could expect the interest rate for investment 3 to be between 2.5% and 4.5%.
+
+
+### Problem 2
+
+
+```{r message=FALSE, warning=FALSE}
+
+library(tidyverse)
+
+savings <- 20000
+interest <- 7/100
+years <- 20
+timeline <- rep(20000,years)
+
+# Create a function to calculate the future value
+# of payments
+
+get_payment_fv <- function(x,y) {
+  
+  payment <- (1 + interest) ^ (years - y) * x
+  return(payment)
+  
+}
+
+payments <- map2_dbl(.x = timeline,.y = 1:years,
+                 .f = get_payment_fv)
+
+print(timeline)
+print(payments)
+cat("The couple will have", paste0("$",round(sum(payments),2)),
+    "at the end of 20 years.")
+
+```
+
+### Problem 3
+
+```{r message=FALSE, warning=FALSE}
+
+cash_flow <- c(0, 0, 20000, 20000, 20000, 0, 0)
+interest <- 9/100
+years <- length(cash_flow)
+
+payments <- map2_dbl(.x = cash_flow,
+                     .y = 1:years,
+                     .f = get_payment_fv)
+
+cat("The client will have", paste0("$",round(sum(payments),2)),
+    "at the end of 6 years.")
+```
+
+### Problem 4
+
+```{r warning=FALSE, message=FALSE}
+
+college_fee <- 75000
+interest <- 6/100
+years <- 5
+
+pv <- (1 + interest) ^ (-years) * college_fee
+
+cat("The father will need to invest", paste0("$",round(pv,2)),
+    "today to have $75000 in 5 years at 6%")
+```
+
+

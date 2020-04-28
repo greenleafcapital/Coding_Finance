@@ -6,10 +6,21 @@
     <description>Recent content on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quantitative Investment Analysis - Chapter 1</title>
+      <link>/post/2020-04-21-investment-analysis-chapter1/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-04-21-investment-analysis-chapter1/</guid>
+      <description>In this post we will solve the end of the chapter practice problems from chapter 1 of the book.
+Here are the first 4 problems and their solutions in R
+Problem 1A Investment 1 and 2 have the same maturity and default risks. However investment 2 has low liquidity and therefore investment 2 has a higher interest rate of 0.5% to compensate for the liquidity risk. This is the liquidity risk premium.</description>
+    </item>
     
     <item>
       <title>Quantitative Investment Analysis in R and Python</title>

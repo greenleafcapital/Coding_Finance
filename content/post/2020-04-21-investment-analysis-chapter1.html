@@ -1,0 +1,86 @@
+---
+title: "Quantitative Investment Analysis - Chapter 1"
+author: "DD"
+date: "2020-04-21"
+description: "Chapter 1: The Time Value of Money"
+output:
+  html_document:
+    highlight: tango
+---
+
+
+
+<p>In this post we will solve the end of the chapter practice problems from chapter 1 of the book.</p>
+<p>Here are the first 4 problems and their solutions in R</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_1_to_4.png" /></p>
+<div id="problem-1a" class="section level3">
+<h3>Problem 1A</h3>
+<p>Investment 1 and 2 have the same maturity and default risks. However investment 2 has low liquidity and therefore investment 2 has a higher interest rate of 0.5% to compensate for the liquidity risk. This is the liquidity risk premium.</p>
+</div>
+<div id="problem-1b" class="section level3">
+<h3>Problem 1B</h3>
+<p>Investment 4 and 5 have the same maturity (8 years). We know from problem 1 the liquidity risk premiums is 0.5%. The interest rate difference between Investment 4 and 5, is 2.5%. Investment 5 has low liquidity and high default risk therefore it has a higher interest rate. Since we know 0.5% is the liquidity premium, we can attribute 2.5% - 0.5% = 2% as default risk premium.</p>
+</div>
+<div id="problem-1c" class="section level3">
+<h3>Problem 1C</h3>
+<p>Investment 2 and 3 has the same liquidity and default risk, but investment 3 has a higher maturity hence it should have atleast 2.5% as the lower bound. Investment 3 and 4 has low default risk. But investment 3 has a lower maturity and lower liquidity. We know the liquidity premium is 0.5%, but we don’t know the compensation for extra year of maturity. Therefore we could expect the interest rate for investment 3 to be between 2.5% and 4.5%.</p>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<pre class="r"><code>library(tidyverse)
+
+savings &lt;- 20000
+interest &lt;- 7/100
+years &lt;- 20
+timeline &lt;- rep(20000,years)
+
+# Create a function to calculate the future value
+# of payments
+
+get_payment_fv &lt;- function(x,y) {
+  
+  payment &lt;- (1 + interest) ^ (years - y) * x
+  return(payment)
+  
+}
+
+payments &lt;- map2_dbl(.x = timeline,.y = 1:years,
+                 .f = get_payment_fv)
+
+print(timeline)</code></pre>
+<pre><code>##  [1] 20000 20000 20000 20000 20000 20000 20000 20000 20000 20000 20000
+## [12] 20000 20000 20000 20000 20000 20000 20000 20000 20000</code></pre>
+<pre class="r"><code>print(payments)</code></pre>
+<pre><code>##  [1] 72330.55 67598.65 63176.30 59043.27 55180.63 51570.68 48196.90
+##  [8] 45043.83 42097.04 39343.03 36769.18 34363.72 32115.63 30014.61
+## [15] 28051.03 26215.92 24500.86 22898.00 21400.00 20000.00</code></pre>
+<pre class="r"><code>cat(&quot;The couple will have&quot;, paste0(&quot;$&quot;,round(sum(payments),2)),
+    &quot;at the end of 20 years.&quot;)</code></pre>
+<pre><code>## The couple will have $819909.85 at the end of 20 years.</code></pre>
+</div>
+<div id="problem-3" class="section level3">
+<h3>Problem 3</h3>
+<pre class="r"><code>cash_flow &lt;- c(0, 0, 20000, 20000, 20000, 0, 0)
+interest &lt;- 9/100
+years &lt;- length(cash_flow)
+
+payments &lt;- map2_dbl(.x = cash_flow,
+                     .y = 1:years,
+                     .f = get_payment_fv)
+
+cat(&quot;The client will have&quot;, paste0(&quot;$&quot;,round(sum(payments),2)),
+    &quot;at the end of 6 years.&quot;)</code></pre>
+<pre><code>## The client will have $77894.21 at the end of 6 years.</code></pre>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<pre class="r"><code>college_fee &lt;- 75000
+interest &lt;- 6/100
+years &lt;- 5
+
+pv &lt;- (1 + interest) ^ (-years) * college_fee
+
+cat(&quot;The father will need to invest&quot;, paste0(&quot;$&quot;,round(pv,2)),
+    &quot;today to have $75000 in 5 years at 6%&quot;)</code></pre>
+<pre><code>## The father will need to invest $56044.36 today to have $75000 in 5 years at 6%</code></pre>
+</div>
