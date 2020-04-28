@@ -27,8 +27,7 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Quantitative Investment Analysis - Chapter 1 :: Coding Finance — " />
 <meta name="twitter:description" content="In this post we will solve the end of the chapter practice problems from chapter 1 of the book.
-Here are the first 4 problems and their solutions in R
-Problem 1A Investment 1 and 2 have the same maturity and default risks. However investment 2 has low liquidity and therefore investment 2 has a higher interest rate of 0.5% to compensate for the liquidity risk. This is the liquidity risk premium." />
+Here are the first 6 problems and their solutions in R  Problem 1A Investment 1 and 2 have the same maturity and default risks. However investment 2 has low liquidity and therefore investment 2 has a higher interest rate of 0.5% to compensate for the liquidity risk. This is the liquidity risk premium." />
 <meta name="twitter:site" content="" />
 <meta name="twitter:creator" content="" />
 <meta name="twitter:image" content="/img/default.jpg">
@@ -122,8 +121,10 @@ Problem 1A Investment 1 and 2 have the same maturity and default risks. However 
 
 
 <p>In this post we will solve the end of the chapter practice problems from chapter 1 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
-<p>Here are the first 4 problems and their solutions in R</p>
-<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_1_to_4.png" /></p>
+<div id="here-are-the-first-6-problems-and-their-solutions-in-r" class="section level4">
+<h4>Here are the first 6 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_1_to_6.png" /></p>
+</div>
 <div id="problem-1a" class="section level3">
 <h3>Problem 1A</h3>
 <p>Investment 1 and 2 have the same maturity and default risks. However investment 2 has low liquidity and therefore investment 2 has a higher interest rate of 0.5% to compensate for the liquidity risk. This is the liquidity risk premium.</p>
@@ -194,6 +195,417 @@ pv &lt;- (1 + interest) ^ (-years) * college_fee
 cat(&quot;The father will need to invest&quot;, paste0(&quot;$&quot;,round(pv,2)),
     &quot;today to have $75000 in 5 years at 6%&quot;)</code></pre>
 <pre><code>## The father will need to invest $56044.36 today to have $75000 in 5 years at 6%</code></pre>
+</div>
+<div id="problem-5" class="section level3">
+<h3>Problem 5</h3>
+<pre class="r"><code>interest &lt;- 5/100
+years &lt;- 10
+
+df &lt;- tibble(year = 1:years,
+       cf = rep(100000,10)) %&gt;%
+  mutate(pv = cf / (1 + interest)^ year)
+
+print(df)</code></pre>
+<pre><code>## # A tibble: 10 x 3
+##     year     cf     pv
+##    &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1     1 100000 95238.
+##  2     2 100000 90703.
+##  3     3 100000 86384.
+##  4     4 100000 82270.
+##  5     5 100000 78353.
+##  6     6 100000 74622.
+##  7     7 100000 71068.
+##  8     8 100000 67684.
+##  9     9 100000 64461.
+## 10    10 100000 61391.</code></pre>
+<pre class="r"><code>lump_sum &lt;- sum(df$pv)
+
+cat(&quot;The client should expect&quot;, paste0(&quot;$&quot;,round(lump_sum, 2)), &quot;payment today.&quot;)</code></pre>
+<pre><code>## The client should expect $772173.49 payment today.</code></pre>
+</div>
+<div id="problem-6a" class="section level3">
+<h3>Problem 6A</h3>
+<pre class="r"><code>cf1 &lt;- c(0,0,0,rep(20000,4))
+
+interest &lt;- 8/100
+
+df &lt;- tibble(year = 1:length(cf1),
+             cf = cf1) %&gt;%
+  mutate(pv = cf / (1 + interest)^ year)
+
+print(df)</code></pre>
+<pre><code>## # A tibble: 7 x 3
+##    year    cf     pv
+##   &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1     0     0 
+## 2     2     0     0 
+## 3     3     0     0 
+## 4     4 20000 14701.
+## 5     5 20000 13612.
+## 6     6 20000 12603.
+## 7     7 20000 11670.</code></pre>
+<pre class="r"><code>pv &lt;- sum(df$pv)
+
+
+cat(&quot;We should be willing to pay&quot;,paste0(&quot;$&quot;,round(pv,2)),&quot;for the first investment&quot;)</code></pre>
+<pre><code>## We should be willing to pay $52585.46 for the first investment</code></pre>
+</div>
+<div id="problem-6b" class="section level3">
+<h3>Problem 6B</h3>
+<pre class="r"><code>cf2 &lt;- c(rep(20000,3), 30000)
+interest &lt;- 8/100
+
+df &lt;- tibble(year = 1:length(cf2),
+             cf = cf2) %&gt;%
+  mutate(pv = cf / (1 + interest)^ year)
+
+cat(&quot;We should be willing to pay&quot;,paste0(&quot;$&quot;,round(pv,2)),&quot;for the second investment&quot;)</code></pre>
+<pre><code>## We should be willing to pay $52585.46 for the second investment</code></pre>
+<div id="problems-7-to-15-and-their-solution-in-r" class="section level4">
+<h4>Problems 7 to 15 and their solution in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_7_to_15.png" /></p>
+</div>
+</div>
+<div id="problem-7" class="section level3">
+<h3>Problem 7</h3>
+<pre class="r"><code>cf &lt;- c(rep(0,2), rep(10000,4))
+
+interest &lt;- 8/100
+
+df &lt;- tibble(year = 1:length(cf),
+             cf = cf) %&gt;%
+  mutate(pv = cf / (1 + interest)^ year)
+
+print(df)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##    year    cf    pv
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1     0    0 
+## 2     2     0    0 
+## 3     3 10000 7938.
+## 4     4 10000 7350.
+## 5     5 10000 6806.
+## 6     6 10000 6302.</code></pre>
+<pre class="r"><code>pv &lt;- sum(df$pv)
+
+cat(&quot;We should set aside&quot;, paste0(&quot;$&quot;,round(pv,2)), &quot;today to pay for the college tuition&quot;)</code></pre>
+<pre><code>## We should set aside $28396.15 today to pay for the college tuition</code></pre>
+</div>
+<div id="problem-8" class="section level3">
+<h3>Problem 8</h3>
+<pre class="r"><code># This is a two part problem
+# First calculate the PV of 
+# Room and board required 
+# before college starts
+
+cf1 &lt;- rep(20000,4)
+interest &lt;- 5/100
+
+df1 &lt;- tibble(year = 1:length(cf1),
+       cf = cf1) %&gt;%
+  mutate(pv = cf / (1 + interest)^ year)
+
+fv &lt;- sum(df1$pv)
+
+cat(&quot;The client will need&quot;, fv, 
+    &quot;before college starts.&quot;)</code></pre>
+<pre><code>## The client will need 70919.01 before college starts.</code></pre>
+<pre class="r"><code># Now we need to calculate the
+# payment needed to get this 
+# Future value
+
+# We will use the FV value of annuity formula
+
+# FV = annuity((1 + r)^N - 1 / r)
+# we need to make 17 payments
+
+annuity &lt;- fv / (((1 + interest)^17 - 1) / 0.05)
+
+cat(&quot;The parent will need to make&quot;, paste0(&quot;$&quot;,round(annuity,2)), &quot;to save for room and board&quot;)</code></pre>
+<pre><code>## The parent will need to make $2744.5 to save for room and board</code></pre>
+</div>
+<div id="problem-9" class="section level3">
+<h3>Problem 9</h3>
+<pre class="r"><code># First we need to calculate the
+# Inflation adjusted cost of college
+# in the future
+
+inflation &lt;- 0.05
+tuition_today &lt;- 7000
+college_start_years &lt;- 18
+
+tuition_fv_year1 &lt;- (1 + inflation) ^ college_start_years * tuition_today
+
+cat(&quot;Tuition will be&quot;, paste0(&quot;C$&quot;,round(tuition_fv_year1,2), 
+                              &quot; for the first year, 18 years from now.&quot;))</code></pre>
+<pre><code>## Tuition will be C$16846.33 for the first year, 18 years from now.</code></pre>
+<pre class="r"><code># Now lets calculate the tuition payments for the next 3 years
+# Year 0 is 
+df &lt;- tibble(year = 1:4,
+             tuition = c(tuition_fv_year1, rep(0,3))) %&gt;%
+  mutate(tuition = (1 + inflation)^(year - 1) * tuition_fv_year1)
+print(df)</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##    year tuition
+##   &lt;int&gt;   &lt;dbl&gt;
+## 1     1  16846.
+## 2     2  17689.
+## 3     3  18573.
+## 4     4  19502.</code></pre>
+<pre class="r"><code># Now we need to PV these payments at
+# beginning of year 17
+
+interest &lt;- 6/100 # Expected returns
+
+df &lt;- df %&gt;%
+  mutate(pv = tuition / (1 + interest) ^ year)
+
+
+fv_total_tuition &lt;- sum(df$pv)
+
+# Now its an annuity problem as before
+
+annuity &lt;- fv_total_tuition / (((1 + interest)^17 - 1) / interest)
+annuity</code></pre>
+<pre><code>## [1] 2221.579</code></pre>
+<pre class="r"><code>cat(&quot;The couple will need to save&quot;, paste0(&quot;$&quot;,round(annuity,2)), &quot;each year for the expected college tuition.&quot;)</code></pre>
+<pre><code>## The couple will need to save $2221.58 each year for the expected college tuition.</code></pre>
+</div>
+<div id="problem-10" class="section level3">
+<h3>Problem 10</h3>
+<p>C. expected inflation.</p>
+</div>
+<div id="problem-11" class="section level3">
+<h3>Problem 11</h3>
+<p>C. Liquidity</p>
+</div>
+<div id="problem-12" class="section level3">
+<h3>Problem 12</h3>
+<pre class="r"><code>(1 + 0.04/365)^365 - 1</code></pre>
+<pre><code>## [1] 0.04080849</code></pre>
+<p>A. daily</p>
+</div>
+<div id="problem-13" class="section level3">
+<h3>Problem 13</h3>
+<pre class="r"><code>(1+0.07 / 4) ^ (4 * 6) * 75000</code></pre>
+<pre><code>## [1] 113733.2</code></pre>
+<p>A. $113733</p>
+</div>
+<div id="problem-14" class="section level3">
+<h3>Problem 14</h3>
+<pre class="r"><code>100000 / (1 + 0.025 / 52) ^ 52</code></pre>
+<pre><code>## [1] 97531.58</code></pre>
+<p>B. 97532</p>
+</div>
+<div id="problem-15" class="section level3">
+<h3>Problem 15</h3>
+<pre class="r"><code># Get the Effective annual rate
+rate &lt;- (1 + 0.03 / 365) ^ 365 - 1
+
+# Get the months
+# needed to quadruple the PV
+
+log(1000000 / 250000) /  log(1 + rate) * 12</code></pre>
+<pre><code>## [1] 554.5405</code></pre>
+<p>A. 555</p>
+<div id="problems-16-to-22-and-their-solution-in-r" class="section level4">
+<h4>Problems 16 to 22 and their solution in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_16_to_22.png" /></p>
+</div>
+</div>
+<div id="problem-16" class="section level3">
+<h3>Problem 16</h3>
+<pre class="r"><code># 3% continuously compounding
+# for 4 years
+
+continuous_compounding &lt;- exp(0.03 * 4) * 1000000
+
+daily_compounding &lt;- (1 + 0.03 / 365) ^ (4 * 365) * 1000000
+
+continuous_compounding - daily_compounding</code></pre>
+<pre><code>## [1] 5.55994</code></pre>
+<p>B. €6</p>
+</div>
+<div id="problem-17" class="section level3">
+<h3>Problem 17</h3>
+<pre class="r"><code>rate &lt;- 4/100
+pmt &lt;- 300
+years &lt;- 5
+
+pv &lt;- (pmt / rate * (1 - 1/(1 + rate)^years)) * (1 + rate)
+
+pv</code></pre>
+<pre><code>## [1] 1388.969</code></pre>
+<p>B. $1389</p>
+</div>
+<div id="problem-18" class="section level3">
+<h3>Problem 18</h3>
+<pre class="r"><code>quarterly_div &lt;- 2
+yearly_div &lt;- quarterly_div * 4
+
+# PV a year from now
+
+fv &lt;- yearly_div / 0.06
+
+# Current price
+
+pv &lt;- fv / (1 + 0.06)
+pv</code></pre>
+<pre><code>## [1] 125.7862</code></pre>
+<p>B. $126</p>
+</div>
+<div id="problem-19" class="section level3">
+<h3>Problem 19</h3>
+<pre class="r"><code>rate &lt;- 4/100
+ear &lt;- (1 + rate / 2) ^ 2
+
+  df &lt;- tibble(year = 1:4,
+               years_remaining = 4:1,
+               cf = c(4000, 8000, 7000, 10000)) %&gt;%
+  mutate(fv = cf * ((1 + 0.02) ^ ((years_remaining - 1) * 2)))
+
+df</code></pre>
+<pre><code>## # A tibble: 4 x 4
+##    year years_remaining    cf     fv
+##   &lt;int&gt;           &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1               4  4000  4505.
+## 2     2               3  8000  8659.
+## 3     3               2  7000  7283.
+## 4     4               1 10000 10000</code></pre>
+<pre class="r"><code>fv &lt;- sum(df$fv)
+
+fv</code></pre>
+<pre><code>## [1] 30446.91</code></pre>
+<p>B. $30447</p>
+</div>
+<div id="problem-20" class="section level3">
+<h3>Problem 20</h3>
+<pre class="r"><code># continuously
+
+cont &lt;- exp(0.075 * 6) * 500000
+
+# daily
+
+d &lt;- (1 + 0.07 / 365) ^ (6 * 365) * 500000
+
+# Semiannually
+
+s &lt;- (1 + 0.08 / 2) ^ (6 * 2) * 500000
+
+tibble(continuously = cont,
+       daily = d,
+       semiannually = s)</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##   continuously   daily semiannually
+##          &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;
+## 1      784156. 760950.      800516.</code></pre>
+<p>C. 8.0% compounded semiannually</p>
+</div>
+<div id="problem-21" class="section level3">
+<h3>Problem 21</h3>
+<pre class="r"><code>perp_payment &lt;- 2000 / (0.06 / 12)
+
+perp_payment</code></pre>
+<pre><code>## [1] 4e+05</code></pre>
+<p>C. greater than the lump sum</p>
+</div>
+<div id="problem-22" class="section level3">
+<h3>Problem 22</h3>
+<pre class="r"><code>ordinary_annuity &lt;- tibble(year = 1:10,
+       cf = 2000) %&gt;%
+  mutate(pv = cf / (1 + 0.05) ^ year) %&gt;%
+  summarise(s = sum(pv)) %&gt;%
+  .[[1]]
+
+annuity_due &lt;- ordinary_annuity * 1.05
+annuity_due</code></pre>
+<pre><code>## [1] 16215.64</code></pre>
+<p>B. 16216</p>
+<div id="problems-23-to-28-and-their-solution-in-r" class="section level4">
+<h4>Problems 23 to 28 and their solution in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_23_to_28.png" /></p>
+</div>
+</div>
+<div id="problem-23" class="section level3">
+<h3>Problem 23</h3>
+<pre class="r"><code>rate &lt;- 6/100
+pmt &lt;- 50000
+years &lt;- 4
+# PV of ordinary annuity
+# This is also the future value
+
+fv &lt;- (pmt / rate * (1 - 1/(1 + rate)^years))
+
+# Calculate the PV
+
+pv &lt;- fv / (1 + rate) ^ 17
+pv</code></pre>
+<pre><code>## [1] 64340.85</code></pre>
+<p>B. 64341</p>
+</div>
+<div id="problem-24" class="section level3">
+<h3>Problem 24</h3>
+<pre class="r"><code>rate &lt;- 12/100
+
+tibble(year = c(1,2,5),
+       cf = c(100000, 150000, -10000)) %&gt;%
+  mutate(pv = cf / (1 + rate) ^ year) %&gt;%
+  summarise(s = sum(pv)) %&gt;%
+  .[[1]]</code></pre>
+<pre><code>## [1] 203190.5</code></pre>
+<p>B. 203191</p>
+</div>
+<div id="problem-25" class="section level3">
+<h3>Problem 25</h3>
+<pre class="r"><code>rate &lt;- 0.06/12
+n &lt;- 12 * 5
+
+pv_factor &lt;- (1 - (1/(1+rate) ^ n)) / rate
+
+payment &lt;- 200000 / pv_factor
+
+payment</code></pre>
+<pre><code>## [1] 3866.56</code></pre>
+<p>B. 3866</p>
+</div>
+<div id="problem-26" class="section level3">
+<h3>Problem 26</h3>
+<pre class="r"><code>rate &lt;- 0.06 / 4
+n = 4 * 10
+
+25000 / (((1 + rate) ^ n - 1) / rate)</code></pre>
+<pre><code>## [1] 460.6775</code></pre>
+<p>A. 460.68</p>
+<pre class="r"><code>(50000 / (1 + 0.04)^20) * (1 + 0.04) ^ 5</code></pre>
+<pre><code>## [1] 27763.23</code></pre>
+<p>B. $27763</p>
+</div>
+<div id="problem-28" class="section level3">
+<h3>Problem 28</h3>
+<p>Answer choices are</p>
+<ul>
+<li>21670</li>
+<li>22890</li>
+<li>22950</li>
+</ul>
+<pre class="r"><code>p &lt;- 0.035 * 20000
+p</code></pre>
+<pre><code>## [1] 700</code></pre>
+<pre class="r"><code>rate &lt;- 0.02/12
+n &lt;- 4 * 12
+
+fv_payments &lt;- tibble(years_remaining = 3:0,
+       cf = p) %&gt;%
+  mutate(n = years_remaining * 12) %&gt;%
+  mutate(fv = (1 + rate) ^ n * cf) %&gt;%
+  summarise(s = sum(fv))
+
+
+20000 + fv_payments</code></pre>
+<pre><code>##          s
+## 1 22885.92</code></pre>
+<p>B. 22890</p>
 </div>
 
     </div>

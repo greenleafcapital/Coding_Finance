@@ -10,9 +10,9 @@ output:
 
 In this post we will solve the end of the chapter practice problems from chapter 1 of the [book](https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X).
 
-Here are the first 4 problems and their solutions in R
+#### Here are the first 6 problems and their solutions in R
 
-![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_1_to_4.png)
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_1_to_6.png)
 
 ### Problem 1A
 
@@ -89,4 +89,453 @@ cat("The father will need to invest", paste0("$",round(pv,2)),
     "today to have $75000 in 5 years at 6%")
 ```
 
+### Problem 5
 
+```{r}
+
+interest <- 5/100
+years <- 10
+
+df <- tibble(year = 1:years,
+       cf = rep(100000,10)) %>%
+  mutate(pv = cf / (1 + interest)^ year)
+
+print(df)
+
+lump_sum <- sum(df$pv)
+
+cat("The client should expect", paste0("$",round(lump_sum, 2)), "payment today.")
+
+```
+
+### Problem 6A
+
+```{r}
+
+cf1 <- c(0,0,0,rep(20000,4))
+
+interest <- 8/100
+
+df <- tibble(year = 1:length(cf1),
+             cf = cf1) %>%
+  mutate(pv = cf / (1 + interest)^ year)
+
+print(df)
+
+pv <- sum(df$pv)
+
+
+cat("We should be willing to pay",paste0("$",round(pv,2)),"for the first investment")
+
+
+```
+
+### Problem 6B
+
+```{r}
+
+cf2 <- c(rep(20000,3), 30000)
+interest <- 8/100
+
+df <- tibble(year = 1:length(cf2),
+             cf = cf2) %>%
+  mutate(pv = cf / (1 + interest)^ year)
+
+cat("We should be willing to pay",paste0("$",round(pv,2)),"for the second investment")
+
+```
+
+#### Problems 7 to 15 and their solution in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_7_to_15.png)
+
+### Problem 7
+
+```{r}
+
+cf <- c(rep(0,2), rep(10000,4))
+
+interest <- 8/100
+
+df <- tibble(year = 1:length(cf),
+             cf = cf) %>%
+  mutate(pv = cf / (1 + interest)^ year)
+
+print(df)
+  
+pv <- sum(df$pv)
+
+cat("We should set aside", paste0("$",round(pv,2)), "today to pay for the college tuition")
+
+```
+
+### Problem 8
+
+```{r}
+
+# This is a two part problem
+# First calculate the PV of 
+# Room and board required 
+# before college starts
+
+cf1 <- rep(20000,4)
+interest <- 5/100
+
+df1 <- tibble(year = 1:length(cf1),
+       cf = cf1) %>%
+  mutate(pv = cf / (1 + interest)^ year)
+
+fv <- sum(df1$pv)
+
+cat("The client will need", fv, 
+    "before college starts.")
+
+# Now we need to calculate the
+# payment needed to get this 
+# Future value
+
+# We will use the FV value of annuity formula
+
+# FV = annuity((1 + r)^N - 1 / r)
+# we need to make 17 payments
+
+annuity <- fv / (((1 + interest)^17 - 1) / 0.05)
+
+cat("The parent will need to make", paste0("$",round(annuity,2)), "to save for room and board")
+
+```
+
+### Problem 9
+
+```{r}
+
+# First we need to calculate the
+# Inflation adjusted cost of college
+# in the future
+
+inflation <- 0.05
+tuition_today <- 7000
+college_start_years <- 18
+
+tuition_fv_year1 <- (1 + inflation) ^ college_start_years * tuition_today
+
+cat("Tuition will be", paste0("C$",round(tuition_fv_year1,2), 
+                              " for the first year, 18 years from now."))
+
+# Now lets calculate the tuition payments for the next 3 years
+# Year 0 is 
+df <- tibble(year = 1:4,
+             tuition = c(tuition_fv_year1, rep(0,3))) %>%
+  mutate(tuition = (1 + inflation)^(year - 1) * tuition_fv_year1)
+print(df)
+
+# Now we need to PV these payments at
+# beginning of year 17
+
+interest <- 6/100 # Expected returns
+
+df <- df %>%
+  mutate(pv = tuition / (1 + interest) ^ year)
+
+
+fv_total_tuition <- sum(df$pv)
+
+# Now its an annuity problem as before
+
+annuity <- fv_total_tuition / (((1 + interest)^17 - 1) / interest)
+annuity
+
+cat("The couple will need to save", paste0("$",round(annuity,2)), "each year for the expected college tuition.")
+
+```
+
+### Problem 10
+
+C. expected inflation.
+
+### Problem 11
+
+C. Liquidity
+
+### Problem 12
+
+```{r}
+
+(1 + 0.04/365)^365 - 1
+
+```
+
+A. daily
+
+### Problem 13
+
+```{r}
+
+(1+0.07 / 4) ^ (4 * 6) * 75000
+
+```
+
+A. \$113733
+
+### Problem 14
+
+```{r}
+
+100000 / (1 + 0.025 / 52) ^ 52
+
+```
+
+B. 97532
+
+### Problem 15
+
+```{r}
+
+# Get the Effective annual rate
+rate <- (1 + 0.03 / 365) ^ 365 - 1
+
+# Get the months
+# needed to quadruple the PV
+
+log(1000000 / 250000) /  log(1 + rate) * 12
+
+```
+
+A. 555
+
+#### Problems 16 to 22 and their solution in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_16_to_22.png)
+
+
+### Problem 16
+
+```{r}
+
+# 3% continuously compounding
+# for 4 years
+
+continuous_compounding <- exp(0.03 * 4) * 1000000
+
+daily_compounding <- (1 + 0.03 / 365) ^ (4 * 365) * 1000000
+
+continuous_compounding - daily_compounding
+
+```
+B. €6
+
+### Problem 17
+
+```{r}
+
+rate <- 4/100
+pmt <- 300
+years <- 5
+
+pv <- (pmt / rate * (1 - 1/(1 + rate)^years)) * (1 + rate)
+
+pv
+
+
+```
+
+B. \$1389
+
+### Problem 18
+
+```{r}
+
+quarterly_div <- 2
+yearly_div <- quarterly_div * 4
+
+# PV a year from now
+
+fv <- yearly_div / 0.06
+
+# Current price
+
+pv <- fv / (1 + 0.06)
+pv
+
+```
+B. $126
+
+### Problem 19
+
+```{r}
+
+rate <- 4/100
+ear <- (1 + rate / 2) ^ 2
+
+  df <- tibble(year = 1:4,
+               years_remaining = 4:1,
+               cf = c(4000, 8000, 7000, 10000)) %>%
+  mutate(fv = cf * ((1 + 0.02) ^ ((years_remaining - 1) * 2)))
+
+df
+
+fv <- sum(df$fv)
+
+fv
+
+```
+
+B. $30447
+
+### Problem 20
+
+```{r}
+
+# continuously
+
+cont <- exp(0.075 * 6) * 500000
+
+# daily
+
+d <- (1 + 0.07 / 365) ^ (6 * 365) * 500000
+
+# Semiannually
+
+s <- (1 + 0.08 / 2) ^ (6 * 2) * 500000
+
+tibble(continuously = cont,
+       daily = d,
+       semiannually = s)
+```
+
+C. 8.0% compounded semiannually
+
+### Problem 21
+
+```{r}
+
+perp_payment <- 2000 / (0.06 / 12)
+
+perp_payment
+
+```
+
+C. greater than the lump sum
+
+### Problem 22
+
+```{r}
+
+ordinary_annuity <- tibble(year = 1:10,
+       cf = 2000) %>%
+  mutate(pv = cf / (1 + 0.05) ^ year) %>%
+  summarise(s = sum(pv)) %>%
+  .[[1]]
+
+annuity_due <- ordinary_annuity * 1.05
+annuity_due
+
+```
+
+B. 16216
+
+#### Problems 23 to 28 and their solution in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/tvm/tvm_pp_23_to_28.png)
+
+### Problem 23
+
+```{r}
+
+rate <- 6/100
+pmt <- 50000
+years <- 4
+# PV of ordinary annuity
+# This is also the future value
+
+fv <- (pmt / rate * (1 - 1/(1 + rate)^years))
+
+# Calculate the PV
+
+pv <- fv / (1 + rate) ^ 17
+pv
+
+```
+
+B. 64341
+
+### Problem 24
+
+```{r}
+
+rate <- 12/100
+
+tibble(year = c(1,2,5),
+       cf = c(100000, 150000, -10000)) %>%
+  mutate(pv = cf / (1 + rate) ^ year) %>%
+  summarise(s = sum(pv)) %>%
+  .[[1]]
+
+```
+
+B. 203191
+
+### Problem 25
+
+```{r}
+
+rate <- 0.06/12
+n <- 12 * 5
+
+pv_factor <- (1 - (1/(1+rate) ^ n)) / rate
+
+payment <- 200000 / pv_factor
+
+payment
+```
+
+B. 3866
+
+### Problem 26
+
+```{r}
+
+rate <- 0.06 / 4
+n = 4 * 10
+
+25000 / (((1 + rate) ^ n - 1) / rate)
+
+```
+
+A. 460.68
+
+```{r}
+
+(50000 / (1 + 0.04)^20) * (1 + 0.04) ^ 5
+
+```
+B. $27763
+
+### Problem 28
+
+Answer choices are 
+
+- 21670
+- 22890
+- 22950
+
+```{r}
+
+p <- 0.035 * 20000
+p
+
+rate <- 0.02/12
+n <- 4 * 12
+
+fv_payments <- tibble(years_remaining = 3:0,
+       cf = p) %>%
+  mutate(n = years_remaining * 12) %>%
+  mutate(fv = (1 + rate) ^ n * cf) %>%
+  summarise(s = sum(fv))
+
+
+20000 + fv_payments
+
+
+```
+B. 22890
