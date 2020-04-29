@@ -1,0 +1,396 @@
+---
+title: "Quantitative Investment Analysis - Chapter 2"
+author: "DD"
+date: "2020-04-23"
+description: "Chapter 2: Discounted Cash Flow Applications"
+output:
+  html_document:
+    highlight: tango
+---
+
+In this post we will solve the end of the chapter practice problems from chapter 2 of the [book](https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X).
+
+### Problem 1
+
+Waldrup Industries is considering a proposal for a joint venture that will require
+an investment of C$13 million. At the end of the fifth year, Waldrup's joint venture
+partner will buy out Waldrup's interest for C$10 million. Waldrup's chief financial
+officer has estimated that the appropriate discount rate for this proposal is 12
+percent. The expected cash flows are given below
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(knitr)
+
+options(scipen = 999)
+df <- tibble(year = 0:5,
+             cf = c(-13000000,3000000,3000000,3000000,3000000,10000000))
+
+df
+
+```
+
+- 1. Calculate this proposal's NPV.
+- 2. Make a recommendation to the CFO (chief financial officer) concerning
+whether Waldrup should enter into this joint venture.
+
+```{r}
+
+rate <- 0.12
+df %>%
+  mutate(pv = cf / (1 + rate)^year) %>%
+  summarise(npv = sum(pv))
+
+```
+
+Since the NPV of the project is C$1786317, Waldrup should take this project.
+
+### Problem 2
+
+Waldrup Industries has committed to investing C$5,500,000 in a project with
+expected cash flows of C\$1,000,000 at the end of Year 1, C\$1,500,000 at the end
+of Year 4, and C$7,000,000 at the end of Year 5.
+
+- 1. Demonstrate that the internal rate of return of the investment is 13.51 percent.
+- 2. State how the internal rate of return of the investment would change if
+Waldrup's opportunity cost of capital were to increase by 5 percentage
+points.
+
+```{r message=FALSE, warning=FALSE}
+
+# Use FinCal library to
+# calculate the IRR
+# install.packages('FinCal')
+
+library(FinCal)
+
+cf <- c(-5500000, 1000000, 0, 0, 1500000, 7000000)
+
+irr(cf)
+
+```
+
+1. IRR of the investment is 13.51
+2. The increase in cost of capital will have no effect on IRR
+
+### Problem 3
+
+Bestfoods, Inc. is planning to spend $10 million on advertising. The company
+expects this expenditure to result in annual incremental cash flows of $1.6 million
+in perpetuity. The corporate opportunity cost of capital for this type of project is
+12.5 percent.
+
+1. Calculate the NPV for the planned advertising.
+2. Calculate the internal rate of return.
+3. Should the company go forward with the planned advertising? Explain.
+
+```{r}
+
+1.6/0.125 - 10
+
+```
+
+1. The NPV is $2.8 millions
+
+```{r}
+
+# When cash flows are perpetual
+# investment = cash_flow / IRR
+
+# IRR is
+
+1.6 / 10
+
+```
+
+2. IRR is 16%
+
+3. Yes. Since NPV is positive and the IRR of 16% is more than the cost of capital of 12.5%
+
+### Problem 4
+
+Trilever is planning to establish a new factory overseas. The project requires an
+initial investment of $15 million. Management intends to run this factory for six
+years and then sell it to a local entity. Trilever's finance department has estimated
+the following yearly cash flows:
+
+```{r}
+
+df <- tibble(year = 0:6,
+             cf = c(-15000000, rep(4000000,5), 7000000))
+
+df
+
+```
+
+Trilever's CFO decides that the company's cost of capital of 19 percent is an
+appropriate hurdle rate for this project.
+
+1. Calculate the internal rate of return of this project.
+2. Make a recommendation to the CFO concerning whether to undertake this
+project.
+
+```{r}
+
+irr(df$cf)
+
+```
+
+1. IRR for this project is 18.24%
+
+2. Since the project's IRR of 18.24% is less than the hurdle rate of 19%. The CFO should not undertake this project.
+
+### Problem 5
+
+Westcott–Smith is a privately held investment management company. Two other
+investment counseling companies, which want to be acquired, have contacted
+Westcott–Smith about purchasing their business. Company A's price is £2 million.
+Company B's price is £3 million. After analysis, Westcott–Smith estimates that
+Company A's profitability is consistent with a perpetuity of £300,000 a year.
+Company B's prospects are consistent with a perpetuity of £435,000 a year.
+Westcott–Smith has a budget that limits acquisitions to a maximum purchase cost
+of £4 million. Its opportunity cost of capital relative to undertaking either project
+is 12 percent.
+
+1. Determine which company or companies (if any) Westcott–Smith should
+purchase according to the NPV rule.
+2. Determine which company or companies (if any) Westcott–Smith should
+purchase according to the IRR rule.
+3. State which company or companies (if any) Westcott–Smith should purchase.
+Justify your answer.
+
+```{r}
+
+npv1 <- (300000 / 0.12) - 2000000
+
+npv2 <- (435000 / 0.12) - 3000000
+
+cat("NPV of company A is", npv1,
+    "\nNPV of company B is", npv2)
+```
+
+1. Buy companies have a positive NPV. But Company 2 has a larger NPV. If they can only buy 1 company then they should buy company B.
+
+
+```{r}
+
+# IRR of company A
+
+irr1 <-  300000 / 2000000
+
+# IRR of company B
+
+irr2 <- 435000 / 3000000
+
+cat("IRR of company A is", irr1,
+    "\nIRR of company B is", irr2,
+    "\nHurdle rate is 12%")
+
+
+```
+2. Both companies have IRR above the hurdle rate of 12%. If they can only buy 1 company then they should buy company A, since it has a higher IRR.
+
+3. When NPV and IRR rules are in conflict we should follow the NPV method since it directly relates to shareholder's wealth. Hence they should buy Company B
+
+### Problem 6
+
+John Wilson buys 150 shares of ABM on 1 January 2012 at a price of $156.30 per
+share. A dividend of $10 per share is paid on 1 January 2013. Assume that this
+dividend is not reinvested. Also on 1 January 2013, Wilson sells 100 shares at a
+price of \$165 per share. On 1 January 2014, he collects a dividend of $15 per
+share (on 50 shares) and sells his remaining 50 shares at $170 per share.
+
+1. Write the formula to calculate the money-weighted rate of return on Wilson's
+portfolio.
+2. Using any method, compute the money-weighted rate of return.
+3. Calculate the time-weighted rate of return on Wilson's portfolio.
+4. Describe a set of circumstances for which the money-weighted rate of return
+is an appropriate return measure for Wilson's portfolio.
+5. Describe a set of circumstances for which the time-weighted rate of return is
+an appropriate return measure for Wilson's portfolio.
+
+```{r, message=FALSE, warning=FALSE}
+
+# First build our cash flow table
+
+library(lubridate)
+
+df <- tibble(date = ymd(c('2012-1-1', '2013-1-1', '2013-1-1', '2014-1-1', '2014-1-1')),
+             cf = c(150 * -156.30, 150 * 10, 100 * 165, 50 * 15, 50 * 170))
+
+df
+
+```
+
+```{r}
+
+# next we group it by date.
+
+df <- df %>%
+  group_by(date) %>%
+  summarise(cash_flow = sum(cf))
+
+df
+```
+
+1. The formula for Money weighted returns is PV(outflows) = PV(inflow)
+
+
+```{r}
+
+# Now calculate the Money weighted returns
+
+irr(df$cash_flow)
+
+```
+
+2. The money weighted returns is 12%
+
+```{r}
+
+# Cash flow period 1
+beg_value <- (150 * 156.30) # stock purchase
+end_value <- (10 * 150 + 150 * 165) 
+
+r1 <- (end_value - beg_value) / beg_value
+r1
+
+# Cash flow period 2
+beg_value <- (50 * 165) # remaining stocks
+end_value <- (15 * 50 + 50 * 170) # Dividends
+
+r2 <- (end_value - beg_value) / beg_value
+r2
+
+# Time weighted returns
+t <- sqrt((1 + r1) * (1 + r2))
+t - 1
+
+```
+
+3. The time weighted returns is 12.04%
+
+4. Money weighted returns are influenced by cash inflow and outflow. If the investor has control over the cash flows then money weighted returns is appropriate. Since Wilson appears to be investing personal money, and has control over the cash flows money weighted returns method may be more appropriate for him.
+
+5. If Wilson was an investment manager, then time weighted returns method is more appropriate.
+
+### Problem 7
+
+Mario Luongo and Bob Weaver both purchase the same stock for €100. One year
+later, the stock price is €110 and it pays a dividend of €5 per share. Weaver
+decides to buy another share at €110 (he does not reinvest the €5 dividend,
+however). Luongo also spends the €5 per share dividend but does not transact in
+the stock. At the end of the second year, the stock pays a dividend of €5 per share
+but its price has fallen back to €100. Luongo and Weaver then decide to sell their
+entire holdings of this stock. The performance for Luongo and Weaver's
+investments are as follows:
+
+Luongo: Time-weighted return = 4.77 percent
+Money-weighted return = 5.00 percent
+Weaver: Money-weighted return = 1.63 percent
+
+Briefly explain any similarities and differences between the performance of
+Luongo's and Weaver's investments.
+
+A. Similarities - Since the time weighted returns don't take into account the addition and subtraction of funds, both investors will have the same time weighted returns.
+
+Differences - The money weighted returns will differ for both investors, since Weaver decided to invest more money in the stock. His money weighted returns are lower than Luongo
+
+See calculation below
+
+```{r}
+
+# Time weighted returns for Luongo
+# Cash flow period 1
+beg_value <- (100) # stock purchase
+end_value <- (5 + 110) 
+
+r1 <- (end_value - beg_value) / beg_value
+
+# Cash flow period 2
+beg_value <- (110) 
+end_value <- (5 + 100) 
+  
+r2 <- (end_value - beg_value) / beg_value
+
+tw_luongo <- sqrt((1 + r1) * (1 + r2))
+
+tw_luongo - 1
+
+# Time weighted returns for Weaver
+# Cash flow period 1
+beg_value <- (100) # stock purchase
+end_value <- (5 + 110) 
+
+r1 <- (end_value - beg_value) / beg_value
+
+# Cash flow period 1
+beg_value <- (110 + 110) # stock purchase
+end_value <- (10 + 200) 
+  
+r2 <- (end_value - beg_value) / beg_value
+
+tw_weaver <- sqrt((1 + r1) * (1 + r2))
+
+tw_weaver - 1
+
+cat("Time weighted returns for Luongo", tw_luongo - 1,
+    "\nMoney weighted returns for Weaver", tw_weaver - 1)
+
+```
+
+
+```{r}
+
+# Money weighted returns for Luongo
+
+mw_luongo <- irr(c(-100, 5, 105))
+
+# Money weighted returns for Weaver
+
+mw_weaver <- irr(c(-100, -105, 210))
+
+cat("Money weighted returns for Luongo", mw_luongo,
+    "\nMoney weighted returns for Weaver", mw_weaver)
+
+```
+
+A Treasury bill with a face value of $100,000 and 120 days until maturity is
+selling for $98,500.
+1. What is the T-bill's bank discount yield?
+2. What is the T-bill's money market yield?
+3. What is the T-bill's effective annual yield?
+
+```{r}
+
+bank_discount_yield <- ((100000 - 98500) / 100000) * (360 / 120)
+
+cat("T-bill's bank discount yield", bank_discount_yield)
+
+```
+
+1. T-bill's bank discount yield 0.045
+
+```{r}
+
+m <- (360 * bank_discount_yield) / (360 - 120 * bank_discount_yield)
+
+cat("T-bill's money market yield", m)
+```
+2. T-bill's money market yield is 0.04568528
+
+```{r}
+
+# Holding period yield
+hpy <- (100000 - 98500) / 98500
+
+# Annualize it
+
+a <- (1 + hpy)^(365/120) - 1
+
+cat("T-bill's effective annual yield is", a)
+
+```
+3. T-bill's effective annual yield is 0.04704368
+
+

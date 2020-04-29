@@ -25,6 +25,16 @@ Here are the first 6 problems and their solutions in R library(tidyverse)  Probl
     </item>
     
     <item>
+      <title>Quantitative Investment Analysis - Chapter 2</title>
+      <link>/post/2020-04-23-investment-analysis-chapter2/</link>
+      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-04-23-investment-analysis-chapter2/</guid>
+      <description>In this post we will solve the end of the chapter practice problems from chapter 2 of the book.
+Problem 1 Waldrup Industries is considering a proposal for a joint venture that will require an investment of C$13 million. At the end of the fifth year, Waldrup’s joint venture partner will buy out Waldrup’s interest for C$10 million. Waldrup’s chief financial officer has estimated that the appropriate discount rate for this proposal is 12 percent.</description>
+    </item>
+    
+    <item>
       <title>Quantitative Investment Analysis - Chapter 1</title>
       <link>/post/2020-04-21-investment-analysis-chapter1/</link>
       <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
