@@ -140,8 +140,12 @@ p_div_telecom &lt;- 0.01
 
 p &lt;- p_div_telecom / p_telecom
 
-cat(&quot;What is the probability that a stock is dividend paying, given that it is a telecom stock that has met your stock selection criteria is&quot;, p)</code></pre>
-<pre><code>## What is the probability that a stock is dividend paying, given that it is a telecom stock that has met your stock selection criteria is 0.2</code></pre>
+cat(&quot;The probability that a stock is dividend paying, 
+given that it is a telecom stock that 
+has met your stock selection criteria is&quot;, p)</code></pre>
+<pre><code>## The probability that a stock is dividend paying, 
+## given that it is a telecom stock that 
+## has met your stock selection criteria is 0.2</code></pre>
 </div>
 <div id="problem-2" class="section level3">
 <h3>Problem 2</h3>
@@ -191,6 +195,441 @@ Balance sheet impact manageable
 </tr>
 </tbody>
 </table>
+<p>If the criteria are independent, how many companies will pass the screen?</p>
+<pre class="r"><code>p &lt;- (0.2 * 0.45 * 0.78)
+c &lt;- 500 * p
+
+cat(paste0(p*100,&quot;%&quot;), &quot;or&quot;, round(c), &quot;companies will pass the screening.&quot;)</code></pre>
+<pre><code>## 7.02% or 35 companies will pass the screening.</code></pre>
+</div>
+<div id="problem-3" class="section level3">
+<h3>Problem 3</h3>
+<p>You apply both valuation criteria and financial strength criteria in choosing stocks. The probability that a randomly selected stock (from your investment universe) meets your valuation criteria is 0.25. Given that a stock meets your valuation criteria, the probability that the stock meets your financial strength criteria is 0.40. What is the probability that a stock meets both your valuation and financial strength criteria?</p>
+<pre class="r"><code>p_val &lt;- 0.25
+p_fin &lt;- 0.4
+
+p &lt;- p_val * p_fin
+
+cat(&quot;The probability that a stock meets both your 
+valuation and financial strength criteria is&quot;, p)</code></pre>
+<pre><code>## The probability that a stock meets both your 
+## valuation and financial strength criteria is 0.1</code></pre>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<p>Suppose the prospects for recovering principal for a defaulted bond issue depend on which of two economic scenarios prevails.</p>
+<ul>
+<li>Scenario 1 has probability 0.75 and will result in recovery of $0.90 per $1 principal value with probability 0.45, or in recovery of $0.80 per $1 principal value with probability 0.55.</li>
+<li><p>Scenario 2 has probability 0.25 and will result in recovery of $0.50 per $1 principal value with probability 0.85, or in recovery of $0.40 per $1 principal value with probability 0.15.</p></li>
+<li>A Compute the probability of each of the four possible recovery amounts: $0.90, $0.80, $0.50, and $0.40.</li>
+<li>B Compute the expected recovery, given the first scenario.</li>
+<li>C Compute the expected recovery, given the second scenario.</li>
+<li><p>D Compute the expected recovery.</p></li>
+</ul>
+<pre class="r"><code># Probability Recovery of $0.90
+
+p_90 &lt;- (0.75) * (0.45)
+
+# Probability Recovery of $0.80
+
+p_80 &lt;- (0.75) * (0.55)
+
+# Probability Recovery of $0.50
+
+p_50 &lt;- (0.25) * (0.85)
+
+# Probability Recovery of $0.40
+
+p_40 &lt;- (0.25) * (0.15)
+
+cat(&quot;The probability of each of the four possible recovery 
+amounts: $0.90, $0.80, $0.50, and $0.40 is\n&quot;,
+p_90,p_80,p_50,p_40, &quot;respectively.&quot;)</code></pre>
+<pre><code>## The probability of each of the four possible recovery 
+## amounts: $0.90, $0.80, $0.50, and $0.40 is
+##  0.3375 0.4125 0.2125 0.0375 respectively.</code></pre>
+<p>A. The probability of each of the four possible recovery amounts: $0.90, $0.80, $0.50, and $0.40 is 0.3375 0.4125 0.2125 0.0375 respectively.</p>
+<pre class="r"><code># Expected recovery given Scenario 1
+
+e_1 &lt;- (0.45 * 0.9) + (0.55 * 0.8)
+
+cat(&quot;Expected recovery given Scenario 1 is&quot;, e_1)</code></pre>
+<pre><code>## Expected recovery given Scenario 1 is 0.845</code></pre>
+<p>B. Expected recovery given Scenario 1 is 0.845</p>
+<pre class="r"><code># Expected recovery Scenario 2
+
+e_2 &lt;- (0.85 * 0.5) + (0.15 * 0.4)
+
+cat(&quot;Expected recovery given Scenario 2 is&quot;, e_2)</code></pre>
+<pre><code>## Expected recovery given Scenario 2 is 0.485</code></pre>
+<p>C. Expected recovery given Scenario 2 is 0.485</p>
+<pre class="r"><code>e &lt;- e_1 + e_2
+
+cat(&quot;The expected recovery is&quot;, e)</code></pre>
+<pre><code>## The expected recovery is 1.33</code></pre>
+<p>D. The expected recovery is 0.755</p>
+</div>
+<div id="problem-5" class="section level3">
+<h3>Problem 5</h3>
+<p>You have developed a set of criteria for evaluating distressed credits. Companies that do not receive a passing score are classed as likely to go bankrupt within 12 months. You gathered the following information when validating the criteria:</p>
+<p>Forty percent of the companies to which the test is administered will go bankrupt within 12 months: P(nonsurvivor) = 0.40.
+Fifty- five percent of the companies to which the test is administered pass it: P(pass test) = 0.55.
+The probability that a company will pass the test given that it will subsequently survive 12 months, is 0.85: P(pass test | survivor) = 0.85.</p>
+<ul>
+<li>A What is P(pass test | nonsurvivor)?</li>
+<li>B Using Bayes’ formula, calculate the probability that a company is a survivor, given that it passes the test; that is, calculate P(survivor | pass test).</li>
+<li>C What is the probability that a company is a nonsurvivor, given that it fails the test?</li>
+<li>D Is the test effective?</li>
+</ul>
+<pre class="r"><code># P(nonsurvivor) = 0.40
+# P(pass test) = 0.55
+# P(pass test | survivor) = 0.85
+
+# We know
+# p(survivor) = 1 - P(nonsurvivor) = 1 - 0.4 = 0.6</code></pre>
+</div>
+<div id="problem-6" class="section level3">
+<h3>Problem 6</h3>
+<p>In probability theory, exhaustive events are best described as events:</p>
+<ul>
+<li>A with a probability of zero.</li>
+<li>B that are mutually exclusive.</li>
+<li>C that include all potential outcomes.</li>
+</ul>
+<p>C. that include all potential outcomes.</p>
+</div>
+<div id="problem-7" class="section level3">
+<h3>Problem 7</h3>
+<p>Which probability estimate most likely varies greatly between people?</p>
+<ul>
+<li>A An a priori probability</li>
+<li>B An empirical probability</li>
+<li>C A subjective probability</li>
+</ul>
+<p>C. A subjective probability</p>
+</div>
+<div id="problem-8" class="section level3">
+<h3>Problem 8</h3>
+<p>If the probability that Zolaf Company sales exceed last year’s sales is 0.167, the odds for exceeding sales are closest to:
+- A 1 to 5.
+- B 1 to 6.
+- C 5 to 1.</p>
+<p>A. 1 to 5</p>
+</div>
+<div id="problem-9" class="section level3">
+<h3>Problem 9</h3>
+<p>The probability of an event given that another event has occurred is a:</p>
+<ul>
+<li>A joint probability.</li>
+<li>B marginal probability.</li>
+<li>C conditional probability.</li>
+</ul>
+<p>C. conditional probability.</p>
+</div>
+<div id="problem-10" class="section level3">
+<h3>Problem 10</h3>
+<p>After estimating the probability that an investment manager will exceed his benchmark return in each of the next two quarters, an analyst wants to forecast the probability that the investment manager will exceed his benchmark return over the two- quarter period in total. Assuming that each quarter’s performance is independent of the other, which probability rule should the analyst select?</p>
+<ul>
+<li>A Addition rule</li>
+<li>B Multiplication rule</li>
+<li>C Total probability rule</li>
+</ul>
+<p>B. Multiplication rule</p>
+</div>
+<div id="problem-11" class="section level3">
+<h3>Problem 11</h3>
+<p>Which of the following is a property of two dependent events?
+- A The two events must occur simultaneously.
+- B The probability of one event influences the probability of the other event.
+- C The probability of the two events occurring is the product of each event’s probability</p>
+<p>B. The probability of one event influences the probability of the other event.</p>
+</div>
+<div id="problem-12" class="section level3">
+<h3>Problem 12</h3>
+<p>Which of the following best describes how an analyst would estimate the expected value of a firm under the scenarios of bankruptcy and survivorship? The analyst would use:</p>
+<ul>
+<li>A the addition rule.</li>
+<li>B conditional expected values.</li>
+<li>C the total probability rule for expected value.</li>
+</ul>
+<p>C. the total probability rule for expected value.</p>
+</div>
+<div id="problem-13" class="section level3">
+<h3>Problem 13</h3>
+<p>An analyst developed two scenarios with respect to the recovery of $100,000 principal from defaulted loans:</p>
+<pre class="r"><code>df &lt;- tribble(~&#39;Scenario&#39;,~&#39;Probabilityof Scenario (%)&#39;, ~&#39;AmountRecovered ($)&#39;, ~&#39;Probabilityof Amount (%)&#39;,1,40,50000, 60, 1,40,30000, 40, 2, 60, 80000, 90, 2, 60, 60000, 10)
+
+df %&gt;%
+  kable() %&gt;%
+    kable_styling(full_width = F)</code></pre>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Scenario
+</th>
+<th style="text-align:right;">
+Probabilityof Scenario (%)
+</th>
+<th style="text-align:right;">
+AmountRecovered ($)
+</th>
+<th style="text-align:right;">
+Probabilityof Amount (%)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+50000
+</td>
+<td style="text-align:right;">
+60
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+30000
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+80000
+</td>
+<td style="text-align:right;">
+90
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+60000
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+</tbody>
+</table>
+<p>The amount of the expected recovery is closest to:</p>
+<ul>
+<li>A $36,400.</li>
+<li>B $63,600.</li>
+<li>C $81,600.</li>
+</ul>
+<pre class="r"><code># This is a expected total probability problem
+
+# Scenario 1
+
+s1 &lt;- (0.4 * 0.6 * 50000) + (0.4 * 0.4 * 30000)
+
+s2 &lt;- (0.6 * 0.9 * 80000) + (0.6 * 0.1 * 60000)
+
+s &lt;- s1 + s2
+
+cat(&quot;The amount of the expected recovery is closest to&quot;, s)</code></pre>
+<pre><code>## The amount of the expected recovery is closest to 63600</code></pre>
+<p>B. The amount of the expected recovery is closest to 63600</p>
+</div>
+<div id="problem-14" class="section level3">
+<h3>Problem 14</h3>
+<p>US and Spanish bonds have return standard deviations of 0.64 and 0.56, respectively. If the correlation between the two bonds is 0.24, the covariance of returns is closest to:</p>
+<ul>
+<li>A 0.086.</li>
+<li>B 0.670.</li>
+<li>C 0.781.</li>
+</ul>
+<pre class="r"><code># Cov(US bond returns, Spanish bond returns) = σ(US bonds) × σ(Spanish bonds) × ρ(US bond returns, Spanish bond returns)
+
+0.64 * 0.56 * 0.24</code></pre>
+<pre><code>## [1] 0.086016</code></pre>
+<p>A. 0.086</p>
+</div>
+<div id="problem-15" class="section level3">
+<h3>Problem 15</h3>
+<p>The covariance of returns is positive when the returns on two assets tend to:</p>
+<ul>
+<li>A have the same expected values.</li>
+<li>B be above their expected value at different times.</li>
+<li>C be on the same side of their expected value at the same time.</li>
+</ul>
+<p>C. be on the same side of their expected value at the same time.</p>
+</div>
+<div id="problem-16" class="section level3">
+<h3>Problem 16</h3>
+<p>Which of the following correlation coefficients indicates the weakest linear relationship between two variables?</p>
+<ul>
+<li>A –0.67</li>
+<li>B –0.24</li>
+<li>C 0.33</li>
+</ul>
+<p>B. –0.24</p>
+</div>
+<div id="problem-17" class="section level3">
+<h3>Problem 17</h3>
+<p>An analyst develops the following covariance matrix of returns:</p>
+<pre class="r"><code>df &lt;- tribble(~&#39;Index&#39;, ~&#39;Hedge Fund&#39;, ~&#39;Market Index&#39;,
+          &#39;Hedge fund&#39;, 256, 110, &#39;Market index&#39;, 110, 81)
+
+df %&gt;%
+  kable() %&gt;%
+    kable_styling(full_width = F)</code></pre>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Index
+</th>
+<th style="text-align:right;">
+Hedge Fund
+</th>
+<th style="text-align:right;">
+Market Index
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Hedge fund
+</td>
+<td style="text-align:right;">
+256
+</td>
+<td style="text-align:right;">
+110
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Market index
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+81
+</td>
+</tr>
+</tbody>
+</table>
+<p>The correlation of returns between the hedge fund and the market index is closest to:</p>
+<ul>
+<li>A 0.005.</li>
+<li>B 0.073.</li>
+<li>C 0.764.</li>
+</ul>
+<pre class="r"><code># ρ(Ri,Rj) = Cov(Ri,Rj)/[σ(Ri)σ(Rj)]
+
+110 / (sqrt(256) * sqrt(81))</code></pre>
+<pre><code>## [1] 0.7638889</code></pre>
+<p>C. 0.764</p>
+</div>
+<div id="problem-18" class="section level3">
+<h3>Problem 18</h3>
+<p>All else being equal, as the correlation between two assets approaches +1.0, the diversification benefits:</p>
+<ul>
+<li>A decrease.</li>
+<li>B stay the same.</li>
+<li>C increase.</li>
+</ul>
+<p>A. decrease</p>
+</div>
+<div id="problem-19" class="section level3">
+<h3>Problem 19</h3>
+<p>Given a portfolio of five stocks, how many unique covariance terms, excluding variances, are required to calculate the portfolio return variance?</p>
+<ul>
+<li>A 10</li>
+<li>B 20</li>
+<li>C 25</li>
+</ul>
+<p>A. 10</p>
+</div>
+<div id="problem-20" class="section level3">
+<h3>Problem 20</h3>
+<p>The probability distribution for a company’s sales is:</p>
+<pre class="r"><code>df &lt;- tribble(~&quot;Probability&quot;, ~&quot;Sales ($ millions)&quot;,
+0.05, 70, 0.70, 40, 0.25, 25)
+
+df %&gt;%
+  kable() %&gt;%
+    kable_styling(full_width = F)</code></pre>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Probability
+</th>
+<th style="text-align:right;">
+Sales ($ millions)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+70
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+25
+</td>
+</tr>
+</tbody>
+</table>
+<p>The standard deviation of sales is closest to:
+- A $9.81 million.
+- B $12.20 million.
+- C $32.40 million</p>
+<pre class="r"><code>df %&gt;%
+  mutate(e = Probability * `Sales ($ millions)`) %&gt;%
+  summarise(s = sd(e))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##       s
+##   &lt;dbl&gt;
+## 1  13.4</code></pre>
 </div>
 
     </div>

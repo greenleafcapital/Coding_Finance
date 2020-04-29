@@ -36,7 +36,9 @@ p_div_telecom <- 0.01
 
 p <- p_div_telecom / p_telecom
 
-cat("What is the probability that a stock is dividend paying, given that it is a telecom stock that has met your stock selection criteria is", p)
+cat("The probability that a stock is dividend paying, 
+given that it is a telecom stock that 
+has met your stock selection criteria is", p)
 
 ```
 
@@ -55,8 +57,361 @@ df %>%
     kable_styling(full_width = F)
 
 ```
+If the criteria are independent, how many companies will pass the screen?
+
+```{r}
+
+p <- (0.2 * 0.45 * 0.78)
+c <- 500 * p
+
+cat(paste0(p*100,"%"), "or", round(c), "companies will pass the screening.")
+
+```
+
+### Problem 3
+
+You apply both valuation criteria and financial strength criteria in choosing stocks. The probability that a randomly selected stock (from your investment universe) meets your valuation criteria is 0.25. Given that a stock meets your valuation criteria, the probability that the stock meets your financial strength criteria is 0.40. What is the probability that a stock meets both your valuation and financial strength criteria?
+
+```{r}
+
+p_val <- 0.25
+p_fin <- 0.4
+
+p <- p_val * p_fin
+
+cat("The probability that a stock meets both your 
+valuation and financial strength criteria is", p)
+
+```
+
+### Problem 4
+
+Suppose the prospects for recovering principal for a defaulted bond issue depend on which of two economic scenarios prevails. 
+
+- Scenario 1 has probability 0.75 and will result in recovery of \$0.90 per \$1 principal value with probability 0.45, or in recovery of \$0.80 per \$1 principal value with probability 0.55. 
+- Scenario 2 has probability 0.25 and will result in recovery of \$0.50 per \$1 principal value with probability 0.85, or in recovery of \$0.40 per \$1 principal value with probability 0.15.
+
+- A Compute the probability of each of the four possible recovery amounts: \$0.90, \$0.80, \$0.50, and \$0.40.
+- B Compute the expected recovery, given the first scenario.
+- C Compute the expected recovery, given the second scenario.
+- D Compute the expected recovery.
+
+```{r}
+
+# Probability Recovery of $0.90
+
+p_90 <- (0.75) * (0.45)
+
+# Probability Recovery of $0.80
+
+p_80 <- (0.75) * (0.55)
+
+# Probability Recovery of $0.50
+
+p_50 <- (0.25) * (0.85)
+
+# Probability Recovery of $0.40
+
+p_40 <- (0.25) * (0.15)
+
+cat("The probability of each of the four possible recovery 
+amounts: $0.90, $0.80, $0.50, and $0.40 is\n",
+p_90,p_80,p_50,p_40, "respectively.")
+
+
+```
+A. The probability of each of the four possible recovery amounts:  \$0.90, \$0.80, \$0.50, and \$0.40 is 0.3375 0.4125 0.2125 0.0375 respectively.
+
+```{r}
+
+# Expected recovery given Scenario 1
+
+e_1 <- (0.45 * 0.9) + (0.55 * 0.8)
+
+cat("Expected recovery given Scenario 1 is", e_1)
+
+```
+
+B. Expected recovery given Scenario 1 is 0.845
+
+```{r}
+# Expected recovery Scenario 2
+
+e_2 <- (0.85 * 0.5) + (0.15 * 0.4)
+
+cat("Expected recovery given Scenario 2 is", e_2)
+
+
+
+```
+
+C. Expected recovery given Scenario 2 is 0.485
+
+```{r}
+
+e <- e_1 + e_2
+
+cat("The expected recovery is", e)
+
+```
+
+D. The expected recovery is 0.755
+
+### Problem 5
+
+You have developed a set of criteria for evaluating distressed credits. Companies that do not receive a passing score are classed as likely to go bankrupt within 12 months. You gathered the following information when validating the criteria:
+
+Forty percent of the companies to which the test is administered will go bankrupt within 12 months: P(nonsurvivor) = 0.40.
+Fifty- five percent of the companies to which the test is administered pass it: P(pass test) = 0.55.
+The probability that a company will pass the test given that it will subsequently survive 12 months, is 0.85: P(pass test | survivor) = 0.85.
+
+- A What is P(pass test | nonsurvivor)?
+- B Using Bayes’ formula, calculate the probability that a company is a survivor, given that it passes the test; that is, calculate P(survivor | pass test).
+- C What is the probability that a company is a nonsurvivor, given that it fails the test?
+- D Is the test effective?
+
+
+```{r}
+
+# P(nonsurvivor) = 0.40
+# P(pass test) = 0.55
+# P(pass test | survivor) = 0.85
+
+# We know
+# p(survivor) = 1 - P(nonsurvivor) = 1 - 0.4 = 0.6
 
 
 
 
+
+
+
+
+```
+
+
+### Problem 6
+
+In probability theory, exhaustive events are best described as events:
+
+- A with a probability of zero.
+- B that are mutually exclusive.
+- C that include all potential outcomes.
+
+C. that include all potential outcomes.
+
+### Problem 7
+
+Which probability estimate most likely varies greatly between people?
+
+- A An a priori probability
+- B An empirical probability
+- C A subjective probability
+
+C. A subjective probability
+
+### Problem 8
+
+If the probability that Zolaf Company sales exceed last year’s sales is 0.167, the odds for exceeding sales are closest to:
+- A 1 to 5.
+- B 1 to 6.
+- C 5 to 1.
+
+A. 1 to 5
+
+### Problem 9
+
+The probability of an event given that another event has occurred is a:
+
+- A joint probability.
+- B marginal probability.
+- C conditional probability.
+
+C. conditional probability.
+
+### Problem 10
+
+After estimating the probability that an investment manager will exceed his benchmark return in each of the next two quarters, an analyst wants to forecast the probability that the investment manager will exceed his benchmark return over the two- quarter period in total. Assuming that each quarter’s performance is independent of the other, which probability rule should the analyst select?
+
+- A Addition rule
+- B Multiplication rule
+- C Total probability rule
+
+B. Multiplication rule
+
+### Problem 11
+
+Which of the following is a property of two dependent events?
+- A The two events must occur simultaneously.
+- B The probability of one event influences the probability of the other event.
+- C The probability of the two events occurring is the product of each event’s probability
+
+B. The probability of one event influences the probability of the other event.
+
+### Problem 12
+
+Which of the following best describes how an analyst would estimate the expected value of a firm under the scenarios of bankruptcy and survivorship? The analyst would use:
+ 
+- A the addition rule.
+- B conditional expected values.
+- C the total probability rule for expected value.
+
+C. the total probability rule for expected value.
+
+### Problem 13
+
+An analyst developed two scenarios with respect to the recovery of $100,000 principal from defaulted loans:
+
+```{r}
+
+df <- tribble(~'Scenario',~'Probabilityof Scenario (%)', ~'AmountRecovered ($)', ~'Probabilityof Amount (%)',1,40,50000, 60, 1,40,30000, 40, 2, 60, 80000, 90, 2, 60, 60000, 10)
+
+df %>%
+  kable() %>%
+    kable_styling(full_width = F)
+
+```
+
+The amount of the expected recovery is closest to:
+
+- A \$36,400.
+- B \$63,600.
+- C \$81,600.
+
+```{r}
+
+# This is a expected total probability problem
+
+# Scenario 1
+
+s1 <- (0.4 * 0.6 * 50000) + (0.4 * 0.4 * 30000)
+
+s2 <- (0.6 * 0.9 * 80000) + (0.6 * 0.1 * 60000)
+
+s <- s1 + s2
+
+cat("The amount of the expected recovery is closest to", s)
+
+```
+
+B. The amount of the expected recovery is closest to 63600
+
+### Problem 14
+
+US and Spanish bonds have return standard deviations of 0.64 and 0.56, respectively. If the correlation between the two bonds is 0.24, the covariance of returns is closest to:
+
+- A 0.086.
+- B 0.670.
+- C 0.781.
+
+```{r}
+
+# Cov(US bond returns, Spanish bond returns) = σ(US bonds) × σ(Spanish bonds) × ρ(US bond returns, Spanish bond returns)
+
+0.64 * 0.56 * 0.24
+
+```
+
+A. 0.086
+
+### Problem 15
+
+The covariance of returns is positive when the returns on two assets tend to:
+
+- A have the same expected values.
+- B be above their expected value at different times.
+- C be on the same side of their expected value at the same time.
+
+C. be on the same side of their expected value at the same time.
+
+### Problem 16
+
+Which of the following correlation coefficients indicates the weakest linear relationship between two variables?
+
+- A –0.67
+- B –0.24
+- C 0.33
+
+B. –0.24
+
+### Problem 17
+
+An analyst develops the following covariance matrix of returns:
+
+```{r}
+
+df <- tribble(~'Index', ~'Hedge Fund', ~'Market Index',
+          'Hedge fund', 256, 110, 'Market index', 110, 81)
+
+df %>%
+  kable() %>%
+    kable_styling(full_width = F)
+
+```
+
+
+The correlation of returns between the hedge fund and the market index is closest to:
+
+- A 0.005.
+- B 0.073.
+- C 0.764.
+
+```{r}
+
+# ρ(Ri,Rj) = Cov(Ri,Rj)/[σ(Ri)σ(Rj)]
+
+110 / (sqrt(256) * sqrt(81))
+
+```
+
+C. 0.764
+
+### Problem 18
+
+All else being equal, as the correlation between two assets approaches +1.0, the diversification benefits:
+
+- A decrease.
+- B stay the same.
+- C increase.
+
+A. decrease
+
+### Problem 19
+
+Given a portfolio of five stocks, how many unique covariance terms, excluding variances, are required to calculate the portfolio return variance?
+
+- A 10
+- B 20
+- C 25
+
+A. 10
+
+### Problem 20
+
+The probability distribution for a company’s sales is:
+
+```{r}
+
+df <- tribble(~"Probability", ~"Sales ($ millions)",
+0.05, 70, 0.70, 40, 0.25, 25)
+
+df %>%
+  kable() %>%
+    kable_styling(full_width = F)
+
+```
+
+
+The standard deviation of sales is closest to:
+- A \$9.81 million.
+- B \$12.20 million.
+- C \$32.40 million
+
+```{r}
+
+df %>%
+  mutate(e = Probability * `Sales ($ millions)`) %>%
+  summarise(s = sd(e))
+
+```
 
