@@ -1,0 +1,430 @@
+---
+title: "Quantitative Investment Analysis - Chapter 3"
+author: "DD"
+date: "2020-04-27"
+description: "Chapter 3: Statistical Concepts and Market Returns"
+output:
+  html_document:
+    highlight: tango
+---
+
+In this post we will solve the end of the chapter practice problems from chapter 3 of the [book](https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X).
+
+#### Here are the first 6 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_1_to_6.png)
+
+```{r warning=FALSE, message=FALSE}
+
+library(tidyverse)
+
+```
+
+### Problem 1
+
+B. The FTSE Eurotop 100 as a representation of the European stock market
+
+### Problem 2
+
+A. Ordinal
+
+### Problem 3
+
+A. The 500 companies in the S&P 500 Index
+
+### Problem 4
+
+A. median of a population.
+
+### Problem 5
+
+```{r}
+
+df <- tibble(return_interval = c("-10 to -7", "-7 to -4", "-4 to -1", "-1 to 2", "2 to 5", "5 to 8"),
+       absolute_freq = c(3,7,10,12,23,5)) %>%
+  mutate(r_freq = absolute_freq / sum(.$absolute_freq)) %>%
+  mutate(cum_sum = cumsum(r_freq))
+
+df
+
+
+```
+
+A. The relative frequency of the interval “–1.0 to +2.0” is 20%.
+
+### Problem 6
+
+```{r}
+
+tibble(year = 1:12,
+       returns = c(2.48, -2.59, 9.47, -0.55, -1.69, -0.89, -9.19, -5.11, 1.33, 6.84, 3.04, 4.72)) %>%
+  group_by(group = cut(returns, breaks = 5)) %>%
+  #group_by(group = cut(returns, breaks = seq(min(returns), max(returns), length = 5))) %>%
+  summarise(n = n()) %>%
+  mutate(rel_freq = n / sum(.$n)) %>%
+  mutate(c_freq = cumsum(rel_freq))
+
+
+
+
+```
+
+C. 0.5833
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_7_to_8.png)
+
+####  Problems 7 to 8 problems and their solutions in R
+
+### Problem 7
+
+A. tabular display.
+
+### Problem 8
+
+```{r}
+
+(2 + 7 + 15 ) / 26
+
+```
+
+
+C. The cumulative relative frequency of Interval C is 92.3%.
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_9_to_11.png)
+
+####  Problems 9 to 10 problems and their solutions in R
+
+### Problem 9
+
+C. 13% to 18%
+
+### Problem 10
+
+C. three modes
+
+####  Problems 11 to 12 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_12_to_14.png)
+
+### Problem 11
+
+The following is a frequency polygon of monthly exchange rate changes in the US dollar/Japanese yen spot exchange rate for a four-year period. A positive change represents yen appreciation (the yen buys more dollars), and a negative change represents yen depreciation (the yen buys fewer dollars). (See chart above)
+
+Based on the chart, yen appreciation:
+- A. occurred more than 50% of the time.
+- B. was less frequent than yen depreciation.
+- C. in the 0.0 to 2.0 interval occurred 20% of the time.
+
+A. occurred more than 50% of the time.
+
+### Problem 12
+
+B. absolute frequency.
+
+####  Problems 13 to 16 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_13_to_16.png)
+
+### Problem 13 
+
+```{r}
+
+df <- tibble(company = c("A", "B", "C", "D", "E", "F"),
+       eq_ret = c(-4.53, -1.40, -1.2, -1.2, 0.7, 8.9))
+df
+
+mean(df$eq_ret)
+
+```
+
+C. Company E
+
+### Problem 14
+
+```{r}
+
+# Median
+med <- median(df$eq_ret)
+
+# Mode is most freq value -1.2
+
+mod <- -1.2
+
+med - mod
+
+```
+
+B. 0
+
+### Problem 15
+
+C. Portfolio R is higher than its arithmetic mean annual return.
+
+### Problem 16
+
+20.08.0Small- cap US equities40.012.0Emerging market equities25.0–3.0High- yield  bonds15.04.0
+
+```{r}
+
+df <- tibble(asset_class = c("Large - cap US equities", "Small - cap US equities",
+                       "Emerging market equities", "High yield bonds"),
+       allocation = c(20,40,25,15),
+       returns = c(8,12,-3,4))
+
+df %>%
+  mutate(allocation = allocation / 100) %>%
+  mutate(contribution = allocation * returns) %>%
+  summarise(port_ret = sum(contribution))
+
+```
+
+C. 6.3%
+
+####  Problems 17 to 20 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_13_to_16.png)
+
+
+### Problem 17
+
+```{r}
+
+df <- tibble(year = 1:5,
+             returns = c(19.5, -1.9, 19.7, 35, 5.7))
+
+df %>%
+  mutate(returns = returns/100) %>%
+  mutate(r = 1 + returns) %>%
+  mutate(cr = cumprod(r)) %>%
+  select(cr) %>%
+  slice(n()) %>%
+  .[[1]]
+
+2.002349 ** (1/5) - 1
+
+```
+
+A. 14.9%
+
+### Problem 18
+
+```{r}
+
+df <- tibble(year = 1:4,
+             price = c(62,76,84,90))
+
+df %>%
+  mutate(shares = 5000 / price) %>%
+  summarise(s = sum(shares)) %>%
+  .[[1]]
+
+
+20000 / 261.514
+
+```
+
+A. $76.48
+
+### Problem 19
+
+```{r}
+
+df <- tibble(year = 1:10,
+             returns = c(15.25, 10.02, 20.65, 9.57, -40.33, 30.79, 12.34, -5.02, 16.54, 27.37))
+
+quantile(df$returns, 0.8, type = 6)
+
+```
+
+A. 26.03%
+
+### Problem 20
+
+```{r}
+
+df <- tibble(year = 1:10,
+             returns = c(15.25, 10.02, 20.65, 9.57, -40.33, 30.79, 12.34, -5.02, 16.54, 27.37))
+
+mean_ret <- df %>%
+  filter(year >= 6) %>%
+  summarise(m = mean(returns)) %>%
+  .[[1]]
+
+df %>%
+  filter(year >= 6) %>%
+  mutate(m = abs(returns - mean_ret)) %>%
+  summarise(mm = mean(m))
+
+
+
+```
+A. 10.20 %
+
+####  Problems 21 to 22 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_21_to_22.png)
+
+### Problem 21
+
+```{r}
+
+df <- tibble(returns = c(-38.49, -0.73, 0.00, 9.54, 11.39, 12.78, 13.41, 19.42, 23.45, 29.60))
+df
+
+quantile(df$returns, type = 6)
+
+```
+
+
+B. 20.44%
+
+### Problem 22
+
+```{r}
+
+sp_range <- abs(min(df$returns) - max(df$returns))
+sp_mad <- mad(df$returns, center = mean(df$returns))
+
+sp_range
+sp_mad
+
+```
+
+C. MAD and range
+
+####  Problems 23 to 26 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_23_to_26.png)
+
+### Problem 23
+
+```{r}
+
+
+abc <- c(-20,23,-14,5,-14)
+xyz <- c(-33,-12,-12,-8,11)
+pqr <- c(-14,-18,6,-2,3)
+
+get_stats <- function(x,y) {
+  
+  r <- abs(min(x) - max(x))
+  v <- var(x)
+  m <- mad(x, center = mean(x))
+  
+  cat(r,v,m,"for",y)
+}
+
+get_stats(abc,'abc')
+
+get_stats(xyz,'xyz')
+
+get_stats(pqr,'pqr')
+
+
+
+```
+C. Fund ABC if the measure of dispersion is the mean absolute deviation.
+
+### Problem 24
+
+```{r}
+
+ret <- c(-0.67, 1.71, 42.96)
+
+sd(ret)
+```
+C. 24.54
+
+### Problem 25
+
+```{r}
+
+mean_ret <-  0.79
+sd_ret <- 1.16
+upper_limit <- 2.53 - mean_ret
+
+lower_limit <- -0.95 - mean_ret
+
+k <- upper_limit / sd_ret
+
+(1 - 1/k^2) * 240
+
+```
+
+C. 133
+
+### Problem 26
+
+```{r}
+
+k <- 8/4
+
+(1 - 1/k^2) * 2000
+
+```
+
+B. 1500
+
+####  Problems 27 to 35 problems and their solutions in R
+
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_27_to_31.png)
+![](https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_32_to_35.png)
+
+### Problem 27
+
+```{r}
+
+df <- tibble(sector = c("utilities", "materials", "industrials"),
+             mean_ret = c(2.1, 1.25, 3.01),
+             sd_ret = c(1.23, 1.35, 1.52))
+
+df %>%
+  mutate(v = sd_ret / mean_ret)
+
+```
+
+B. matrials
+
+### Problem 28
+
+B. equal to its median.
+
+### Problem 29
+
+B. has a greater number of extreme returns
+
+### Problem 30
+
+A. For Portfolio 1, the median is less than the mean.
+
+### Problem 31
+
+C. negatively skewed.
+
+### Problem 32
+
+B. mode < median < mean
+
+### Problem 33
+
+B. platykurtic
+
+### Problem 34
+
+B. The geometric mean measures an investment’s compound rate of growth over multiple periods.
+
+### Problem 35
+
+B. Geometric
+
+
+
+
+
+
+
+
+
+
+
+

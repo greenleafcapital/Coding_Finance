@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Quantitative Investment Analysis - Chapter 3 :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2020-04-27-investment-analysis-chapter3/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Quantitative Investment Analysis - Chapter 3 :: Coding Finance — " />
+<meta name="twitter:description" content="In this post we will solve the end of the chapter practice problems from chapter 3 of the book.
+Here are the first 6 problems and their solutions in R library(tidyverse)  Problem 1 B. The FTSE Eurotop 100 as a representation of the European stock market
+ Problem 2 A. Ordinal
+ Problem 3 A. The 500 companies in the S&amp;amp;P 500 Index
+ Problem 4 A. median of a population." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Quantitative Investment Analysis - Chapter 3 :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2020-04-27-investment-analysis-chapter3/" />
+<meta property="og:site_name" content="Quantitative Investment Analysis - Chapter 3" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2020-04-27 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2020-04-27-investment-analysis-chapter3/">Quantitative Investment Analysis - Chapter 3</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        4/27/2020
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+
+
+<p>In this post we will solve the end of the chapter practice problems from chapter 3 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
+<div id="here-are-the-first-6-problems-and-their-solutions-in-r" class="section level4">
+<h4>Here are the first 6 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_1_to_6.png" /></p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+</div>
+<div id="problem-1" class="section level3">
+<h3>Problem 1</h3>
+<p>B. The FTSE Eurotop 100 as a representation of the European stock market</p>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p>A. Ordinal</p>
+</div>
+<div id="problem-3" class="section level3">
+<h3>Problem 3</h3>
+<p>A. The 500 companies in the S&amp;P 500 Index</p>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<p>A. median of a population.</p>
+</div>
+<div id="problem-5" class="section level3">
+<h3>Problem 5</h3>
+<pre class="r"><code>df &lt;- tibble(return_interval = c(&quot;-10 to -7&quot;, &quot;-7 to -4&quot;, &quot;-4 to -1&quot;, &quot;-1 to 2&quot;, &quot;2 to 5&quot;, &quot;5 to 8&quot;),
+       absolute_freq = c(3,7,10,12,23,5)) %&gt;%
+  mutate(r_freq = absolute_freq / sum(.$absolute_freq)) %&gt;%
+  mutate(cum_sum = cumsum(r_freq))
+
+df</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   return_interval absolute_freq r_freq cum_sum
+##   &lt;chr&gt;                   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1 -10 to -7                   3 0.05     0.05 
+## 2 -7 to -4                    7 0.117    0.167
+## 3 -4 to -1                   10 0.167    0.333
+## 4 -1 to 2                    12 0.2      0.533
+## 5 2 to 5                     23 0.383    0.917
+## 6 5 to 8                      5 0.0833   1</code></pre>
+<p>A. The relative frequency of the interval “–1.0 to +2.0” is 20%.</p>
+</div>
+<div id="problem-6" class="section level3">
+<h3>Problem 6</h3>
+<pre class="r"><code>tibble(year = 1:12,
+       returns = c(2.48, -2.59, 9.47, -0.55, -1.69, -0.89, -9.19, -5.11, 1.33, 6.84, 3.04, 4.72)) %&gt;%
+  group_by(group = cut(returns, breaks = 5)) %&gt;%
+  #group_by(group = cut(returns, breaks = seq(min(returns), max(returns), length = 5))) %&gt;%
+  summarise(n = n()) %&gt;%
+  mutate(rel_freq = n / sum(.$n)) %&gt;%
+  mutate(c_freq = cumsum(rel_freq))</code></pre>
+<pre><code>## # A tibble: 5 x 4
+##   group             n rel_freq c_freq
+##   &lt;fct&gt;         &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1 (-9.21,-5.46]     1   0.0833 0.0833
+## 2 (-5.46,-1.73]     2   0.167  0.25  
+## 3 (-1.73,2.01]      4   0.333  0.583 
+## 4 (2.01,5.74]       3   0.25   0.833 
+## 5 (5.74,9.49]       2   0.167  1</code></pre>
+<p>C. 0.5833</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_7_to_8.png" /></p>
+<div id="problems-7-to-8-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 7 to 8 problems and their solutions in R</h4>
+</div>
+</div>
+<div id="problem-7" class="section level3">
+<h3>Problem 7</h3>
+<p>A. tabular display.</p>
+</div>
+<div id="problem-8" class="section level3">
+<h3>Problem 8</h3>
+<pre class="r"><code>(2 + 7 + 15 ) / 26</code></pre>
+<pre><code>## [1] 0.9230769</code></pre>
+<p>C. The cumulative relative frequency of Interval C is 92.3%.</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_9_to_11.png" /></p>
+<div id="problems-9-to-10-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 9 to 10 problems and their solutions in R</h4>
+</div>
+</div>
+<div id="problem-9" class="section level3">
+<h3>Problem 9</h3>
+<p>C. 13% to 18%</p>
+</div>
+<div id="problem-10" class="section level3">
+<h3>Problem 10</h3>
+<p>C. three modes</p>
+<div id="problems-11-to-12-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 11 to 12 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_12_to_14.png" /></p>
+</div>
+</div>
+<div id="problem-11" class="section level3">
+<h3>Problem 11</h3>
+<p>The following is a frequency polygon of monthly exchange rate changes in the US dollar/Japanese yen spot exchange rate for a four-year period. A positive change represents yen appreciation (the yen buys more dollars), and a negative change represents yen depreciation (the yen buys fewer dollars). (See chart above)</p>
+<p>Based on the chart, yen appreciation:
+- A. occurred more than 50% of the time.
+- B. was less frequent than yen depreciation.
+- C. in the 0.0 to 2.0 interval occurred 20% of the time.</p>
+<p>A. occurred more than 50% of the time.</p>
+</div>
+<div id="problem-12" class="section level3">
+<h3>Problem 12</h3>
+<p>B. absolute frequency.</p>
+<div id="problems-13-to-16-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 13 to 16 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_13_to_16.png" /></p>
+</div>
+</div>
+<div id="problem-13" class="section level3">
+<h3>Problem 13</h3>
+<pre class="r"><code>df &lt;- tibble(company = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;),
+       eq_ret = c(-4.53, -1.40, -1.2, -1.2, 0.7, 8.9))
+df</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   company eq_ret
+##   &lt;chr&gt;    &lt;dbl&gt;
+## 1 A        -4.53
+## 2 B        -1.4 
+## 3 C        -1.2 
+## 4 D        -1.2 
+## 5 E         0.7 
+## 6 F         8.9</code></pre>
+<pre class="r"><code>mean(df$eq_ret)</code></pre>
+<pre><code>## [1] 0.2116667</code></pre>
+<p>C. Company E</p>
+</div>
+<div id="problem-14" class="section level3">
+<h3>Problem 14</h3>
+<pre class="r"><code># Median
+med &lt;- median(df$eq_ret)
+
+# Mode is most freq value -1.2
+
+mod &lt;- -1.2
+
+med - mod</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>B. 0</p>
+</div>
+<div id="problem-15" class="section level3">
+<h3>Problem 15</h3>
+<p>C. Portfolio R is higher than its arithmetic mean annual return.</p>
+</div>
+<div id="problem-16" class="section level3">
+<h3>Problem 16</h3>
+<p>20.08.0Small- cap US equities40.012.0Emerging market equities25.0–3.0High- yield bonds15.04.0</p>
+<pre class="r"><code>df &lt;- tibble(asset_class = c(&quot;Large - cap US equities&quot;, &quot;Small - cap US equities&quot;,
+                       &quot;Emerging market equities&quot;, &quot;High yield bonds&quot;),
+       allocation = c(20,40,25,15),
+       returns = c(8,12,-3,4))
+
+df %&gt;%
+  mutate(allocation = allocation / 100) %&gt;%
+  mutate(contribution = allocation * returns) %&gt;%
+  summarise(port_ret = sum(contribution))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   port_ret
+##      &lt;dbl&gt;
+## 1     6.25</code></pre>
+<p>C. 6.3%</p>
+<div id="problems-17-to-20-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 17 to 20 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_13_to_16.png" /></p>
+</div>
+</div>
+<div id="problem-17" class="section level3">
+<h3>Problem 17</h3>
+<pre class="r"><code>df &lt;- tibble(year = 1:5,
+             returns = c(19.5, -1.9, 19.7, 35, 5.7))
+
+df %&gt;%
+  mutate(returns = returns/100) %&gt;%
+  mutate(r = 1 + returns) %&gt;%
+  mutate(cr = cumprod(r)) %&gt;%
+  select(cr) %&gt;%
+  slice(n()) %&gt;%
+  .[[1]]</code></pre>
+<pre><code>## [1] 2.002349</code></pre>
+<pre class="r"><code>2.002349 ** (1/5) - 1</code></pre>
+<pre><code>## [1] 0.1489681</code></pre>
+<p>A. 14.9%</p>
+</div>
+<div id="problem-18" class="section level3">
+<h3>Problem 18</h3>
+<pre class="r"><code>df &lt;- tibble(year = 1:4,
+             price = c(62,76,84,90))
+
+df %&gt;%
+  mutate(shares = 5000 / price) %&gt;%
+  summarise(s = sum(shares)) %&gt;%
+  .[[1]]</code></pre>
+<pre><code>## [1] 261.514</code></pre>
+<pre class="r"><code>20000 / 261.514</code></pre>
+<pre><code>## [1] 76.47774</code></pre>
+<p>A. $76.48</p>
+</div>
+<div id="problem-19" class="section level3">
+<h3>Problem 19</h3>
+<pre class="r"><code>df &lt;- tibble(year = 1:10,
+             returns = c(15.25, 10.02, 20.65, 9.57, -40.33, 30.79, 12.34, -5.02, 16.54, 27.37))
+
+quantile(df$returns, 0.8, type = 6)</code></pre>
+<pre><code>##    80% 
+## 26.026</code></pre>
+<p>A. 26.03%</p>
+</div>
+<div id="problem-20" class="section level3">
+<h3>Problem 20</h3>
+<pre class="r"><code>df &lt;- tibble(year = 1:10,
+             returns = c(15.25, 10.02, 20.65, 9.57, -40.33, 30.79, 12.34, -5.02, 16.54, 27.37))
+
+mean_ret &lt;- df %&gt;%
+  filter(year &gt;= 6) %&gt;%
+  summarise(m = mean(returns)) %&gt;%
+  .[[1]]
+
+df %&gt;%
+  filter(year &gt;= 6) %&gt;%
+  mutate(m = abs(returns - mean_ret)) %&gt;%
+  summarise(mm = mean(m))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##      mm
+##   &lt;dbl&gt;
+## 1  10.2</code></pre>
+<p>A. 10.20 %</p>
+<div id="problems-21-to-22-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 21 to 22 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_21_to_22.png" /></p>
+</div>
+</div>
+<div id="problem-21" class="section level3">
+<h3>Problem 21</h3>
+<pre class="r"><code>df &lt;- tibble(returns = c(-38.49, -0.73, 0.00, 9.54, 11.39, 12.78, 13.41, 19.42, 23.45, 29.60))
+df</code></pre>
+<pre><code>## # A tibble: 10 x 1
+##    returns
+##      &lt;dbl&gt;
+##  1  -38.5 
+##  2   -0.73
+##  3    0   
+##  4    9.54
+##  5   11.4 
+##  6   12.8 
+##  7   13.4 
+##  8   19.4 
+##  9   23.4 
+## 10   29.6</code></pre>
+<pre class="r"><code>quantile(df$returns, type = 6)</code></pre>
+<pre><code>##       0%      25%      50%      75%     100% 
+## -38.4900  -0.1825  12.0850  20.4275  29.6000</code></pre>
+<p>B. 20.44%</p>
+</div>
+<div id="problem-22" class="section level3">
+<h3>Problem 22</h3>
+<pre class="r"><code>sp_range &lt;- abs(min(df$returns) - max(df$returns))
+sp_mad &lt;- mad(df$returns, center = mean(df$returns))
+
+sp_range</code></pre>
+<pre><code>## [1] 68.09</code></pre>
+<pre class="r"><code>sp_mad</code></pre>
+<pre><code>## [1] 12.45681</code></pre>
+<p>C. MAD and range</p>
+<div id="problems-23-to-26-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 23 to 26 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_23_to_26.png" /></p>
+</div>
+</div>
+<div id="problem-23" class="section level3">
+<h3>Problem 23</h3>
+<pre class="r"><code>abc &lt;- c(-20,23,-14,5,-14)
+xyz &lt;- c(-33,-12,-12,-8,11)
+pqr &lt;- c(-14,-18,6,-2,3)
+
+get_stats &lt;- function(x,y) {
+  
+  r &lt;- abs(min(x) - max(x))
+  v &lt;- var(x)
+  m &lt;- mad(x, center = mean(x))
+  
+  cat(r,v,m,&quot;for&quot;,y)
+}
+
+get_stats(abc,&#39;abc&#39;)</code></pre>
+<pre><code>## 43 316.5 14.826 for abc</code></pre>
+<pre class="r"><code>get_stats(xyz,&#39;xyz&#39;)</code></pre>
+<pre><code>## 44 244.7 4.15128 for xyz</code></pre>
+<pre class="r"><code>get_stats(pqr,&#39;pqr&#39;)</code></pre>
+<pre><code>## 24 111 13.3434 for pqr</code></pre>
+<p>C. Fund ABC if the measure of dispersion is the mean absolute deviation.</p>
+</div>
+<div id="problem-24" class="section level3">
+<h3>Problem 24</h3>
+<pre class="r"><code>ret &lt;- c(-0.67, 1.71, 42.96)
+
+sd(ret)</code></pre>
+<pre><code>## [1] 24.53163</code></pre>
+<p>C. 24.54</p>
+</div>
+<div id="problem-25" class="section level3">
+<h3>Problem 25</h3>
+<pre class="r"><code>mean_ret &lt;-  0.79
+sd_ret &lt;- 1.16
+upper_limit &lt;- 2.53 - mean_ret
+
+lower_limit &lt;- -0.95 - mean_ret
+
+k &lt;- upper_limit / sd_ret
+
+(1 - 1/k^2) * 240</code></pre>
+<pre><code>## [1] 133.3333</code></pre>
+<p>C. 133</p>
+</div>
+<div id="problem-26" class="section level3">
+<h3>Problem 26</h3>
+<pre class="r"><code>k &lt;- 8/4
+
+(1 - 1/k^2) * 2000</code></pre>
+<pre><code>## [1] 1500</code></pre>
+<p>B. 1500</p>
+<div id="problems-27-to-35-problems-and-their-solutions-in-r" class="section level4">
+<h4>Problems 27 to 35 problems and their solutions in R</h4>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_27_to_31.png" />
+<img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch3_stats/ch3_pp_32_to_35.png" /></p>
+</div>
+</div>
+<div id="problem-27" class="section level3">
+<h3>Problem 27</h3>
+<pre class="r"><code>df &lt;- tibble(sector = c(&quot;utilities&quot;, &quot;materials&quot;, &quot;industrials&quot;),
+             mean_ret = c(2.1, 1.25, 3.01),
+             sd_ret = c(1.23, 1.35, 1.52))
+
+df %&gt;%
+  mutate(v = sd_ret / mean_ret)</code></pre>
+<pre><code>## # A tibble: 3 x 4
+##   sector      mean_ret sd_ret     v
+##   &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 utilities       2.1    1.23 0.586
+## 2 materials       1.25   1.35 1.08 
+## 3 industrials     3.01   1.52 0.505</code></pre>
+<p>B. matrials</p>
+</div>
+<div id="problem-28" class="section level3">
+<h3>Problem 28</h3>
+<p>B. equal to its median.</p>
+</div>
+<div id="problem-29" class="section level3">
+<h3>Problem 29</h3>
+<p>B. has a greater number of extreme returns</p>
+</div>
+<div id="problem-30" class="section level3">
+<h3>Problem 30</h3>
+<p>A. For Portfolio 1, the median is less than the mean.</p>
+</div>
+<div id="problem-31" class="section level3">
+<h3>Problem 31</h3>
+<p>C. negatively skewed.</p>
+</div>
+<div id="problem-32" class="section level3">
+<h3>Problem 32</h3>
+<p>B. mode &lt; median &lt; mean</p>
+</div>
+<div id="problem-33" class="section level3">
+<h3>Problem 33</h3>
+<p>B. platykurtic</p>
+</div>
+<div id="problem-34" class="section level3">
+<h3>Problem 34</h3>
+<p>B. The geometric mean measures an investment’s compound rate of growth over multiple periods.</p>
+</div>
+<div id="problem-35" class="section level3">
+<h3>Problem 35</h3>
+<p>B. Geometric</p>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2020-04-21-investment-analysis-chapter1/">Quantitative Investment Analysis - Chapter 1 →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

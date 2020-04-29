@@ -6,10 +6,23 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 27 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quantitative Investment Analysis - Chapter 3</title>
+      <link>/post/2020-04-27-investment-analysis-chapter3/</link>
+      <pubDate>Mon, 27 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-04-27-investment-analysis-chapter3/</guid>
+      <description>In this post we will solve the end of the chapter practice problems from chapter 3 of the book.
+Here are the first 6 problems and their solutions in R library(tidyverse)  Problem 1 B. The FTSE Eurotop 100 as a representation of the European stock market
+ Problem 2 A. Ordinal
+ Problem 3 A. The 500 companies in the S&amp;amp;P 500 Index
+ Problem 4 A. median of a population.</description>
+    </item>
     
     <item>
       <title>Quantitative Investment Analysis - Chapter 1</title>
