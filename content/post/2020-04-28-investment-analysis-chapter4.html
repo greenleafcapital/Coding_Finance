@@ -1,0 +1,52 @@
+---
+title: "Quantitative Investment Analysis - Chapter 4"
+author: "DD"
+date: "2020-04-28"
+description: "Chapter 4: Probability Concepts"
+output:
+  html_document:
+    highlight: tango
+---
+
+
+
+<p>In this post we will solve the end of the chapter practice problems from chapter 4 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
+<div id="problem-1" class="section level3">
+<h3>Problem 1</h3>
+<p>Suppose that 5 percent of the stocks meeting your stock-selection criteria are in the telecommunications (telecom) industry. Also, dividend-paying telecom stocks are 1 percent of the total number of stocks meeting your selection cri-teria. What is the probability that a stock is dividend paying, given that it is a telecom stock that has met your stock selection criteria?</p>
+<pre class="r"><code># Probability stock is telecom
+p_telecom &lt;- 0.05
+
+# Probability stock is dividend paying telecom stock
+p_div_telecom &lt;- 0.01
+
+# Find
+# p(stock_is_div | stock_is_telecom) = p(stock_is_div_telecom) / p(stock_is_telecom)
+
+p &lt;- p_div_telecom / p_telecom
+
+cat(&quot;What is the probability that a stock is dividend paying, given that it is a telecom stock that has met your stock selection criteria is&quot;, p)</code></pre>
+<pre><code>## What is the probability that a stock is dividend paying, given that it is a telecom stock that has met your stock selection criteria is 0.2</code></pre>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p>You are using the following three criteria to screen potential acquisition targets from a list of 500 companies:</p>
+<table>
+<thead>
+<tr class="header">
+<th>First Header</th>
+<th>Second Header</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+<tr class="even">
+<td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+</tbody>
+</table>
+</div>
