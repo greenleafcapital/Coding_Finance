@@ -8,6 +8,15 @@ output:
     highlight: tango
 ---
 
+```{r message=FALSE, warning=FALSE}
+
+library(DT)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+```
+
 In this post we will solve the end of the chapter practice problems from chapter 4 of the [book](https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X).
 
 ### Problem 1
@@ -35,10 +44,19 @@ cat("What is the probability that a stock is dividend paying, given that it is a
 
 You are using the following three criteria to screen potential acquisition targets from a list of 500 companies:
 
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
+```{r}
+
+df <- tribble(~'Criterion', ~'Fraction of the 500 Companies Meeting the Criterion',
+              'Product lines compatible', 0.20, 'Company will increase combined sales growth rate', 0.45,
+              'Balance sheet impact manageable', 0.78)
+
+df %>%
+  kable() %>%
+    kable_styling(full_width = F)
+
+```
+
+
 
 
 
