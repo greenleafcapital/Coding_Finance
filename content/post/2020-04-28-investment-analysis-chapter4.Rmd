@@ -10,7 +10,6 @@ output:
 
 ```{r message=FALSE, warning=FALSE}
 
-library(DT)
 library(tidyverse)
 library(knitr)
 library(kableExtra)
@@ -409,9 +408,111 @@ The standard deviation of sales is closest to:
 
 ```{r}
 
-df %>%
+# Calculate the expected sales
+expected_sales <- df %>%
   mutate(e = Probability * `Sales ($ millions)`) %>%
-  summarise(s = sd(e))
+  summarise(m = sum(e)) %>%
+  .[[1]]
+
+# Calculate SD
+
+s <- df %>%
+  mutate(v = Probability * (`Sales ($ millions)` - expected_sales)^2) %>%
+  summarise(s = sqrt(sum(v))) %>%
+  .[[1]]
+
+cat("The standard deviation of sales is closest to", s)
+
+
+```
+A. \$9.81
+
+# Problem 21
+
+Which of the following statements is most accurate? If the covariance of returns between two assets is 0.0023, then:
+
+- A the assets’ risk is near zero.
+- B the asset returns are unrelated.
+- C the asset returns have a positive relationship.
+
+C. the asset returns have a positive relationship.
+
+# Problem 22
+
+An analyst produces the following joint probability function for a foreign index (FI) and a domestic index (DI).
+
+```{r}
+
+df <- tribble(~"FI", ~"RDI = 30%", ~"RDI = 25%", ~"RDI = 15%",
+        "RFI = 25%", 0.25, "", "", "RFI = 15%", "", "0.50", "", "RFI = 10%", "", "", "0.25")
+
+df %>%
+  kable() %>%
+    kable_styling("striped")
 
 ```
 
+The covariance of returns on the foreign index and the returns on the domestic index is closest to:
+
+- A 26.39.
+- B 26.56.
+- C 28.12
+
+```{r}
+
+# Calculate the Expected returns
+
+er_fi <- (0.25 * 25) + (0.5 * 15) + (0.25 * 10)
+er_di <- (0.25 * 30) + (0.5 * 25) + (0.25 * 15)
+
+cov_fi_di <- (0.25 * (25 - er_fi) * (30 - er_di)) + (0.5 * (15 - er_fi) * (25 - er_di)) + (0.25 * (10 - er_fi) * (15 - er_di))
+
+cat("The covariance of returns on the foreign index and the returns on the domestic index is closest to", cov_fi_di)
+
+```
+
+B. 26.56
+
+### Problem 23
+
+A manager will select 20 bonds out of his universe of 100 bonds to construct a portfolio. Which formula provides the number of possible portfolios?
+
+- A Permutation formula
+- B Multinomial formula
+- C Combination formula
+
+C. Combination formula
+
+### Problem 24
+
+A firm will select two of four vice presidents to be added to the investment committee. How many different groups of two are possible?
+
+- A 6
+- B 12
+- C 24
+
+```{r}
+
+# nCr
+# n! / (n-r)!r!
+
+n = 4
+r = 2
+
+factorial(n) / (factorial(n - r) * factorial(r))
+
+
+
+```
+
+A. 6
+
+### Problem 25
+
+From an approved list of 25 funds, a portfolio manager wants to rank 4 mutual funds from most recommended to least recommended. Which formula is most appropriateto calculate the number of possible ways the funds could be ranked?
+
+- A Permutation formula 
+- B Multinomial formula
+- C Combination formula
+
+A. Permutation formula 

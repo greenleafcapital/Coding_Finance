@@ -11,8 +11,7 @@ output:
 <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
 
 
-<pre class="r"><code>library(DT)
-library(tidyverse)
+<pre class="r"><code>library(tidyverse)
 library(knitr)
 library(kableExtra)</code></pre>
 <p>In this post we will solve the end of the chapter practice problems from chapter 4 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
@@ -513,11 +512,150 @@ Sales ($ millions)
 - A $9.81 million.
 - B $12.20 million.
 - C $32.40 million</p>
-<pre class="r"><code>df %&gt;%
+<pre class="r"><code># Calculate the expected sales
+expected_sales &lt;- df %&gt;%
   mutate(e = Probability * `Sales ($ millions)`) %&gt;%
-  summarise(s = sd(e))</code></pre>
-<pre><code>## # A tibble: 1 x 1
-##       s
-##   &lt;dbl&gt;
-## 1  13.4</code></pre>
+  summarise(m = sum(e)) %&gt;%
+  .[[1]]
+
+# Calculate SD
+
+s &lt;- df %&gt;%
+  mutate(v = Probability * (`Sales ($ millions)` - expected_sales)^2) %&gt;%
+  summarise(s = sqrt(sum(v))) %&gt;%
+  .[[1]]
+
+cat(&quot;The standard deviation of sales is closest to&quot;, s)</code></pre>
+<pre><code>## The standard deviation of sales is closest to 9.807523</code></pre>
+<p>A. $9.81</p>
+</div>
+<div id="problem-21" class="section level1">
+<h1>Problem 21</h1>
+<p>Which of the following statements is most accurate? If the covariance of returns between two assets is 0.0023, then:</p>
+<ul>
+<li>A the assets’ risk is near zero.</li>
+<li>B the asset returns are unrelated.</li>
+<li>C the asset returns have a positive relationship.</li>
+</ul>
+<p>C. the asset returns have a positive relationship.</p>
+</div>
+<div id="problem-22" class="section level1">
+<h1>Problem 22</h1>
+<p>An analyst produces the following joint probability function for a foreign index (FI) and a domestic index (DI).</p>
+<pre class="r"><code>df &lt;- tribble(~&quot;FI&quot;, ~&quot;RDI = 30%&quot;, ~&quot;RDI = 25%&quot;, ~&quot;RDI = 15%&quot;,
+        &quot;RFI = 25%&quot;, 0.25, &quot;&quot;, &quot;&quot;, &quot;RFI = 15%&quot;, &quot;&quot;, &quot;0.50&quot;, &quot;&quot;, &quot;RFI = 10%&quot;, &quot;&quot;, &quot;&quot;, &quot;0.25&quot;)
+
+df %&gt;%
+  kable() %&gt;%
+    kable_styling(&quot;striped&quot;)</code></pre>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+FI
+</th>
+<th style="text-align:left;">
+RDI = 30%
+</th>
+<th style="text-align:left;">
+RDI = 25%
+</th>
+<th style="text-align:left;">
+RDI = 15%
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+RFI = 25%
+</td>
+<td style="text-align:left;">
+0.25
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RFI = 15%
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.50
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RFI = 10%
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+0.25
+</td>
+</tr>
+</tbody>
+</table>
+<p>The covariance of returns on the foreign index and the returns on the domestic index is closest to:</p>
+<ul>
+<li>A 26.39.</li>
+<li>B 26.56.</li>
+<li>C 28.12</li>
+</ul>
+<pre class="r"><code># Calculate the Expected returns
+
+er_fi &lt;- (0.25 * 25) + (0.5 * 15) + (0.25 * 10)
+er_di &lt;- (0.25 * 30) + (0.5 * 25) + (0.25 * 15)
+
+cov_fi_di &lt;- (0.25 * (25 - er_fi) * (30 - er_di)) + (0.5 * (15 - er_fi) * (25 - er_di)) + (0.25 * (10 - er_fi) * (15 - er_di))
+
+cat(&quot;The covariance of returns on the foreign index and the returns on the domestic index is closest to&quot;, cov_fi_di)</code></pre>
+<pre><code>## The covariance of returns on the foreign index and the returns on the domestic index is closest to 26.5625</code></pre>
+<p>B. 26.56</p>
+<div id="problem-23" class="section level3">
+<h3>Problem 23</h3>
+<p>A manager will select 20 bonds out of his universe of 100 bonds to construct a portfolio. Which formula provides the number of possible portfolios?</p>
+<ul>
+<li>A Permutation formula</li>
+<li>B Multinomial formula</li>
+<li>C Combination formula</li>
+</ul>
+<p>C. Combination formula</p>
+</div>
+<div id="problem-24" class="section level3">
+<h3>Problem 24</h3>
+<p>A firm will select two of four vice presidents to be added to the investment committee. How many different groups of two are possible?</p>
+<ul>
+<li>A 6</li>
+<li>B 12</li>
+<li>C 24</li>
+</ul>
+<pre class="r"><code># nCr
+# n! / (n-r)!r!
+
+n = 4
+r = 2
+
+factorial(n) / (factorial(n - r) * factorial(r))</code></pre>
+<pre><code>## [1] 6</code></pre>
+<p>A. 6</p>
+</div>
+<div id="problem-25" class="section level3">
+<h3>Problem 25</h3>
+<p>From an approved list of 25 funds, a portfolio manager wants to rank 4 mutual funds from most recommended to least recommended. Which formula is most appropriateto calculate the number of possible ways the funds could be ranked?</p>
+<ul>
+<li>A Permutation formula</li>
+<li>B Multinomial formula</li>
+<li>C Combination formula</li>
+</ul>
+<p>A. Permutation formula</p>
+</div>
 </div>

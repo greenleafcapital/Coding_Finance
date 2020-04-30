@@ -17,7 +17,7 @@
       <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/2020-04-28-investment-analysis-chapter4/</guid>
-      <description>library(DT) library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 4 of the book.
+      <description>library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 4 of the book.
 Problem 1 Suppose that 5 percent of the stocks meeting your stock-selection criteria are in the telecommunications (telecom) industry. Also, dividend-paying telecom stocks are 1 percent of the total number of stocks meeting your selection cri-teria. What is the probability that a stock is dividend paying, given that it is a telecom stock that has met your stock selection criteria?</description>
     </item>
     
