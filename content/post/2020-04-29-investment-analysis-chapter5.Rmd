@@ -122,7 +122,7 @@ cat("The probability that X is greater than or equal to 3 but less than 6, P(3 â
 
 ```
 
-B.
+B. 0.15
 
 ### Problem 6
 
@@ -224,9 +224,9 @@ A portfolio manager annually outperforms her benchmark 60% of the time.
 Assuming independent annual trials, what is the probability that she will outperform
 her benchmark four or more times over the next five years?
 
-A 0.26
-B 0.34
-C 0.48
+- A 0.26
+- B 0.34
+- C 0.48
 
 ```{r}
 
@@ -372,9 +372,9 @@ If the probability that a portfolio outperforms its benchmark in any quarter is
 0.75, the probability that the portfolio outperforms its benchmark in three or
 fewer quarters over the course of a year is closest to:
 
-A 0.26
-B 0.42
-C 0.68
+- A 0.26
+- B 0.42
+- C 0.68
 
 ```{r}
 
@@ -581,7 +581,7 @@ df %>%
 
 
 ```
-Since allocation C has the highest ratio, it is the best allocation.
+B. Since allocation C has the highest ratio, it is the best allocation.
 
 ```{r}
 
@@ -593,7 +593,7 @@ pnorm(-0.53)
 
 ```
 
-The safety-first optimal portfolio has a roughly 30 percent chance of not meeting a 3.7 percent return threshold
+C. The safety-first optimal portfolio has a roughly 30 percent chance of not meeting a 3.7 percent return threshold
 
 ### Problem 18
 
@@ -666,7 +666,7 @@ prior to maturity was \$20.11 and the value of the stock at maturity is $23, for
 example, the call is worth \$23 âˆ’ \$20.11 = $2.89. Briefly discuss how you might
 use Monte Carlo simulation in valuing a lookback call option.
 
-Skip for now. We will cover Monte Carlo in a separate post
+Skip for now. We will cover Monte Carlo in a separate post.
 
 ### Problem 22
 

@@ -108,9 +108,7 @@ p &lt;- length(y) / length(x)
 
 cat(&quot;The probability that X is greater than or equal to 3 but less than 6, P(3 ≤ X &lt; 6) is&quot;, p)</code></pre>
 <pre><code>## The probability that X is greater than or equal to 3 but less than 6, P(3 ≤ X &lt; 6) is 0.15</code></pre>
-<ol start="2" style="list-style-type: upper-alpha">
-<li></li>
-</ol>
+<p>B. 0.15</p>
 </div>
 <div id="problem-6" class="section level3">
 <h3>Problem 6</h3>
@@ -197,9 +195,11 @@ increases during the next 10 years is&quot;,v, &quot;and&quot;, s, &quot;respect
 <p>A portfolio manager annually outperforms her benchmark 60% of the time.
 Assuming independent annual trials, what is the probability that she will outperform
 her benchmark four or more times over the next five years?</p>
-<p>A 0.26
-B 0.34
-C 0.48</p>
+<ul>
+<li>A 0.26</li>
+<li>B 0.34</li>
+<li>C 0.48</li>
+</ul>
 <pre class="r"><code># There are two ways to solve this
 
 p_success &lt;- 0.6
@@ -276,7 +276,7 @@ x &lt;- runif(10000, min = 14, max = 15)
 
 # We can see that mean value of x is close to 14.5
 mean(x)</code></pre>
-<pre><code>## [1] 14.49976</code></pre>
+<pre><code>## [1] 14.4971</code></pre>
 <p>A. The expected value of sales for the fourth quarter is 14.5</p>
 <pre class="r"><code>set.seed(123)
 
@@ -319,9 +319,11 @@ Interpret this value.</p>
 <p>If the probability that a portfolio outperforms its benchmark in any quarter is
 0.75, the probability that the portfolio outperforms its benchmark in three or
 fewer quarters over the course of a year is closest to:</p>
-<p>A 0.26
-B 0.42
-C 0.68</p>
+<ul>
+<li>A 0.26</li>
+<li>B 0.42</li>
+<li>C 0.68</li>
+</ul>
 <pre class="r"><code># We know there are 4 quarters in a year
 # The outcomes are outperform or not
 # Binomial distribution
@@ -548,14 +550,14 @@ df %&gt;%
 ## 2 B                                12                             17 0.488
 ## 3 C                                10                             12 0.525
 ## 4 D                                 9                             11 0.481</code></pre>
-<p>Since allocation C has the highest ratio, it is the best allocation.</p>
+<p>B. Since allocation C has the highest ratio, it is the best allocation.</p>
 <pre class="r"><code># Since allocation C has 0.5246 ratio
 # round it up to 0.53
 # We need to find the cumulative probability of z = -0.53
 
 pnorm(-0.53)</code></pre>
 <pre><code>## [1] 0.298056</code></pre>
-<p>The safety-first optimal portfolio has a roughly 30 percent chance of not meeting a 3.7 percent return threshold</p>
+<p>C. The safety-first optimal portfolio has a roughly 30 percent chance of not meeting a 3.7 percent return threshold</p>
 </div>
 <div id="problem-18" class="section level3">
 <h3>Problem 18</h3>
@@ -623,7 +625,7 @@ prior to maturity) or $0, whichever is greater. If the minimum value reached
 prior to maturity was $20.11 and the value of the stock at maturity is $23, for
 example, the call is worth $23 − $20.11 = $2.89. Briefly discuss how you might
 use Monte Carlo simulation in valuing a lookback call option.</p>
-<p>Skip for now. We will cover Monte Carlo in a separate post</p>
+<p>Skip for now. We will cover Monte Carlo in a separate post.</p>
 </div>
 <div id="problem-22" class="section level3">
 <h3>Problem 22</h3>
