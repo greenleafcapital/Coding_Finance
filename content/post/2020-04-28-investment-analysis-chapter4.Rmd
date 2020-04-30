@@ -179,15 +179,54 @@ The probability that a company will pass the test given that it will subsequentl
 # We know
 # p(survivor) = 1 - P(nonsurvivor) = 1 - 0.4 = 0.6
 
+# p(pass_test) = p(pass_test | survivor) * p(survivor) + p(pass_test | nonsurvivor) * p(nonsurvivor)
 
+# 0.55 = (0.85 * 0.6) + p(pass_test | nonsurvivor) * 0.4
 
+p_pass_test_nonsurvivor =  (0.55 - (0.85 * 0.6)) / 0.4
 
+cat("P(pass test | nonsurvivor) is", p_pass_test_nonsurvivor)
 
+```
+A. P(pass test | nonsurvivor) is 0.1
 
+```{r}
 
+# p(survivor | pass test) = [p (pass test | survivor) / p(pass test)] * p(survivor)
+
+p <- (0.85 * 0.6) / 0.55
+
+cat("The probability that a company is a survivor, given that it passes the test is", p)
 
 ```
 
+B. The probability that a company is a survivor, given that it passes the test is 0.9272727
+
+```{r}
+
+# p(nonsurvivor | fail test) = ?
+# p(fail test) = 1 - p(pass test)
+# p(fail test) = 1 - 0.55 = 0.45
+
+# p(fail test) = p(fail test | nonsurvivor) * p(nonsurvivor) + p(fail test | survivor) * p(survivor)
+
+# 0.45 = p(fail test | nonsurvivor) * 0.4 + 0.15 * 0.6
+
+p_failtest_nonsurvivor <- (0.45 - (0.6 * 0.15)) / 0.4
+
+# Bayes formula
+
+# p(nonsurvivor | fail test) = [p(fail test | nonsurvivor) / p(fail test)] * p(nonsurvivor)
+
+p_nonsurvivro_ftest <- p_failtest_nonsurvivor / 0.45 * 0.4
+
+cat("The probability that a company is a nonsurvivor, given that it fails the test is", p_nonsurvivro_ftest)
+
+```
+
+C. The probability that a company is a nonsurvivor, given that it fails the test is 0.8
+
+D. Test appears to be useful since, the company that passes the test has 92% survival rate and company that fails the test has 80% non survival rate.
 
 ### Problem 6
 
@@ -212,6 +251,7 @@ C. A subjective probability
 ### Problem 8
 
 If the probability that Zolaf Company sales exceed last year’s sales is 0.167, the odds for exceeding sales are closest to:
+
 - A 1 to 5.
 - B 1 to 6.
 - C 5 to 1.
@@ -241,6 +281,7 @@ B. Multiplication rule
 ### Problem 11
 
 Which of the following is a property of two dependent events?
+
 - A The two events must occur simultaneously.
 - B The probability of one event influences the probability of the other event.
 - C The probability of the two events occurring is the product of each event’s probability
@@ -402,6 +443,7 @@ df %>%
 
 
 The standard deviation of sales is closest to:
+
 - A \$9.81 million.
 - B \$12.20 million.
 - C \$32.40 million

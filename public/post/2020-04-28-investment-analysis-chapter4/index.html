@@ -278,7 +278,44 @@ The probability that a company will pass the test given that it will subsequentl
 # P(pass test | survivor) = 0.85
 
 # We know
-# p(survivor) = 1 - P(nonsurvivor) = 1 - 0.4 = 0.6</code></pre>
+# p(survivor) = 1 - P(nonsurvivor) = 1 - 0.4 = 0.6
+
+# p(pass_test) = p(pass_test | survivor) * p(survivor) + p(pass_test | nonsurvivor) * p(nonsurvivor)
+
+# 0.55 = (0.85 * 0.6) + p(pass_test | nonsurvivor) * 0.4
+
+p_pass_test_nonsurvivor =  (0.55 - (0.85 * 0.6)) / 0.4
+
+cat(&quot;P(pass test | nonsurvivor) is&quot;, p_pass_test_nonsurvivor)</code></pre>
+<pre><code>## P(pass test | nonsurvivor) is 0.1</code></pre>
+<p>A. P(pass test | nonsurvivor) is 0.1</p>
+<pre class="r"><code># p(survivor | pass test) = [p (pass test | survivor) / p(pass test)] * p(survivor)
+
+p &lt;- (0.85 * 0.6) / 0.55
+
+cat(&quot;The probability that a company is a survivor, given that it passes the test is&quot;, p)</code></pre>
+<pre><code>## The probability that a company is a survivor, given that it passes the test is 0.9272727</code></pre>
+<p>B. The probability that a company is a survivor, given that it passes the test is 0.9272727</p>
+<pre class="r"><code># p(nonsurvivor | fail test) = ?
+# p(fail test) = 1 - p(pass test)
+# p(fail test) = 1 - 0.55 = 0.45
+
+# p(fail test) = p(fail test | nonsurvivor) * p(nonsurvivor) + p(fail test | survivor) * p(survivor)
+
+# 0.45 = p(fail test | nonsurvivor) * 0.4 + 0.15 * 0.6
+
+p_failtest_nonsurvivor &lt;- (0.45 - (0.6 * 0.15)) / 0.4
+
+# Bayes formula
+
+# p(nonsurvivor | fail test) = [p(fail test | nonsurvivor) / p(fail test)] * p(nonsurvivor)
+
+p_nonsurvivro_ftest &lt;- p_failtest_nonsurvivor / 0.45 * 0.4
+
+cat(&quot;The probability that a company is a nonsurvivor, given that it fails the test is&quot;, p_nonsurvivro_ftest)</code></pre>
+<pre><code>## The probability that a company is a nonsurvivor, given that it fails the test is 0.8</code></pre>
+<p>C. The probability that a company is a nonsurvivor, given that it fails the test is 0.8</p>
+<p>D. Test appears to be useful since, the company that passes the test has 92% survival rate and company that fails the test has 80% non survival rate.</p>
 </div>
 <div id="problem-6" class="section level3">
 <h3>Problem 6</h3>
@@ -302,10 +339,12 @@ The probability that a company will pass the test given that it will subsequentl
 </div>
 <div id="problem-8" class="section level3">
 <h3>Problem 8</h3>
-<p>If the probability that Zolaf Company sales exceed last year’s sales is 0.167, the odds for exceeding sales are closest to:
-- A 1 to 5.
-- B 1 to 6.
-- C 5 to 1.</p>
+<p>If the probability that Zolaf Company sales exceed last year’s sales is 0.167, the odds for exceeding sales are closest to:</p>
+<ul>
+<li>A 1 to 5.</li>
+<li>B 1 to 6.</li>
+<li>C 5 to 1.</li>
+</ul>
 <p>A. 1 to 5</p>
 </div>
 <div id="problem-9" class="section level3">
@@ -330,10 +369,12 @@ The probability that a company will pass the test given that it will subsequentl
 </div>
 <div id="problem-11" class="section level3">
 <h3>Problem 11</h3>
-<p>Which of the following is a property of two dependent events?
-- A The two events must occur simultaneously.
-- B The probability of one event influences the probability of the other event.
-- C The probability of the two events occurring is the product of each event’s probability</p>
+<p>Which of the following is a property of two dependent events?</p>
+<ul>
+<li>A The two events must occur simultaneously.</li>
+<li>B The probability of one event influences the probability of the other event.</li>
+<li>C The probability of the two events occurring is the product of each event’s probability</li>
+</ul>
 <p>B. The probability of one event influences the probability of the other event.</p>
 </div>
 <div id="problem-12" class="section level3">
@@ -594,10 +635,12 @@ Sales ($ millions)
 </tr>
 </tbody>
 </table>
-<p>The standard deviation of sales is closest to:
-- A $9.81 million.
-- B $12.20 million.
-- C $32.40 million</p>
+<p>The standard deviation of sales is closest to:</p>
+<ul>
+<li>A $9.81 million.</li>
+<li>B $12.20 million.</li>
+<li>C $32.40 million</li>
+</ul>
 <pre class="r"><code># Calculate the expected sales
 expected_sales &lt;- df %&gt;%
   mutate(e = Probability * `Sales ($ millions)`) %&gt;%
