@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 29 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quantitative Investment Analysis - Chapter 5</title>
+      <link>/post/2020-04-29-investment-analysis-chapter5/</link>
+      <pubDate>Wed, 29 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-04-29-investment-analysis-chapter5/</guid>
+      <description>library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 5 of the book.
+Problem 1 A European put option on stock conveys the right to sell the stock at a prespecified price, called the exercise price, at the maturity date of the option. The value of this put at maturity is (exercise price – stock price) or $0, whichever is greater.</description>
+    </item>
     
     <item>
       <title>Quantitative Investment Analysis - Chapter 4</title>

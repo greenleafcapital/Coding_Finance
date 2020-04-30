@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Quantitative Investment Analysis - Chapter 5 :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2020-04-29-investment-analysis-chapter5/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Quantitative Investment Analysis - Chapter 5 :: Coding Finance — " />
+<meta name="twitter:description" content="library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 5 of the book.
+Problem 1 A European put option on stock conveys the right to sell the stock at a prespecified price, called the exercise price, at the maturity date of the option. The value of this put at maturity is (exercise price – stock price) or $0, whichever is greater." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Quantitative Investment Analysis - Chapter 5 :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2020-04-29-investment-analysis-chapter5/" />
+<meta property="og:site_name" content="Quantitative Investment Analysis - Chapter 5" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2020-04-29 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2020-04-29-investment-analysis-chapter5/">Quantitative Investment Analysis - Chapter 5</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        4/29/2020
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+library(kableExtra)</code></pre>
+<p>In this post we will solve the end of the chapter practice problems from chapter 5 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
+<div id="problem-1" class="section level3">
+<h3>Problem 1</h3>
+<p>A European put option on stock conveys the right to sell the stock at a prespecified
+price, called the exercise price, at the maturity date of the option. The
+value of this put at maturity is (exercise price – stock price) or $0, whichever
+is greater. Suppose the exercise price is $100 and the underlying stock trades
+in ticks of $0.01. At any time before maturity, the terminal value of the put is a
+random variable.</p>
+<ul>
+<li>A Describe the distinct possible outcomes for terminal put value. (Think of the
+put’s maximum and minimum values and its minimum price increments.)</li>
+<li>B Is terminal put value, at a time before maturity, a discrete or continuous
+random variable?</li>
+<li>C Letting Y stand for terminal put value, express in standard notation the
+probability that terminal put value is less than or equal to $24. No calculations
+or formulas are necessary.</li>
+</ul>
+<pre class="r"><code># Max value of the put at expiration
+# When the stock price is 0
+put_max_value = 100 - 0
+
+# Min value of the put at expiration
+# When the stock price is above 100
+
+put_min_value = 0
+
+# Since the put trades at 0.01 increments
+# Distinct possible outcomes of put value are
+
+distinct_values &lt;- seq(put_min_value, put_max_value, by = 0.01)
+
+cat(&quot;The discrete possible outcomes are&quot;, distinct_values[1:25], &quot;......&quot;, distinct_values[length(distinct_values)])</code></pre>
+<pre><code>## The discrete possible outcomes are 0 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.1 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.2 0.21 0.22 0.23 0.24 ...... 100</code></pre>
+<p>A. The discrete possible outcomes are 0 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.1 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.2 0.21 0.22 0.23 0.24 …… 100</p>
+<p>B. The terminal put value, at a time before maturity, is a discrete random variable.</p>
+<p>C. P(Y &lt;= 24)</p>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p>Define the term “binomial random variable.” Describe the types of problems for
+which the binomial distribution is used.</p>
+<p>A binomial random variable is defined as the number of successes in <em>n</em> Bernoulli trials. The binomial distribution is used to make probability statements about anything with binary outcomes (success or failure).</p>
+</div>
+<div id="problem-3" class="section level3">
+<h3>Problem 3</h3>
+<p>The value of the cumulative distribution function F(x), where x is a particular
+outcome, for a discrete uniform distribution:</p>
+<ul>
+<li>A sums to 1.</li>
+<li>B lies between 0 and 1.</li>
+<li>C decreases as x increases.</li>
+</ul>
+<p>B. lies between 0 and 1</p>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<p>For a binomial random variable with five trials, and a probability of success on
+each trial of 0.50, the distribution will be:</p>
+<ul>
+<li>A skewed.</li>
+<li>B uniform.</li>
+<li>C symmetric</li>
+</ul>
+<p>C. symmetric, since probability of success (and failure) is 0.50 each</p>
+</div>
+<div id="problem-5" class="section level3">
+<h3>Problem 5</h3>
+<p>In a discrete uniform distribution with 20 potential outcomes of integers 1 to
+20, the probability that X is greater than or equal to 3 but less than 6, P(3 ≤ X &lt;
+6), is:</p>
+<ul>
+<li>A 0.10.</li>
+<li>B 0.15.</li>
+<li>C 0.20.</li>
+</ul>
+<pre class="r"><code># Create our sample space
+
+x &lt;- 1:20
+
+x</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code># Lets create our event
+
+y = x[x &gt;= 3 &amp; x &lt; 6]
+
+y</code></pre>
+<pre><code>## [1] 3 4 5</code></pre>
+<pre class="r"><code># Get probability
+
+p &lt;- length(y) / length(x)
+
+cat(&quot;The probability that X is greater than or equal to 3 but less than 6, P(3 ≤ X &lt; 6) is&quot;, p)</code></pre>
+<pre><code>## The probability that X is greater than or equal to 3 but less than 6, P(3 ≤ X &lt; 6) is 0.15</code></pre>
+<ol start="2" style="list-style-type: upper-alpha">
+<li></li>
+</ol>
+</div>
+<div id="problem-6" class="section level3">
+<h3>Problem 6</h3>
+<p>Over the last 10 years, a company’s annual earnings increased year over year
+seven times and decreased year over year three times. You decide to model
+the number of earnings increases for the next decade as a binomial random
+variable.</p>
+<ul>
+<li>A What is your estimate of the probability of success, defined as an increase in
+annual earnings?</li>
+</ul>
+<p>For Parts B, C, and D of this problem, assume the estimated probability is the
+actual probability for the next decade.</p>
+<ul>
+<li>B What is the probability that earnings will increase in exactly 5 of the next 10
+years?</li>
+<li>C Calculate the expected number of yearly earnings increases during the next
+10 years.</li>
+<li>D Calculate the variance and standard deviation of the number of yearly earnings
+increases during the next 10 years.</li>
+<li>E The expression for the probability function of a binomial random variable
+depends on two major assumptions. In the context of this problem, what
+must you assume about annual earnings increases to apply the binomial
+distribution in Part B? What reservations might you have about the validity
+of these assumptions?</li>
+</ul>
+<pre class="r"><code>event &lt;- 10
+increase &lt;- 7
+decrease &lt;- 3
+
+p_success &lt;- increase / event
+
+cat(&quot;The probability of success, defined as an increase in
+annual earnings is&quot;, p_success)</code></pre>
+<pre><code>## The probability of success, defined as an increase in
+## annual earnings is 0.7</code></pre>
+<p>A. The probability of success, defined as an increase in
+annual earnings is 0.7</p>
+<pre class="r"><code># http://www.r-tutor.com/elementary-statistics/probability-distributions/binomial-distribution
+
+p &lt;- dbinom(5,10,0.7)
+
+cat(&quot;The probability that earnings will increase in exactly 5 of the next 10
+years&quot;, p)</code></pre>
+<pre><code>## The probability that earnings will increase in exactly 5 of the next 10
+## years 0.1029193</code></pre>
+<p>B. The probability that earnings will increase in exactly 5 of the next 10
+years 0.1029193</p>
+<pre class="r"><code># lecture on expected value of bernoulli distribution
+# https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/binomial-mean-standard-dev-formulas/v/expected-value-of-binomial-variable
+
+n = 10
+p_success &lt;- 0.7
+e &lt;- n * p_success
+
+cat(&quot;The expected number of yearly earnings increases during the next
+10 years&quot;, e)</code></pre>
+<pre><code>## The expected number of yearly earnings increases during the next
+## 10 years 7</code></pre>
+<p>C. The expected number of yearly earnings increases during the next
+10 years 7</p>
+<pre class="r"><code># Lecture on variance and standard deviation of benoulli distribution
+# https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/binomial-mean-standard-dev-formulas/v/mean-and-variance-of-bernoulli-distribution-example
+
+# n * (1-p) * p
+
+n = 10
+p = 0.7
+
+# variane is
+v &lt;- n * (1 - p) * p
+
+# sd is
+s &lt;- sqrt(v)
+
+cat(&quot;The variance and standard deviation of the number of yearly earnings
+increases during the next 10 years is&quot;,v, &quot;and&quot;, s, &quot;respectively&quot;)</code></pre>
+<pre><code>## The variance and standard deviation of the number of yearly earnings
+## increases during the next 10 years is 2.1 and 1.449138 respectively</code></pre>
+<p>E. We assume the probability remains the same every year. We also assume that the trials are independent. This may not be the case as we know that probability will change every year and earnings are subject to economic cycles and thus may not be independent.</p>
+</div>
+<div id="problem-7" class="section level3">
+<h3>Problem 7</h3>
+<p>A portfolio manager annually outperforms her benchmark 60% of the time.
+Assuming independent annual trials, what is the probability that she will outperform
+her benchmark four or more times over the next five years?</p>
+<p>A 0.26
+B 0.34
+C 0.48</p>
+<pre class="r"><code># There are two ways to solve this
+
+p_success &lt;- 0.6
+n &lt;- 5
+
+# probability of exactly 4
+p_4 &lt;- dbinom(4,5,0.6) 
+
+# probability of exactly 5
+p_5 &lt;- dbinom(5,5,0.6)
+
+p &lt;- p_4 + p_5
+p</code></pre>
+<pre><code>## [1] 0.33696</code></pre>
+<pre class="r"><code># probability of exactly 3 or less
+p &lt;- pbinom(3, n, prob = p_success, lower.tail = FALSE)
+p</code></pre>
+<pre><code>## [1] 0.33696</code></pre>
+<pre class="r"><code>cat(&quot;The probability that she will outperform 
+her benchmark four or more times over the next five years is&quot;, p)</code></pre>
+<pre><code>## The probability that she will outperform 
+## her benchmark four or more times over the next five years is 0.33696</code></pre>
+<p>B. 0.34</p>
+</div>
+<div id="problem-8" class="section level3">
+<h3>Problem 8</h3>
+<p>You are examining the record of an investment newsletter writer who claims a
+70 percent success rate in making investment recommendations that are profitable
+over a one-year
+time horizon. You have the one-year
+record of the newsletter’s
+seven most recent recommendations. Four of those recommendations
+were profitable. If all the recommendations are independent and the newsletter
+writer’s skill is as claimed, what is the probability of observing four or fewer
+profitable recommendations out of seven in total?</p>
+<pre class="r"><code># Claimed success
+p_success &lt;- 7/10
+
+# Size
+n &lt;- 7
+
+# probability of observing four or fewer success
+p &lt;- pbinom(4, n, prob = p_success)
+
+cat(&quot;The probability of observing four or fewer
+profitable recommendations out of seven in total is&quot;, p)</code></pre>
+<pre><code>## The probability of observing four or fewer
+## profitable recommendations out of seven in total is 0.3529305</code></pre>
+<p>The probability of observing four or fewer
+profitable recommendations out of seven in total is 0.3529305</p>
+</div>
+<div id="problem-9" class="section level3">
+<h3>Problem 9</h3>
+<p>You are forecasting sales for a company in the fourth quarter of its fiscal year.
+Your low-end estimate of sales is €14 million, and your high-end estimate is
+€15 million. You decide to treat all outcomes for sales between these two values
+as equally likely, using a continuous uniform distribution.</p>
+<ul>
+<li>A What is the expected value of sales for the fourth quarter?</li>
+<li>B What is the probability that fourth-quarter sales will be less than or equal to €14,125,000?</li>
+</ul>
+<pre class="r"><code>low_estimate &lt;- 14
+high_estimate &lt;- 15
+
+e &lt;- mean(c(low_estimate, high_estimate))
+
+cat(&quot;The expected value of sales for the fourth quarter is&quot;, e)</code></pre>
+<pre><code>## The expected value of sales for the fourth quarter is 14.5</code></pre>
+<pre class="r"><code># We can also do this using an experiment
+
+# Let x be uniform distribution of 10000 values between 14 and 15
+
+x &lt;- runif(10000, min = 14, max = 15)
+
+# We can see that mean value of x is close to 14.5
+mean(x)</code></pre>
+<pre><code>## [1] 14.49976</code></pre>
+<p>A. The expected value of sales for the fourth quarter is 14.5</p>
+<pre class="r"><code>set.seed(123)
+
+# Create our random uniform continuous variables
+
+x &lt;- runif(100000, min = 14, max = 15)
+
+# See how many values are less than 14.125
+y = x[x &lt;= 14.125]
+
+# Count the values
+p &lt;- length(y) / length(x)
+
+cat(&quot;the probability that fourth-quarter sales will be less than or equal to €14,125,000 is&quot;, p)</code></pre>
+<pre><code>## the probability that fourth-quarter sales will be less than or equal to €14,125,000 is 0.12493</code></pre>
+<p>The probability that fourth-quarter sales will be less than or equal to €14,125,000 is 0.12493 ~12.50%</p>
+</div>
+<div id="problem-10" class="section level3">
+<h3>Problem 10</h3>
+<p>State the approximate probability that a normal random variable will fall within the following intervals:</p>
+<ul>
+<li>A Mean plus or minus one standard deviation.</li>
+<li>B Mean plus or minus two standard deviations.</li>
+<li>C Mean plus or minus three standard deviations</li>
+</ul>
+<p>A Mean plus or minus one standard deviation will have approximately 68% of all outcomes.
+B Mean plus or minus two standard deviations will have approximately 95% of all outcomes. 95%
+C Mean plus or minus three standard deviations will have approximately 99% of all outcomes. 99%</p>
+</div>
+<div id="problem-11" class="section level3">
+<h3>Problem 11</h3>
+<p>Find the area under the normal curve up to z = 0.36; that is, find P(Z ≤ 0.36).
+Interpret this value.</p>
+<pre class="r"><code>cat(&quot;The area under the normal curve up to z = 0.36 is&quot;, pnorm(0.36))</code></pre>
+<pre><code>## The area under the normal curve up to z = 0.36 is 0.6405764</code></pre>
+<p>When z = 0.36, we can interpret this as 64% of observations are smaller than 0.36.</p>
+</div>
+<div id="problem-12" class="section level3">
+<h3>Problem 12</h3>
+<p>If the probability that a portfolio outperforms its benchmark in any quarter is
+0.75, the probability that the portfolio outperforms its benchmark in three or
+fewer quarters over the course of a year is closest to:</p>
+<p>A 0.26
+B 0.42
+C 0.68</p>
+<pre class="r"><code># We know there are 4 quarters in a year
+# The outcomes are outperform or not
+# Binomial distribution
+
+# Cumulative probability of having 3 out 4 quarters outperform is
+
+
+pbinom(3,4,0.75)</code></pre>
+<pre><code>## [1] 0.6835937</code></pre>
+<p>C. 0.68</p>
+</div>
+<div id="problem-13" class="section level3">
+<h3>Problem 13</h3>
+<p>In futures markets, profits or losses on contracts are settled at the end of each
+trading day. This procedure is called marking to market or daily resettlement.
+By preventing a trader’s losses from accumulating over many days, marking to
+market reduces the risk that traders will default on their obligations. A futures
+markets trader needs a liquidity pool to meet the daily mark to market. If
+liquidity is exhausted, the trader may be forced to unwind his position at an
+unfavorable time.</p>
+<p>Suppose you are using financial futures contracts to hedge a risk in your
+portfolio. You have a liquidity pool (cash and cash equivalents) of λ dollars per
+contract and a time horizon of T trading days. For a given size liquidity pool, λ,
+Kolb, Gay, and Hunter (1985) developed an expression for the probability
+stating that you will exhaust your liquidity pool within a T-day horizon as a
+result of the daily mark to market. Kolb et al. assumed that the expected change
+in futures price is 0 and that futures price changes are normally distributed.
+With σ representing the standard deviation of daily futures price changes, the
+standard deviation of price changes over a time horizon to day T is σ T , given
+continuous compounding. With that background, the Kolb et al. expression is
+Probability of exhausting liquidity pool = 2[1 – N(x)]
+where x = λ/(σ√T). Here x is a standardized value of λ. N(x) is the standard
+normal cumulative distribution function. For some intuition about 1 − N(x) in
+the expression, note that the liquidity pool is exhausted if losses exceed the size
+of the liquidity pool at any time up to and including T; the probability of that
+event happening can be shown to be proportional to an area in the right tail of
+a standard normal distribution, 1 − N(x).</p>
+<p>Using the Kolb et al. expression, answer the following questions:</p>
+<ul>
+<li>A Your hedging horizon is five days, and your liquidity pool is $2,000 per contract.
+You estimate that the standard deviation of daily price changes for the
+contract is $450. What is the probability that you will exhaust your liquidity
+pool in the five-day period?</li>
+<li>B Suppose your hedging horizon is 20 days, but all the other facts given in
+Part A remain the same. What is the probability that you will exhaust your
+liquidity pool in the 20-day
+period?</li>
+</ul>
+<pre class="r"><code># x = λ/(σ√T)
+# We know
+# λ = 2000
+# σ = 450
+# T = 5
+
+x &lt;- 2000 / (450 * sqrt(5))
+x</code></pre>
+<pre><code>## [1] 1.987616</code></pre>
+<pre class="r"><code># N(x) is the standard normal cumulative distribution function
+
+N_x &lt;- pnorm(x)
+
+# Probability of exhausting liquidity pool = 2[1 – N(x)]
+
+p &lt;- 2 * (1 - N_x)
+p</code></pre>
+<pre><code>## [1] 0.04685418</code></pre>
+<pre class="r"><code>cat(&quot;The probability that you will exhaust your liquidity pool in the five-day period&quot;, p)</code></pre>
+<pre><code>## The probability that you will exhaust your liquidity pool in the five-day period 0.04685418</code></pre>
+<p>The probability that you will exhaust your liquidity pool in the five-day period 0.04685418</p>
+<pre class="r"><code># the probability that you will exhaust your liquidity pool in the 20-day
+# We know
+# λ = 2000
+# σ = 450
+# T = 20
+
+x &lt;- 2000 / (450 * sqrt(20))
+x</code></pre>
+<pre><code>## [1] 0.993808</code></pre>
+<pre class="r"><code># N(x) is the standard normal cumulative distribution function
+
+N_x &lt;- pnorm(x)
+
+# Probability of exhausting liquidity pool = 2[1 – N(x)]
+
+p &lt;- 2 * (1 - N_x)
+p</code></pre>
+<pre><code>## [1] 0.3203164</code></pre>
+<pre class="r"><code>cat(&quot;The probability that you will exhaust your liquidity pool in the twenty-day period&quot;, p)</code></pre>
+<pre><code>## The probability that you will exhaust your liquidity pool in the twenty-day period 0.3203164</code></pre>
+<p>The probability that you will exhaust your liquidity pool in the twenty-day period 0.3203164</p>
+</div>
+<div id="problem-14" class="section level3">
+<h3>Problem 14</h3>
+<p>Which of the following is characteristic of the normal distribution?</p>
+<ul>
+<li>A Asymmetry</li>
+<li>B Kurtosis of 3</li>
+<li>C Definitive limits or boundaries</li>
+</ul>
+<p>B. Kurtosis of 3</p>
+</div>
+<div id="problem-15" class="section level3">
+<h3>Problem 15</h3>
+<p>Which of the following assets most likely requires the use of a multivariate distribution
+for modeling returns?</p>
+<ul>
+<li>A A call option on a bond</li>
+<li>B A portfolio of technology stocks</li>
+<li>C A stock in a market index</li>
+</ul>
+<p>B. A portfolio of technology stocks. A multivariate distribution specify the probabilities of group of related random variables.</p>
+</div>
+<div id="problem-16" class="section level3">
+<h3>Problem 16</h3>
+<p>The total number of parameters that fully characterizes a multivariate normal
+distribution for the returns on two stocks is:</p>
+<ul>
+<li>A 3.</li>
+<li>B 4.</li>
+<li>C 5.</li>
+</ul>
+<pre class="r"><code># multivariate normal distribution for the returns on two stocks will have
+# 2 means
+# 2 variance
+# 1 correlation</code></pre>
+<p>C. 5</p>
+</div>
+<div id="problem-17" class="section level3">
+<h3>Problem 17</h3>
+<p>A client has a portfolio of common stocks and fixed-income
+instruments with a current value of £1,350,000. She intends to liquidate £50,000 from the
+portfolio at the end of the year to purchase a partnership share in a business.
+Furthermore, the client would like to be able to withdraw the £50,000 without
+reducing the initial capital of £1,350,000. The following table shows four alternative
+asset allocations</p>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+parameters
+</th>
+<th style="text-align:right;">
+A
+</th>
+<th style="text-align:right;">
+B
+</th>
+<th style="text-align:right;">
+C
+</th>
+<th style="text-align:right;">
+D
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Expected annual return
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Standard deviation of return
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+</tbody>
+</table>
+<p>Address the following questions (assume normality for Parts B and C):</p>
+<ul>
+<li>A Given the client’s desire not to invade the £1,350,000 principal, what is the
+shortfall level, RL? Use this shortfall level to answer Part B.</li>
+<li>B According to the safety-first
+criterion, which of the allocations is the best?</li>
+<li>C What is the probability that the return on the safety-first
+optimal portfolio
+will be less than the shortfall level, RL?</li>
+</ul>
+<pre class="r"><code>withdraw &lt;- 50000
+portfolio &lt;- 1350000
+
+shortfall_level &lt;- withdraw / portfolio
+
+
+cat(&quot;The client&#39;s shortfall level is&quot;, shortfall_level)</code></pre>
+<pre><code>## The client&#39;s shortfall level is 0.03703704</code></pre>
+<p>A. The client’s shortfall level is 0.03703704</p>
+<pre class="r"><code># Safety first criteria
+# allocates to assets with the highest ratio
+# as expressed below
+
+df %&gt;%
+  gather(A:D, key = allocation, value = v) %&gt;%
+  spread(parameters, value = v) %&gt;%
+  mutate(ratio = (`Expected annual return` - shortfall_level * 100) / `Standard deviation of return`)</code></pre>
+<pre><code>## # A tibble: 4 x 4
+##   allocation `Expected annual return` `Standard deviation of return` ratio
+##   &lt;chr&gt;                         &lt;dbl&gt;                          &lt;dbl&gt; &lt;dbl&gt;
+## 1 A                                16                             24 0.512
+## 2 B                                12                             17 0.488
+## 3 C                                10                             12 0.525
+## 4 D                                 9                             11 0.481</code></pre>
+<p>Since allocation C has the highest ratio, it is the best allocation.</p>
+<pre class="r"><code># Since allocation C has 0.5246 ratio
+# round it up to 0.53
+# We need to find the cumulative probability of z = -0.53
+
+pnorm(-0.53)</code></pre>
+<pre><code>## [1] 0.298056</code></pre>
+<p>The safety-first optimal portfolio has a roughly 30 percent chance of not meeting a 3.7 percent return threshold</p>
+</div>
+<div id="problem-18" class="section level3">
+<h3>Problem 18</h3>
+<p>A portfolio has an expected mean return of 8 percent and standard deviation
+of 14 percent. The probability that its return falls between 8 and 11 percent is
+closest to:</p>
+<ul>
+<li>A 8.3%</li>
+<li>B 14.8%.</li>
+<li>C 58.3%.</li>
+</ul>
+<pre class="r"><code>z1 &lt;- (8 - 8) / 14 
+z1</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>z2 &lt;- (11 - 8) / 14
+z2</code></pre>
+<pre><code>## [1] 0.2142857</code></pre>
+<pre class="r"><code>p &lt;- pnorm(z2) - pnorm(z1) 
+
+cat(&quot;The probability that its return falls between 8 and 11 percent is
+closest to is&quot;, p)</code></pre>
+<pre><code>## The probability that its return falls between 8 and 11 percent is
+## closest to is 0.08483787</code></pre>
+<p>A. 8.3%</p>
+</div>
+<div id="problem-19" class="section level3">
+<h3>Problem 19</h3>
+<p>A portfolio has an expected return of 7% with a standard deviation of 13%. For
+an investor with a minimum annual return target of 4%, the probability that the
+portfolio return will fail to meet the target is closest to:</p>
+<ul>
+<li>A 33%.</li>
+<li>B 41%.</li>
+<li>C 59%.</li>
+</ul>
+<pre class="r"><code>z &lt;- (4 - 7) / 13
+
+p &lt;- pnorm(z)
+
+cat(&quot;The probability that the
+portfolio return will fail to meet the target is closest to is&quot;, p)</code></pre>
+<pre><code>## The probability that the
+## portfolio return will fail to meet the target is closest to is 0.408747</code></pre>
+<p>B. 41%</p>
+</div>
+<div id="problem-20" class="section level3">
+<h3>Problem 20</h3>
+<p>A Define Monte Carlo simulation and explain its use in finance.
+B Compared with analytical methods, what are the strengths and weaknesses
+of Monte Carlo simulation for use in valuing securities?</p>
+<p>A. Monte Carlo simulation uses computer to program to find an approximate solution to a complex problem. Monte Carlo simulation generates a large number of random samples from a probability distribution.</p>
+<ol start="2" style="list-style-type: upper-alpha">
+<li></li>
+</ol>
+<ul>
+<li>Strengths. It can be used to find approximate solutions to complex problems such as valuing exotic option.</li>
+<li>Weakness. It provides only extimates and not exact solutions.</li>
+</ul>
+</div>
+<div id="problem-21" class="section level3">
+<h3>Problem 21</h3>
+<p>A standard lookback call option on stock has a value at maturity equal to (Value
+of the stock at maturity – Minimum value of stock during the life of the option
+prior to maturity) or $0, whichever is greater. If the minimum value reached
+prior to maturity was $20.11 and the value of the stock at maturity is $23, for
+example, the call is worth $23 − $20.11 = $2.89. Briefly discuss how you might
+use Monte Carlo simulation in valuing a lookback call option.</p>
+<p>Skip for now. We will cover Monte Carlo in a separate post</p>
+</div>
+<div id="problem-22" class="section level3">
+<h3>Problem 22</h3>
+<p>Which of the following is a continuous random variable?</p>
+<ul>
+<li>A The value of a futures contract quoted in increments of $0.05</li>
+<li>B The total number of heads recorded in 1 million tosses of a coin</li>
+<li>C The rate of return on a diversified portfolio of stocks over a three-month
+period</li>
+</ul>
+<p>C. The rate of return on a diversified portfolio of stocks over a three-month
+period</p>
+</div>
+<div id="problem-23" class="section level3">
+<h3>Problem 23</h3>
+<p>X is a discrete random variable with possible outcomes X = {1,2,3,4}. Three
+functions f(x), g(x), and h(x) are proposed to describe the probabilities of the
+outcomes in X.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+X = x
+</th>
+<th style="text-align:right;">
+f(x) = P(X = x)
+</th>
+<th style="text-align:right;">
+g(x) = P(X = x)
+</th>
+<th style="text-align:right;">
+<ol start="24" style="list-style-type: lower-alpha">
+<li>= P(X = x)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+-0.25
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.50
+</td>
+<td style="text-align:right;">
+0.50
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+</tr>
+</tbody>
+</table></li>
+</ol>
+<p>The conditions for a probability function are satisfied by:
+A f(x).
+B g(x).
+C h(x).</p>
+<p>B. g(x). Since all values sum to 1</p>
+</div>
+<div id="problem-24" class="section level3">
+<h3>Problem 24</h3>
+<p>The cumulative distribution function for a discrete random variable is shown in
+the following table.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+X = x
+</th>
+<th style="text-align:right;">
+Cumulative Distribution Function
+F(x) = P(X ≤ x)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.15
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.50
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.95
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+</tr>
+</tbody>
+</table>
+<p>The probability that X will take on a value of either 2 or 4 is closest to:</p>
+<ul>
+<li>A 0.20.</li>
+<li>B 0.35.</li>
+<li>C 0.85.</li>
+</ul>
+<p>A. 0.20</p>
+</div>
+<div id="problem-25" class="section level3">
+<h3>Problem 25</h3>
+<p>Which of the following events can be represented as a Bernoulli trial?</p>
+<ul>
+<li>A The flip of a coin</li>
+<li>B The closing price of a stock</li>
+<li>C The picking of a random integer between 1 and 10</li>
+</ul>
+<p>A. The flip of a coin</p>
+</div>
+<div id="problem-26" class="section level3">
+<h3>Problem 26</h3>
+<p>The weekly closing prices of Mordice Corporation shares are as follows:</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Closing Price (€)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1 August
+</td>
+<td style="text-align:right;">
+112
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8 August
+</td>
+<td style="text-align:right;">
+160
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15 August
+</td>
+<td style="text-align:right;">
+120
+</td>
+</tr>
+</tbody>
+</table>
+<p>The continuously compounded return of Mordice Corporation shares for the
+period August 1 to August 15 is closest to:</p>
+<ul>
+<li>A 6.90%</li>
+<li>B 7.14%</li>
+<li>C 8.95%</li>
+</ul>
+<pre class="r"><code>r &lt;- log(df$`Closing Price (€)`[length(df$Date)] / df$`Closing Price (€)`[1])
+
+cat(&quot;The continuously compounded return of Mordice Corporation shares is&quot;, r)</code></pre>
+<pre><code>## The continuously compounded return of Mordice Corporation shares is 0.06899287</code></pre>
+<p>A. 6.90%</p>
+</div>
+<div id="problem-27" class="section level3">
+<h3>Problem 27</h3>
+<p>A stock is priced at $100.00 and follows a one-period
+binomial process with
+an up move that equals 1.05 and a down move that equals 0.97. If 1 million
+Bernoulli trials are conducted, and the average terminal stock price is $102.00,
+the probability of an up move (p) is closest to:</p>
+<ul>
+<li>A 0.375.</li>
+<li>B 0.500.</li>
+<li>C 0.625</li>
+</ul>
+<pre class="r"><code>up_move &lt;- 100 * 1.05
+down_move &lt;- 100 * 0.97
+terminal_value &lt;- 102
+
+# p(up_move) * up_move + p(down_move) * down_move = terminal_value
+# p(up_move) * up_move + (1 - p(up_move)) * down_move = terminal_value
+# After doing some simple algebra
+
+p &lt;- 5/8
+
+cat(&quot;probability of an up move (p) is closest to&quot;, p)</code></pre>
+<pre><code>## probability of an up move (p) is closest to 0.625</code></pre>
+<p>C. 0.625</p>
+</div>
+<div id="problem-28" class="section level3">
+<h3>Problem 28</h3>
+<p>A call option on a stock index is valued using a three-step
+binomial tree with an up move that equals 1.05 and a down move that equals 0.95. The current level
+of the index is $190, and the option exercise price is $200. If the option value
+is positive when the stock price exceeds the exercise price at expiration and $0
+otherwise, the number of terminal nodes with a positive payoff is:</p>
+<ul>
+<li>A one.</li>
+<li>B two.</li>
+<li>C three.</li>
+</ul>
+<pre class="r"><code># There are 4 nodes or paths.
+# U=up, D=Down
+# UUU
+# UUD
+# DUD
+# DDD
+
+node1 &lt;- 190 * 1.05 * 1.05 * 1.05
+node2 &lt;- 190 * 1.05 * 1.05 * 0.95
+node3 &lt;- 190 * 0.95 * 1.05 * 0.95
+node4 &lt;- 190 * 0.95 * 0.95 * 0.95
+
+cat(&quot;Node 1&quot;, node1,&quot;\n&quot;,
+    &quot;Node 2&quot;,node2,&quot;\n&quot;,
+    &quot;Node 3&quot;,node3,&quot;\n&quot;,
+    &quot;Node 4&quot;,node4)</code></pre>
+<pre><code>## Node 1 219.9488 
+##  Node 2 199.0012 
+##  Node 3 180.0487 
+##  Node 4 162.9012</code></pre>
+<pre class="r"><code># Only 1 value is above 200
+# Node 1</code></pre>
+<p>A. one</p>
+</div>
+<div id="problem-29" class="section level3">
+<h3>Problem 29</h3>
+<p>A random number between zero and one is generated according to a continuous
+uniform distribution. What is the probability that the first number generated
+will have a value of exactly 0.30?</p>
+<ul>
+<li>A 0%</li>
+<li>B 30%</li>
+<li>C 70%</li>
+</ul>
+<p>A. 0%. Getting an exact number on a continuous scale is not possible.</p>
+</div>
+<div id="problem-30" class="section level3">
+<h3>Problem 30</h3>
+<p>A Monte Carlo simulation can be used to:</p>
+<ul>
+<li>A directly provide precise valuations of call options.</li>
+<li>B simulate a process from historical records of returns.</li>
+<li>C test the sensitivity of a model to changes in assumptions.</li>
+</ul>
+<p>C. test the sensitivity of a model to changes in assumptions.</p>
+</div>
+<div id="problem-31" class="section level3">
+<h3>Problem 31</h3>
+<p>A limitation of Monte Carlo simulation is:</p>
+<ul>
+<li>A its failure to do “what if” analysis.</li>
+<li>B that it requires historical records of returns</li>
+<li>C its inability to independently specify cause-and-
+effect relationships.</li>
+</ul>
+<p>C. its inability to independently specify cause-and-
+effect relationships.</p>
+</div>
+<div id="problem-32" class="section level3">
+<h3>Problem 32</h3>
+<p>Which parameter equals zero in a normal distribution?</p>
+<ul>
+<li>A Kurtosis</li>
+<li>B Skewness</li>
+<li>C Standard deviation</li>
+</ul>
+<p>B. Skewness</p>
+</div>
+<div id="problem-33" class="section level3">
+<h3>Problem 33</h3>
+<p>An analyst develops the following capital market projections.</p>
+<pre><code>## # A tibble: 2 x 3
+##   param              Stocks Bonds
+##   &lt;chr&gt;              &lt;chr&gt;  &lt;chr&gt;
+## 1 Mean Return        10%    2%   
+## 2 Standard Deviation 15%    5%</code></pre>
+<p>Assuming the returns of the asset classes are described by normal distributions,
+which of the following statements is correct?</p>
+<ul>
+<li>A Bonds have a higher probability of a negative return than stocks.</li>
+<li>B On average, 99% of stock returns will fall within two standard deviations of
+the mean.</li>
+<li>C The probability of a bond return less than or equal to 3% is determined
+using a Z-score of 0.25</li>
+</ul>
+<p>A. Bonds have a higher probability of a negative return than stocks.</p>
+</div>
+<div id="problem-34" class="section level3">
+<h3>Problem 34</h3>
+<p>A client holding a £2,000,000 portfolio wants to withdraw £90,000 in one year
+without invading the principal. According to Roy’s safety-first
+criterion, which of the following portfolio allocations is optimal?</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+param
+</th>
+<th style="text-align:left;">
+Allocation A
+</th>
+<th style="text-align:left;">
+Allocation B
+</th>
+<th style="text-align:left;">
+Allocation C
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Expected annual return
+</td>
+<td style="text-align:left;">
+6.5%
+</td>
+<td style="text-align:left;">
+7.5%
+</td>
+<td style="text-align:left;">
+8.5%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Standard deviation of returns
+</td>
+<td style="text-align:left;">
+8.35%
+</td>
+<td style="text-align:left;">
+10.21%
+</td>
+<td style="text-align:left;">
+14.34%
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A Allocation A</li>
+<li>B Allocation B</li>
+<li>C Allocation C</li>
+</ul>
+<pre class="r"><code>shortfall_level &lt;- 90000/2000000
+
+df %&gt;%
+  gather(`Allocation A`:`Allocation C`, key = `Allocation`, value = v) %&gt;%
+  spread(param, value = v) %&gt;%
+  mutate_at(c(2,3),.funs = parse_number) %&gt;%
+  mutate(ratio = (`Expected annual return` - shortfall_level * 100) / `Standard deviation of returns`)</code></pre>
+<pre><code>## # A tibble: 3 x 4
+##   Allocation   `Expected annual return` `Standard deviation of retur… ratio
+##   &lt;chr&gt;                           &lt;dbl&gt;                         &lt;dbl&gt; &lt;dbl&gt;
+## 1 Allocation A                      6.5                          8.35 0.240
+## 2 Allocation B                      7.5                         10.2  0.294
+## 3 Allocation C                      8.5                         14.3  0.279</code></pre>
+<p>B. Allocation B</p>
+</div>
+<div id="problem-35" class="section level3">
+<h3>Problem 35</h3>
+<p>In contrast to normal distributions, lognormal distributions:</p>
+<ul>
+<li>A are skewed to the left.</li>
+<li>B have outcomes that cannot be negative.</li>
+<li>C are more suitable for describing asset returns than asset prices.</li>
+</ul>
+<p>B. have outcomes that cannot be negative.</p>
+</div>
+<div id="problem-36" class="section level3">
+<h3>Problem 36</h3>
+<p>The lognormal distribution is a more accurate model for the distribution of
+stock prices than the normal distribution because stock prices are:</p>
+<ul>
+<li>A symmetrical.</li>
+<li>B unbounded.</li>
+<li>C non-negative.</li>
+</ul>
+<p>C. non-negative</p>
+</div>
+<div id="problem-37" class="section level3">
+<h3>Problem 37</h3>
+<p>The price of a stock at t = 0 is $208.25 and at t = 1 is $186.75. The continuously
+compounded rate of return for the stock from t = 0 to t = 1 is closest to:</p>
+<ul>
+<li>A –10.90%.</li>
+<li>B –10.32%.</li>
+<li>C 11.51%.</li>
+</ul>
+<pre class="r"><code>log(186.75/208.25)</code></pre>
+<pre><code>## [1] -0.1089685</code></pre>
+<p>A. -10.90</p>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2020-04-28-investment-analysis-chapter4/">Quantitative Investment Analysis - Chapter 4 →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

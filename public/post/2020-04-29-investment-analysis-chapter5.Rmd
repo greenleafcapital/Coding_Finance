@@ -1,0 +1,989 @@
+---
+title: "Quantitative Investment Analysis - Chapter 5"
+author: "DD"
+date: "2020-04-29"
+description: "Chapter 5: Common Probability Distributions"
+output:
+  html_document:
+    highlight: tango
+---
+
+```{r message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+```
+
+In this post we will solve the end of the chapter practice problems from chapter 5 of the [book](https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X).
+
+### Problem 1
+
+A European put option on stock conveys the right to sell the stock at a prespecified
+price, called the exercise price, at the maturity date of the option. The
+value of this put at maturity is (exercise price – stock price) or $0, whichever
+is greater. Suppose the exercise price is $100 and the underlying stock trades
+in ticks of $0.01. At any time before maturity, the terminal value of the put is a
+random variable.
+
+- A Describe the distinct possible outcomes for terminal put value. (Think of the
+put’s maximum and minimum values and its minimum price increments.)
+- B Is terminal put value, at a time before maturity, a discrete or continuous
+random variable?
+- C Letting Y stand for terminal put value, express in standard notation the
+probability that terminal put value is less than or equal to $24. No calculations
+or formulas are necessary.
+
+```{r}
+
+# Max value of the put at expiration
+# When the stock price is 0
+put_max_value = 100 - 0
+
+# Min value of the put at expiration
+# When the stock price is above 100
+
+put_min_value = 0
+
+# Since the put trades at 0.01 increments
+# Distinct possible outcomes of put value are
+
+distinct_values <- seq(put_min_value, put_max_value, by = 0.01)
+
+cat("The discrete possible outcomes are", distinct_values[1:25], "......", distinct_values[length(distinct_values)])
+
+```
+
+A. The discrete possible outcomes are 0 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.1 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.2 0.21 0.22 0.23 0.24 ...... 100
+
+B. The terminal put value, at a time before maturity, is a discrete random variable.
+
+C. P(Y <= 24)
+
+### Problem 2
+
+Define the term “binomial random variable.” Describe the types of problems for
+which the binomial distribution is used.
+
+A binomial random variable is defined as the number of successes in *n* Bernoulli trials. The binomial distribution is used to make probability statements about anything with binary outcomes (success or failure).
+
+### Problem 3
+
+The value of the cumulative distribution function F(x), where x is a particular
+outcome, for a discrete uniform distribution:
+
+- A sums to 1.
+- B lies between 0 and 1.
+- C decreases as x increases.
+
+B. lies between 0 and 1
+
+### Problem 4
+
+For a binomial random variable with five trials, and a probability of success on
+each trial of 0.50, the distribution will be:
+
+- A skewed.
+- B uniform.
+- C symmetric
+
+C. symmetric, since probability of success (and failure) is 0.50 each
+
+### Problem 5
+
+In a discrete uniform distribution with 20 potential outcomes of integers 1 to
+20, the probability that X is greater than or equal to 3 but less than 6, P(3 ≤ X <
+6), is:
+
+- A 0.10.
+- B 0.15.
+- C 0.20.
+
+```{r}
+
+# Create our sample space
+
+x <- 1:20
+
+x
+
+# Lets create our event
+
+y = x[x >= 3 & x < 6]
+
+y
+
+# Get probability
+
+p <- length(y) / length(x)
+
+cat("The probability that X is greater than or equal to 3 but less than 6, P(3 ≤ X < 6) is", p)
+
+```
+
+B.
+
+### Problem 6
+
+Over the last 10 years, a company’s annual earnings increased year over year
+seven times and decreased year over year three times. You decide to model
+the number of earnings increases for the next decade as a binomial random
+variable.
+
+- A What is your estimate of the probability of success, defined as an increase in
+annual earnings?
+
+For Parts B, C, and D of this problem, assume the estimated probability is the
+actual probability for the next decade.
+
+- B What is the probability that earnings will increase in exactly 5 of the next 10
+years?
+- C Calculate the expected number of yearly earnings increases during the next
+10 years.
+- D Calculate the variance and standard deviation of the number of yearly earnings
+increases during the next 10 years.
+- E The expression for the probability function of a binomial random variable
+depends on two major assumptions. In the context of this problem, what
+must you assume about annual earnings increases to apply the binomial
+distribution in Part B? What reservations might you have about the validity
+of these assumptions?
+
+```{r}
+
+event <- 10
+increase <- 7
+decrease <- 3
+
+p_success <- increase / event
+
+cat("The probability of success, defined as an increase in
+annual earnings is", p_success)
+
+```
+A. The probability of success, defined as an increase in
+annual earnings is 0.7
+
+```{r}
+
+# http://www.r-tutor.com/elementary-statistics/probability-distributions/binomial-distribution
+
+p <- dbinom(5,10,0.7)
+
+cat("The probability that earnings will increase in exactly 5 of the next 10
+years", p)
+
+```
+
+B. The probability that earnings will increase in exactly 5 of the next 10
+years 0.1029193
+
+```{r}
+
+# lecture on expected value of bernoulli distribution
+# https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/binomial-mean-standard-dev-formulas/v/expected-value-of-binomial-variable
+
+n = 10
+p_success <- 0.7
+e <- n * p_success
+
+cat("The expected number of yearly earnings increases during the next
+10 years", e)
+
+```
+
+C. The expected number of yearly earnings increases during the next
+10 years 7
+
+```{r}
+
+# Lecture on variance and standard deviation of benoulli distribution
+# https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/binomial-mean-standard-dev-formulas/v/mean-and-variance-of-bernoulli-distribution-example
+
+# n * (1-p) * p
+
+n = 10
+p = 0.7
+
+# variane is
+v <- n * (1 - p) * p
+
+# sd is
+s <- sqrt(v)
+
+cat("The variance and standard deviation of the number of yearly earnings
+increases during the next 10 years is",v, "and", s, "respectively")
+
+```
+
+E. We assume the probability remains the same every year. We also assume that the trials are independent. This may not be the case as we know that probability will change every year and earnings are subject to economic cycles and thus may not be independent.
+
+### Problem 7
+
+A portfolio manager annually outperforms her benchmark 60% of the time.
+Assuming independent annual trials, what is the probability that she will outperform
+her benchmark four or more times over the next five years?
+
+A 0.26
+B 0.34
+C 0.48
+
+```{r}
+
+# There are two ways to solve this
+
+p_success <- 0.6
+n <- 5
+
+# probability of exactly 4
+p_4 <- dbinom(4,5,0.6) 
+
+# probability of exactly 5
+p_5 <- dbinom(5,5,0.6)
+
+p <- p_4 + p_5
+p
+
+# probability of exactly 3 or less
+p <- pbinom(3, n, prob = p_success, lower.tail = FALSE)
+p
+
+cat("The probability that she will outperform 
+her benchmark four or more times over the next five years is", p)
+```
+B. 0.34
+
+### Problem 8
+
+You are examining the record of an investment newsletter writer who claims a
+70 percent success rate in making investment recommendations that are profitable
+over a one-year
+time horizon. You have the one-year
+record of the newsletter’s
+seven most recent recommendations. Four of those recommendations
+were profitable. If all the recommendations are independent and the newsletter
+writer’s skill is as claimed, what is the probability of observing four or fewer
+profitable recommendations out of seven in total?
+
+```{r}
+
+# Claimed success
+p_success <- 7/10
+
+# Size
+n <- 7
+
+# probability of observing four or fewer success
+p <- pbinom(4, n, prob = p_success)
+
+cat("The probability of observing four or fewer
+profitable recommendations out of seven in total is", p)
+
+```
+
+The probability of observing four or fewer
+profitable recommendations out of seven in total is 0.3529305
+
+### Problem 9
+
+You are forecasting sales for a company in the fourth quarter of its fiscal year.
+Your low-end estimate of sales is €14 million, and your high-end estimate is
+€15 million. You decide to treat all outcomes for sales between these two values
+as equally likely, using a continuous uniform distribution.
+
+- A What is the expected value of sales for the fourth quarter?
+- B What is the probability that fourth-quarter sales will be less than or equal to €14,125,000?
+
+```{r}
+
+low_estimate <- 14
+high_estimate <- 15
+
+e <- mean(c(low_estimate, high_estimate))
+
+cat("The expected value of sales for the fourth quarter is", e)
+
+```
+
+```{r}
+
+# We can also do this using an experiment
+
+# Let x be uniform distribution of 10000 values between 14 and 15
+
+x <- runif(10000, min = 14, max = 15)
+
+# We can see that mean value of x is close to 14.5
+mean(x)
+
+
+```
+
+
+A. The expected value of sales for the fourth quarter is 14.5
+
+```{r}
+set.seed(123)
+
+# Create our random uniform continuous variables
+
+x <- runif(100000, min = 14, max = 15)
+
+# See how many values are less than 14.125
+y = x[x <= 14.125]
+
+# Count the values
+p <- length(y) / length(x)
+
+cat("the probability that fourth-quarter sales will be less than or equal to €14,125,000 is", p)
+
+
+```
+The probability that fourth-quarter sales will be less than or equal to €14,125,000 is 0.12493 ~12.50%
+
+### Problem 10
+
+State the approximate probability that a normal random variable will fall within the following intervals:
+
+- A Mean plus or minus one standard deviation.
+- B Mean plus or minus two standard deviations.
+- C Mean plus or minus three standard deviations
+
+A Mean plus or minus one standard deviation will have approximately 68% of all outcomes.
+B Mean plus or minus two standard deviations will have approximately 95% of all outcomes. 95%
+C Mean plus or minus three standard deviations will have approximately 99% of all outcomes. 99% 
+
+### Problem 11
+
+Find the area under the normal curve up to z = 0.36; that is, find P(Z ≤ 0.36).
+Interpret this value.
+
+```{r}
+
+cat("The area under the normal curve up to z = 0.36 is", pnorm(0.36))
+
+```
+
+When z = 0.36, we can interpret this as 64% of observations are smaller than 0.36.
+
+### Problem 12
+
+If the probability that a portfolio outperforms its benchmark in any quarter is
+0.75, the probability that the portfolio outperforms its benchmark in three or
+fewer quarters over the course of a year is closest to:
+
+A 0.26
+B 0.42
+C 0.68
+
+```{r}
+
+# We know there are 4 quarters in a year
+# The outcomes are outperform or not
+# Binomial distribution
+
+# Cumulative probability of having 3 out 4 quarters outperform is
+
+
+pbinom(3,4,0.75)
+
+
+```
+
+C. 0.68
+
+### Problem 13
+
+In futures markets, profits or losses on contracts are settled at the end of each
+trading day. This procedure is called marking to market or daily resettlement.
+By preventing a trader’s losses from accumulating over many days, marking to
+market reduces the risk that traders will default on their obligations. A futures
+markets trader needs a liquidity pool to meet the daily mark to market. If
+liquidity is exhausted, the trader may be forced to unwind his position at an
+unfavorable time.
+
+Suppose you are using financial futures contracts to hedge a risk in your
+portfolio. You have a liquidity pool (cash and cash equivalents) of λ dollars per
+contract and a time horizon of T trading days. For a given size liquidity pool, λ,
+Kolb, Gay, and Hunter (1985) developed an expression for the probability
+stating that you will exhaust your liquidity pool within a T-day horizon as a
+result of the daily mark to market. Kolb et al. assumed that the expected change
+in futures price is 0 and that futures price changes are normally distributed.
+With σ representing the standard deviation of daily futures price changes, the
+standard deviation of price changes over a time horizon to day T is σ T , given
+continuous compounding. With that background, the Kolb et al. expression is
+Probability of exhausting liquidity pool = 2[1 – N(x)]
+where x = λ/(σ√T). Here x is a standardized value of λ. N(x) is the standard
+normal cumulative distribution function. For some intuition about 1 − N(x) in
+the expression, note that the liquidity pool is exhausted if losses exceed the size
+of the liquidity pool at any time up to and including T; the probability of that
+event happening can be shown to be proportional to an area in the right tail of
+a standard normal distribution, 1 − N(x).
+
+Using the Kolb et al. expression, answer the following questions:
+
+- A Your hedging horizon is five days, and your liquidity pool is $2,000 per contract.
+You estimate that the standard deviation of daily price changes for the
+contract is $450. What is the probability that you will exhaust your liquidity
+pool in the five-day period?
+- B Suppose your hedging horizon is 20 days, but all the other facts given in
+Part A remain the same. What is the probability that you will exhaust your
+liquidity pool in the 20-day
+period?
+
+```{r}
+
+# x = λ/(σ√T)
+# We know
+# λ = 2000
+# σ = 450
+# T = 5
+
+x <- 2000 / (450 * sqrt(5))
+x
+
+# N(x) is the standard normal cumulative distribution function
+
+N_x <- pnorm(x)
+
+# Probability of exhausting liquidity pool = 2[1 – N(x)]
+
+p <- 2 * (1 - N_x)
+p
+
+cat("The probability that you will exhaust your liquidity pool in the five-day period", p)
+
+```
+
+The probability that you will exhaust your liquidity pool in the five-day period 0.04685418
+
+```{r}
+
+# the probability that you will exhaust your liquidity pool in the 20-day
+# We know
+# λ = 2000
+# σ = 450
+# T = 20
+
+x <- 2000 / (450 * sqrt(20))
+x
+
+# N(x) is the standard normal cumulative distribution function
+
+N_x <- pnorm(x)
+
+# Probability of exhausting liquidity pool = 2[1 – N(x)]
+
+p <- 2 * (1 - N_x)
+p
+
+cat("The probability that you will exhaust your liquidity pool in the twenty-day period", p)
+
+
+```
+The probability that you will exhaust your liquidity pool in the twenty-day period 0.3203164
+
+### Problem 14 
+
+Which of the following is characteristic of the normal distribution?
+
+- A Asymmetry
+- B Kurtosis of 3
+- C Definitive limits or boundaries
+
+B. Kurtosis of 3
+
+### Problem 15
+
+Which of the following assets most likely requires the use of a multivariate distribution
+for modeling returns?
+
+- A A call option on a bond
+- B A portfolio of technology stocks
+- C A stock in a market index
+
+B. A portfolio of technology stocks. A multivariate distribution specify the probabilities of group of related random variables.
+
+### Problem 16
+
+The total number of parameters that fully characterizes a multivariate normal
+distribution for the returns on two stocks is:
+
+- A 3.
+- B 4.
+- C 5.
+
+```{r}
+
+# multivariate normal distribution for the returns on two stocks will have
+# 2 means
+# 2 variance
+# 1 correlation
+
+```
+
+C. 5 
+
+### Problem 17
+
+A client has a portfolio of common stocks and fixed-income
+instruments with a current value of £1,350,000. She intends to liquidate £50,000 from the
+portfolio at the end of the year to purchase a partnership share in a business.
+Furthermore, the client would like to be able to withdraw the £50,000 without
+reducing the initial capital of £1,350,000. The following table shows four alternative
+asset allocations
+
+```{r echo=FALSE}
+
+df <- tribble(~"parameters", ~"A", ~"B", ~"C", ~"D","Expected annual return", 16, 12, 10, 9,
+"Standard deviation of return", 24, 17, 12, 11)  
+
+df %>%
+  kable() %>%
+  kable_styling('striped')
+
+
+```
+
+Address the following questions (assume normality for Parts B and C):
+
+- A Given the client’s desire not to invade the £1,350,000 principal, what is the
+shortfall level, RL? Use this shortfall level to answer Part B.
+- B According to the safety-first
+criterion, which of the allocations is the best?
+- C What is the probability that the return on the safety-first
+optimal portfolio
+will be less than the shortfall level, RL?
+
+```{r}
+
+withdraw <- 50000
+portfolio <- 1350000
+
+shortfall_level <- withdraw / portfolio
+
+
+cat("The client's shortfall level is", shortfall_level)
+```
+A. The client's shortfall level is 0.03703704
+
+```{r}
+
+# Safety first criteria
+# allocates to assets with the highest ratio
+# as expressed below
+
+df %>%
+  gather(A:D, key = allocation, value = v) %>%
+  spread(parameters, value = v) %>%
+  mutate(ratio = (`Expected annual return` - shortfall_level * 100) / `Standard deviation of return`)
+
+
+
+```
+Since allocation C has the highest ratio, it is the best allocation.
+
+```{r}
+
+# Since allocation C has 0.5246 ratio
+# round it up to 0.53
+# We need to find the cumulative probability of z = -0.53
+
+pnorm(-0.53)
+
+```
+
+The safety-first optimal portfolio has a roughly 30 percent chance of not meeting a 3.7 percent return threshold
+
+### Problem 18
+
+A portfolio has an expected mean return of 8 percent and standard deviation
+of 14 percent. The probability that its return falls between 8 and 11 percent is
+closest to:
+ 
+- A 8.3%
+- B 14.8%.
+- C 58.3%.
+
+```{r}
+
+z1 <- (8 - 8) / 14 
+z1
+
+z2 <- (11 - 8) / 14
+z2
+
+p <- pnorm(z2) - pnorm(z1) 
+
+cat("The probability that its return falls between 8 and 11 percent is
+closest to is", p)
+
+```
+
+A. 8.3%
+
+### Problem 19
+
+A portfolio has an expected return of 7% with a standard deviation of 13%. For
+an investor with a minimum annual return target of 4%, the probability that the
+portfolio return will fail to meet the target is closest to:
+
+- A 33%. 
+- B 41%.
+- C 59%.
+
+```{r}
+
+z <- (4 - 7) / 13
+
+p <- pnorm(z)
+
+cat("The probability that the
+portfolio return will fail to meet the target is closest to is", p)
+
+```
+
+B. 41%
+
+### Problem 20
+
+A Define Monte Carlo simulation and explain its use in finance.
+B Compared with analytical methods, what are the strengths and weaknesses
+of Monte Carlo simulation for use in valuing securities?
+
+A. Monte Carlo simulation uses computer to program to find an approximate solution to a complex problem. Monte Carlo simulation generates a large number of random samples from a probability distribution.
+
+B. 
+- Strengths. It can be used to find approximate solutions to complex problems such as valuing exotic option.
+- Weakness. It provides only extimates and not exact solutions. 
+
+### Problem 21
+
+A standard lookback call option on stock has a value at maturity equal to (Value
+of the stock at maturity – Minimum value of stock during the life of the option
+prior to maturity) or $0, whichever is greater. If the minimum value reached
+prior to maturity was \$20.11 and the value of the stock at maturity is $23, for
+example, the call is worth \$23 − \$20.11 = $2.89. Briefly discuss how you might
+use Monte Carlo simulation in valuing a lookback call option.
+
+Skip for now. We will cover Monte Carlo in a separate post
+
+### Problem 22
+
+Which of the following is a continuous random variable?
+
+- A The value of a futures contract quoted in increments of $0.05
+- B The total number of heads recorded in 1 million tosses of a coin
+- C The rate of return on a diversified portfolio of stocks over a three-month
+period
+
+C. The rate of return on a diversified portfolio of stocks over a three-month
+period
+
+### Problem 23
+
+X is a discrete random variable with possible outcomes X = {1,2,3,4}. Three
+functions f(x), g(x), and h(x) are proposed to describe the probabilities of the
+outcomes in X.
+
+```{r echo=FALSE}
+
+df <- tribble(~"X = x",  ~"f(x) = P(X = x)",  ~"g(x) = P(X = x)",  ~"(x) = P(X = x)",1, -0.25, 0.20,  0.20, 2, 0.25, 0.25, 0.25, 3, 0.50, 0.50, 0.30, 4, 0.25, 0.05, 0.35)
+
+df %>%
+  kable() %>%
+  kable_styling()
+
+```
+
+The conditions for a probability function are satisfied by:
+A f(x).
+B g(x).
+C h(x).
+
+B. g(x). Since all values sum to 1
+
+### Problem 24
+
+The cumulative distribution function for a discrete random variable is shown in
+the following table.
+
+```{r echo=FALSE}
+
+df <- tribble(~"X = x",
+~"Cumulative Distribution Function
+F(x) = P(X ≤ x)",
+1, 0.15,
+2, 0.25,
+3, 0.50,
+4, 0.60,
+5,0.95,
+6, 1.00)
+
+df %>%
+  kable() %>%
+  kable_styling()
+
+```
+
+
+The probability that X will take on a value of either 2 or 4 is closest to:
+
+- A 0.20.
+- B 0.35.
+- C 0.85.
+
+A. 0.20
+
+### Problem 25
+
+Which of the following events can be represented as a Bernoulli trial?
+
+- A The flip of a coin
+- B The closing price of a stock
+- C The picking of a random integer between 1 and 10
+
+A. The flip of a coin
+
+### Problem 26
+
+The weekly closing prices of Mordice Corporation shares are as follows:
+
+```{r echo=FALSE}
+
+df <- tribble(~"Date",  ~"Closing Price (€)",
+'1 August', 112,
+'8 August', 160,
+'15 August', 120)
+
+df %>%
+  kable() %>%
+  kable_styling()
+
+```
+
+The continuously compounded return of Mordice Corporation shares for the
+period August 1 to August 15 is closest to:
+
+- A 6.90%
+- B 7.14%
+- C 8.95%
+
+```{r}
+
+r <- log(df$`Closing Price (€)`[length(df$Date)] / df$`Closing Price (€)`[1])
+
+cat("The continuously compounded return of Mordice Corporation shares is", r)
+
+```
+
+A. 6.90%
+
+### Problem 27
+
+A stock is priced at $100.00 and follows a one-period
+binomial process with
+an up move that equals 1.05 and a down move that equals 0.97. If 1 million
+Bernoulli trials are conducted, and the average terminal stock price is $102.00,
+the probability of an up move (p) is closest to:
+
+- A 0.375.
+- B 0.500.
+- C 0.625
+
+```{r}
+
+up_move <- 100 * 1.05
+down_move <- 100 * 0.97
+terminal_value <- 102
+
+# p(up_move) * up_move + p(down_move) * down_move = terminal_value
+# p(up_move) * up_move + (1 - p(up_move)) * down_move = terminal_value
+# After doing some simple algebra
+
+p <- 5/8
+
+cat("probability of an up move (p) is closest to", p)
+
+```
+
+C. 0.625
+
+### Problem 28
+
+A call option on a stock index is valued using a three-step
+binomial tree with an up move that equals 1.05 and a down move that equals 0.95. The current level
+of the index is \$190, and the option exercise price is $200. If the option value
+is positive when the stock price exceeds the exercise price at expiration and $0
+otherwise, the number of terminal nodes with a positive payoff is:
+
+- A one.
+- B two.
+- C three.
+
+```{r}
+
+# There are 4 nodes or paths.
+# U=up, D=Down
+# UUU
+# UUD
+# DUD
+# DDD
+
+node1 <- 190 * 1.05 * 1.05 * 1.05
+node2 <- 190 * 1.05 * 1.05 * 0.95
+node3 <- 190 * 0.95 * 1.05 * 0.95
+node4 <- 190 * 0.95 * 0.95 * 0.95
+
+cat("Node 1", node1,"\n",
+    "Node 2",node2,"\n",
+    "Node 3",node3,"\n",
+    "Node 4",node4)
+
+# Only 1 value is above 200
+# Node 1
+
+```
+A. one
+
+### Problem 29
+
+A random number between zero and one is generated according to a continuous
+uniform distribution. What is the probability that the first number generated
+will have a value of exactly 0.30?
+
+- A 0%
+- B 30%
+- C 70%
+
+A. 0%. Getting an exact number on a continuous scale is not possible.
+
+### Problem 30
+
+A Monte Carlo simulation can be used to:
+
+- A directly provide precise valuations of call options.
+- B simulate a process from historical records of returns.
+- C test the sensitivity of a model to changes in assumptions.
+
+C. test the sensitivity of a model to changes in assumptions.
+
+### Problem 31
+
+A limitation of Monte Carlo simulation is:
+
+- A its failure to do “what if” analysis.
+- B that it requires historical records of returns
+- C its inability to independently specify cause-and-
+effect relationships.
+
+C. its inability to independently specify cause-and-
+effect relationships.
+
+### Problem 32
+
+Which parameter equals zero in a normal distribution?
+
+- A Kurtosis
+- B Skewness
+- C Standard deviation
+
+B. Skewness
+
+### Problem 33
+
+An analyst develops the following capital market projections.
+
+```{r echo=FALSE}
+
+tribble(~"param",~"Stocks", ~"Bonds",
+"Mean Return", "10%", "2%",
+"Standard Deviation", "15%", "5%")
+
+```
+
+Assuming the returns of the asset classes are described by normal distributions,
+which of the following statements is correct?
+
+- A Bonds have a higher probability of a negative return than stocks.
+- B On average, 99% of stock returns will fall within two standard deviations of
+the mean.
+- C The probability of a bond return less than or equal to 3% is determined
+using a Z-score of 0.25
+
+A. Bonds have a higher probability of a negative return than stocks.
+
+### Problem 34
+
+A client holding a £2,000,000 portfolio wants to withdraw £90,000 in one year
+without invading the principal. According to Roy’s safety-first
+criterion, which of the following portfolio allocations is optimal?
+
+```{r echo=FALSE}
+
+df <- tribble(~"param",~"Allocation A", ~"Allocation B", ~"Allocation C",
+"Expected annual return",  "6.5%", "7.5%", "8.5%",
+"Standard deviation of returns", "8.35%", "10.21%", "14.34%")
+
+df %>%
+  kable() %>%
+  kable_styling()
+
+```
+
+- A Allocation A
+- B Allocation B
+- C Allocation C
+
+```{r}
+
+shortfall_level <- 90000/2000000
+
+df %>%
+  gather(`Allocation A`:`Allocation C`, key = `Allocation`, value = v) %>%
+  spread(param, value = v) %>%
+  mutate_at(c(2,3),.funs = parse_number) %>%
+  mutate(ratio = (`Expected annual return` - shortfall_level * 100) / `Standard deviation of returns`)
+
+```
+
+B. Allocation B
+
+### Problem 35
+
+In contrast to normal distributions, lognormal distributions:
+
+- A are skewed to the left.
+- B have outcomes that cannot be negative.
+- C are more suitable for describing asset returns than asset prices.
+
+B. have outcomes that cannot be negative.
+
+### Problem 36
+
+The lognormal distribution is a more accurate model for the distribution of
+stock prices than the normal distribution because stock prices are:
+
+- A symmetrical.
+- B unbounded.
+- C non-negative.
+
+C. non-negative
+
+### Problem 37
+
+The price of a stock at t = 0 is \$208.25 and at t = 1 is $186.75. The continuously
+compounded rate of return for the stock from t = 0 to t = 1 is closest to:
+
+- A –10.90%.
+- B –10.32%.
+- C 11.51%.
+
+```{r}
+
+log(186.75/208.25)
+
+```
+
+
+A. -10.90
