@@ -45,7 +45,7 @@ has met your stock selection criteria is", p)
 
 You are using the following three criteria to screen potential acquisition targets from a list of 500 companies:
 
-```{r}
+```{r include=TRUE, echo=FALSE}
 
 df <- tribble(~'Criterion', ~'Fraction of the 500 Companies Meeting the Criterion',
               'Product lines compatible', 0.20, 'Company will increase combined sales growth rate', 0.45,
@@ -261,7 +261,7 @@ C. the total probability rule for expected value.
 
 An analyst developed two scenarios with respect to the recovery of $100,000 principal from defaulted loans:
 
-```{r}
+```{r echo=FALSE}
 
 df <- tribble(~'Scenario',~'Probabilityof Scenario (%)', ~'AmountRecovered ($)', ~'Probabilityof Amount (%)',1,40,50000, 60, 1,40,30000, 40, 2, 60, 80000, 90, 2, 60, 60000, 10)
 
@@ -337,7 +337,7 @@ B. –0.24
 
 An analyst develops the following covariance matrix of returns:
 
-```{r}
+```{r echo=FALSE}
 
 df <- tribble(~'Index', ~'Hedge Fund', ~'Market Index',
           'Hedge fund', 256, 110, 'Market index', 110, 81)
@@ -389,7 +389,7 @@ A. 10
 
 The probability distribution for a company’s sales is:
 
-```{r}
+```{r echo=FALSE}
 
 df <- tribble(~"Probability", ~"Sales ($ millions)",
 0.05, 70, 0.70, 40, 0.25, 25)
@@ -441,7 +441,7 @@ C. the asset returns have a positive relationship.
 
 An analyst produces the following joint probability function for a foreign index (FI) and a domestic index (DI).
 
-```{r}
+```{r echo=FALSE}
 
 df <- tribble(~"FI", ~"RDI = 30%", ~"RDI = 25%", ~"RDI = 15%",
         "RFI = 25%", 0.25, "", "", "RFI = 15%", "", "0.50", "", "RFI = 10%", "", "", "0.25")

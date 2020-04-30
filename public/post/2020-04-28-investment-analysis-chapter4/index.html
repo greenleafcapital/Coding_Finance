@@ -149,13 +149,6 @@ has met your stock selection criteria is&quot;, p)</code></pre>
 <div id="problem-2" class="section level3">
 <h3>Problem 2</h3>
 <p>You are using the following three criteria to screen potential acquisition targets from a list of 500 companies:</p>
-<pre class="r"><code>df &lt;- tribble(~&#39;Criterion&#39;, ~&#39;Fraction of the 500 Companies Meeting the Criterion&#39;,
-              &#39;Product lines compatible&#39;, 0.20, &#39;Company will increase combined sales growth rate&#39;, 0.45,
-              &#39;Balance sheet impact manageable&#39;, 0.78)
-
-df %&gt;%
-  kable() %&gt;%
-    kable_styling(full_width = F)</code></pre>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -356,11 +349,6 @@ The probability that a company will pass the test given that it will subsequentl
 <div id="problem-13" class="section level3">
 <h3>Problem 13</h3>
 <p>An analyst developed two scenarios with respect to the recovery of $100,000 principal from defaulted loans:</p>
-<pre class="r"><code>df &lt;- tribble(~&#39;Scenario&#39;,~&#39;Probabilityof Scenario (%)&#39;, ~&#39;AmountRecovered ($)&#39;, ~&#39;Probabilityof Amount (%)&#39;,1,40,50000, 60, 1,40,30000, 40, 2, 60, 80000, 90, 2, 60, 60000, 10)
-
-df %&gt;%
-  kable() %&gt;%
-    kable_styling(full_width = F)</code></pre>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -494,12 +482,6 @@ cat(&quot;The amount of the expected recovery is closest to&quot;, s)</code></pr
 <div id="problem-17" class="section level3">
 <h3>Problem 17</h3>
 <p>An analyst develops the following covariance matrix of returns:</p>
-<pre class="r"><code>df &lt;- tribble(~&#39;Index&#39;, ~&#39;Hedge Fund&#39;, ~&#39;Market Index&#39;,
-          &#39;Hedge fund&#39;, 256, 110, &#39;Market index&#39;, 110, 81)
-
-df %&gt;%
-  kable() %&gt;%
-    kable_styling(full_width = F)</code></pre>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -574,12 +556,6 @@ Market index
 <div id="problem-20" class="section level3">
 <h3>Problem 20</h3>
 <p>The probability distribution for a company’s sales is:</p>
-<pre class="r"><code>df &lt;- tribble(~&quot;Probability&quot;, ~&quot;Sales ($ millions)&quot;,
-0.05, 70, 0.70, 40, 0.25, 25)
-
-df %&gt;%
-  kable() %&gt;%
-    kable_styling(full_width = F)</code></pre>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -652,12 +628,6 @@ cat(&quot;The standard deviation of sales is closest to&quot;, s)</code></pre>
 <div id="problem-22" class="section level1">
 <h1>Problem 22</h1>
 <p>An analyst produces the following joint probability function for a foreign index (FI) and a domestic index (DI).</p>
-<pre class="r"><code>df &lt;- tribble(~&quot;FI&quot;, ~&quot;RDI = 30%&quot;, ~&quot;RDI = 25%&quot;, ~&quot;RDI = 15%&quot;,
-        &quot;RFI = 25%&quot;, 0.25, &quot;&quot;, &quot;&quot;, &quot;RFI = 15%&quot;, &quot;&quot;, &quot;0.50&quot;, &quot;&quot;, &quot;RFI = 10%&quot;, &quot;&quot;, &quot;&quot;, &quot;0.25&quot;)
-
-df %&gt;%
-  kable() %&gt;%
-    kable_styling(&quot;striped&quot;)</code></pre>
 <table class="table table-striped" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
