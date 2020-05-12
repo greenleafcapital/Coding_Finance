@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Quantitative Investment Analysis - Chapter 6 :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2020-05-02-investment-analysis-chapter6/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Quantitative Investment Analysis - Chapter 6 :: Coding Finance — " />
+<meta name="twitter:description" content="library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 6 of the book.
+Problem 1 Peter Biggs wants to know how growth managers performed last year. Biggs assumes that the population cross-sectional standard deviation of growth manager returns is 6 percent and that the returns are independent across managers.
+ A How large a random sample does Biggs need if he wants the standard deviation of the sample means to be 1 percent?" />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Quantitative Investment Analysis - Chapter 6 :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2020-05-02-investment-analysis-chapter6/" />
+<meta property="og:site_name" content="Quantitative Investment Analysis - Chapter 6" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2020-05-02 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2020-05-02-investment-analysis-chapter6/">Quantitative Investment Analysis - Chapter 6</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        5/2/2020
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+
+
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+library(kableExtra)</code></pre>
+<p>In this post we will solve the end of the chapter practice problems from chapter 6 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
+<div id="problem-1" class="section level3">
+<h3>Problem 1</h3>
+<p>Peter Biggs wants to know how growth managers performed last year. Biggs
+assumes that the population cross-sectional
+standard deviation of growth manager
+returns is 6 percent and that the returns are independent across managers.</p>
+<ul>
+<li>A How large a random sample does Biggs need if he wants the standard deviation
+of the sample means to be 1 percent?</li>
+<li>B How large a random sample does Biggs need if he wants the standard deviation
+of the sample means to be 0.25 percent?</li>
+</ul>
+<p>We know that</p>
+<p><img src="https://www.gstatic.com/education/formulas/images_long_sheet/en/standard_error.svg" /></p>
+<pre class="r"><code># Population sd is 0.06
+pop_sd &lt;- 6/100
+
+# The standard deviation or standard error of the sample mean is σX = σ / sqrt(n)
+# 0.01 = pop_sd / sqrt(n)
+
+n = (pop_sd / 0.01) ** 2
+
+cat(&quot;Biggs need&quot;, n, &quot;samples, if he wants the standard deviation
+    of the sample means to be 1 percent&quot;)</code></pre>
+<pre><code>## Biggs need 36 samples, if he wants the standard deviation
+##     of the sample means to be 1 percent</code></pre>
+<p>A - Biggs need 36 samples, if he wants the standard deviation of the sample means to be 1 percent</p>
+<pre class="r"><code>n = (pop_sd / 0.0025) ** 2
+
+cat(&quot;Biggs need&quot;, n, &quot;samples, if he wants the standard deviation
+    of the sample means to be 0.25 percent&quot;)</code></pre>
+<pre><code>## Biggs need 576 samples, if he wants the standard deviation
+##     of the sample means to be 0.25 percent</code></pre>
+<p>B - Biggs need 576 samples, if he wants the standard deviation of the sample means to be 0.25 percent</p>
+<p>As standard error decreases, the sample size increases.</p>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p>Petra Munzi wants to know how value managers performed last year. Munzi
+estimates that the population cross-sectional
+standard deviation of value manager
+returns is 4 percent and assumes that the returns are independent across
+managers.</p>
+<ul>
+<li>A Munzi wants to build a 95 percent confidence interval for the mean return.
+How large a random sample does Munzi need if she wants the 95 percent
+confidence interval to have a total width of 1 percent?</li>
+<li>B Munzi expects a cost of about $10 to collect each observation. If she has
+a $1,000 budget, will she be able to construct the confidence interval she
+wants?</li>
+</ul>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2020-04-29-investment-analysis-chapter5/">Quantitative Investment Analysis - Chapter 5 →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>

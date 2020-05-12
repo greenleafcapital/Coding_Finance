@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quantitative Investment Analysis - Chapter 6</title>
+      <link>/post/2020-05-02-investment-analysis-chapter6/</link>
+      <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-05-02-investment-analysis-chapter6/</guid>
+      <description>library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 6 of the book.
+Problem 1 Peter Biggs wants to know how growth managers performed last year. Biggs assumes that the population cross-sectional standard deviation of growth manager returns is 6 percent and that the returns are independent across managers.
+ A How large a random sample does Biggs need if he wants the standard deviation of the sample means to be 1 percent?</description>
+    </item>
     
     <item>
       <title>Quantitative Investment Analysis - Chapter 5</title>

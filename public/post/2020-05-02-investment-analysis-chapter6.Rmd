@@ -1,0 +1,80 @@
+---
+title: "Quantitative Investment Analysis - Chapter 6"
+author: "DD"
+date: "2020-05-02"
+description: "Chapter 6: Sampling and Estimation"
+output:
+  html_document:
+    highlight: tango
+---
+
+```{r message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+```
+
+In this post we will solve the end of the chapter practice problems from chapter 6 of the [book](https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X).
+
+### Problem 1
+
+Peter Biggs wants to know how growth managers performed last year. Biggs
+assumes that the population cross-sectional
+standard deviation of growth manager
+returns is 6 percent and that the returns are independent across managers.
+
+- A How large a random sample does Biggs need if he wants the standard deviation
+of the sample means to be 1 percent?
+- B How large a random sample does Biggs need if he wants the standard deviation
+of the sample means to be 0.25 percent?
+
+We know that
+
+![](https://www.gstatic.com/education/formulas/images_long_sheet/en/standard_error.svg)
+
+```{r}
+
+# Population sd is 0.06
+pop_sd <- 6/100
+
+# The standard deviation or standard error of the sample mean is σX = σ / sqrt(n)
+# 0.01 = pop_sd / sqrt(n)
+
+n = (pop_sd / 0.01) ** 2
+
+cat("Biggs need", n, "samples, if he wants the standard deviation
+    of the sample means to be 1 percent")
+
+```
+
+A - Biggs need 36 samples, if he wants the standard deviation of the sample means to be 1 percent
+
+```{r}
+
+n = (pop_sd / 0.0025) ** 2
+
+cat("Biggs need", n, "samples, if he wants the standard deviation
+    of the sample means to be 0.25 percent")
+
+```
+
+B - Biggs need 576 samples, if he wants the standard deviation of the sample means to be 0.25 percent
+
+As standard error decreases, the sample size increases.
+
+### Problem 2
+
+Petra Munzi wants to know how value managers performed last year. Munzi
+estimates that the population cross-sectional
+standard deviation of value manager
+returns is 4 percent and assumes that the returns are independent across
+managers.
+
+- A Munzi wants to build a 95 percent confidence interval for the mean return.
+How large a random sample does Munzi need if she wants the 95 percent
+confidence interval to have a total width of 1 percent?
+- B Munzi expects a cost of about $10 to collect each observation. If she has
+a $1,000 budget, will she be able to construct the confidence interval she
+wants?
