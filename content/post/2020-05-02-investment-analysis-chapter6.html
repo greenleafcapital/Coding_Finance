@@ -65,4 +65,128 @@ confidence interval to have a total width of 1 percent?</li>
 a $1,000 budget, will she be able to construct the confidence interval she
 wants?</li>
 </ul>
+<pre class="r"><code># We know population sd
+
+pop_sd &lt;- 0.04
+
+# se is s/sqrt(n) # standard error
+# we have to find n
+# but before that we need to find se
+# 95% confidence interval means
+# 2.5% in each tail
+
+lower_tail &lt;- qnorm(0.025, lower.tail = T)
+uppper_tail &lt;- qnorm(0.025, lower.tail = F)
+
+cat(&quot;lower tail&quot;, lower_tail,&quot;\n&quot;,
+    &quot;upper tail&quot;, uppper_tail)</code></pre>
+<pre><code>## lower tail -1.959964 
+##  upper tail 1.959964</code></pre>
+<p>So we need our 95% confidence interval to have a 1% width.</p>
+<pre class="r"><code># Assuming X as our mean and se as our sample sd
+# We have (X + 1.96se) − (X − 1.96se) = 1% 
+# which is equal to 2*(1.96se) = 1%
+# se = 0.01 / (2 * 1.96)
+
+se &lt;- 0.01 / (2 * uppper_tail)
+cat(&quot;The standard deviation of sample mean is,&quot;, se, &quot;\n\n\n&quot;)</code></pre>
+<pre><code>## The standard deviation of sample mean is, 0.002551067</code></pre>
+<pre class="r"><code># Now find the n
+
+n &lt;- (0.04 / se) ** 2
+cat(&quot;Munzi needs a sample size of&quot;, round(n),  &quot;if she wants the 95 percent
+confidence interval to have a total width of 1 percent&quot;)</code></pre>
+<pre><code>## Munzi needs a sample size of 246 if she wants the 95 percent
+## confidence interval to have a total width of 1 percent</code></pre>
+<p>A - Munzi needs a sample size of 246 if she wants the 95 percent
+confidence interval to have a total width of 1 percent</p>
+<p>B - With her $1000 budget Munzi can only afford 100 observations which is far short of 246 she needs to have a 1% width of her confidence interval.</p>
+</div>
+<div id="problem-3" class="section level3">
+<h3>Problem 3</h3>
+<p>Assume that the equity risk premium is normally distributed with a population
+mean of 6 percent and a population standard deviation of 18 percent. Over
+the last four years, equity returns (relative to the risk-free
+rate) have averaged
+−2.0 percent. You have a large client who is very upset and claims that results
+this poor should never occur. Evaluate your client’s concerns.</p>
+<ul>
+<li>A Construct a 95 percent confidence interval around the population mean for
+a sample of four-year
+returns.</li>
+<li>B What is the probability of a −2.0 percent or lower average return over a
+four-year
+period?</li>
+</ul>
+<pre class="r"><code># Assuming normal distribution
+# Pop mean
+m &lt;- 6/100
+
+# Pop sd
+s &lt;- 18/100
+
+# we need the se for last 4 years
+# se is the sample sd
+# se = sd / sqrt(4)
+
+se &lt;- s / sqrt(4)
+
+# 95% confidence interval will
+# have 2.5% in each tail
+
+# upper limit
+upper_limit &lt;- qnorm(0.025, m, se,lower.tail = F)
+
+# lower limit
+
+lower_limit &lt;- qnorm(0.025, m, se,lower.tail = T)
+
+cat( &quot;A 95 percent confidence interval around the population mean for
+a sample of four-year
+returns has upper limit of&quot;,
+upper_limit, &quot;and a lower limit of&quot;, lower_limit)</code></pre>
+<pre><code>## A 95 percent confidence interval around the population mean for
+## a sample of four-year
+## returns has upper limit of 0.2363968 and a lower limit of -0.1163968</code></pre>
+<p>A - There is a 95% probability that returns will fall between ~23.7% and ~-11.64%</p>
+<pre class="r"><code># lower limit is -2%
+
+# Probability of getting
+# -2% or lower returns over a 4 year period is
+
+p &lt;- pnorm(-0.02,mean = m, sd = se, lower.tail = T)
+
+cat(&quot;The probability of a −2.0 percent or lower average return over a
+four-year
+period is&quot;, p)</code></pre>
+<pre><code>## The probability of a −2.0 percent or lower average return over a
+## four-year
+## period is 0.1870314</code></pre>
+<p>B- The probability of a −2.0 percent or lower average return over a
+four-year period is 0.1870314</p>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<p>Compare the standard normal distribution and Student’s t-distribution.</p>
+<p>See below plots for comparison</p>
+<pre class="r"><code>x &lt;- seq(-4,4,length = 1000)
+d_x &lt;- dnorm(x)
+d_x1 &lt;- dt(x, 2)
+d_x2 &lt;- dt(x, 5)
+
+tibble(x = x,
+       d_x = d_x,
+       d_x1 = d_x1,
+       d_x2 = d_x2) %&gt;%
+  ggplot(aes(x = x, y = d_x, color = &#39;normal\ndistribution&#39;)) +
+  geom_line() +
+  geom_line(aes(x = x, y = d_x1, color = &#39;t with\ndf = 2&#39;)) +
+  geom_line(aes(x = x, y = d_x2, color = &#39;t with\ndf = 5&#39;)) +
+  labs(x = &#39;x&#39;,
+       y = &#39;f(x)&#39;,
+       title = &#39;Comparing Normal Distribution with t distribution&#39;) +
+  scale_colour_discrete(&quot;Distributions&quot;) +
+  theme_classic() +
+  scale_y_continuous(expand = c(0,0))</code></pre>
+<p><img src="/post/2020-05-02-investment-analysis-chapter6_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>

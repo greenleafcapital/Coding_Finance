@@ -78,3 +78,152 @@ confidence interval to have a total width of 1 percent?
 - B Munzi expects a cost of about $10 to collect each observation. If she has
 a $1,000 budget, will she be able to construct the confidence interval she
 wants?
+
+
+```{r}
+# We know population sd
+
+pop_sd <- 0.04
+
+# se is s/sqrt(n) # standard error
+# we have to find n
+# but before that we need to find se
+# 95% confidence interval means
+# 2.5% in each tail
+
+lower_tail <- qnorm(0.025, lower.tail = T)
+uppper_tail <- qnorm(0.025, lower.tail = F)
+
+cat("lower tail", lower_tail,"\n",
+    "upper tail", uppper_tail)
+
+```
+
+So we need our 95% confidence interval to have a 1% width.
+
+```{r}
+
+# Assuming X as our mean and se as our sample sd
+# We have (X + 1.96se) − (X − 1.96se) = 1% 
+# which is equal to 2*(1.96se) = 1%
+# se = 0.01 / (2 * 1.96)
+
+se <- 0.01 / (2 * uppper_tail)
+cat("The standard deviation of sample mean is,", se, "\n\n\n")
+
+# Now find the n
+
+n <- (0.04 / se) ** 2
+cat("Munzi needs a sample size of", round(n),  "if she wants the 95 percent
+confidence interval to have a total width of 1 percent")
+
+```
+
+A - Munzi needs a sample size of 246 if she wants the 95 percent
+confidence interval to have a total width of 1 percent
+
+B - With her \$1000 budget Munzi can only afford 100 observations which is far short of 246 she needs to have a 1% width of her confidence interval. 
+
+### Problem 3
+
+Assume that the equity risk premium is normally distributed with a population
+mean of 6 percent and a population standard deviation of 18 percent. Over
+the last four years, equity returns (relative to the risk-free
+rate) have averaged
+−2.0 percent. You have a large client who is very upset and claims that results
+this poor should never occur. Evaluate your client’s concerns.
+
+- A Construct a 95 percent confidence interval around the population mean for
+a sample of four-year
+returns.
+- B What is the probability of a −2.0 percent or lower average return over a
+four-year
+period?
+
+```{r}
+
+# Assuming normal distribution
+# Pop mean
+m <- 6/100
+
+# Pop sd
+s <- 18/100
+
+# we need the se for last 4 years
+# se is the sample sd
+# se = sd / sqrt(4)
+
+se <- s / sqrt(4)
+
+# 95% confidence interval will
+# have 2.5% in each tail
+
+# upper limit
+upper_limit <- qnorm(0.025, m, se,lower.tail = F)
+
+# lower limit
+
+lower_limit <- qnorm(0.025, m, se,lower.tail = T)
+
+cat( "A 95 percent confidence interval around the population mean for
+a sample of four-year
+returns has upper limit of",
+upper_limit, "and a lower limit of", lower_limit)
+```
+
+A - There is a 95% probability that returns will fall between ~23.7% and ~-11.64%
+
+```{r}
+
+# lower limit is -2%
+
+# Probability of getting
+# -2% or lower returns over a 4 year period is
+
+p <- pnorm(-0.02,mean = m, sd = se, lower.tail = T)
+
+cat("The probability of a −2.0 percent or lower average return over a
+four-year
+period is", p)
+
+
+
+```
+
+B- The probability of a −2.0 percent or lower average return over a
+four-year period is 0.1870314
+
+### Problem 4
+
+Compare the standard normal distribution and Student’s t-distribution.
+
+See below plots for comparison
+
+```{r}
+
+x <- seq(-4,4,length = 1000)
+d_x <- dnorm(x)
+d_x1 <- dt(x, 2)
+d_x2 <- dt(x, 5)
+
+tibble(x = x,
+       d_x = d_x,
+       d_x1 = d_x1,
+       d_x2 = d_x2) %>%
+  ggplot(aes(x = x, y = d_x, color = 'normal\ndistribution')) +
+  geom_line() +
+  geom_line(aes(x = x, y = d_x1, color = 't with\ndf = 2')) +
+  geom_line(aes(x = x, y = d_x2, color = 't with\ndf = 5')) +
+  labs(x = 'x',
+       y = 'f(x)',
+       title = 'Comparing Normal Distribution with t distribution') +
+  scale_colour_discrete("Distributions") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0,0))
+  
+
+```
+
+
+
+
