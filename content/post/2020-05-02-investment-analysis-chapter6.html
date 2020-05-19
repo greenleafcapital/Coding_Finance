@@ -8,6 +8,7 @@ output:
     highlight: tango
 ---
 
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
 
 
 <pre class="r"><code>library(tidyverse)
@@ -170,9 +171,19 @@ four-year period is 0.1870314</p>
 <p>Compare the standard normal distribution and Student’s t-distribution.</p>
 <p>See below plots for comparison</p>
 <pre class="r"><code>x &lt;- seq(-4,4,length = 1000)
+
+# normal distribution
 d_x &lt;- dnorm(x)
+
+# df = degrees of freedom
+# t distribution with 2 df
 d_x1 &lt;- dt(x, 2)
+
+# t distribution with 5 df
 d_x2 &lt;- dt(x, 5)
+
+# make our tibble
+# plot the chart
 
 tibble(x = x,
        d_x = d_x,
@@ -189,4 +200,683 @@ tibble(x = x,
   theme_classic() +
   scale_y_continuous(expand = c(0,0))</code></pre>
 <p><img src="/post/2020-05-02-investment-analysis-chapter6_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="problem-5" class="section level3">
+<h3>Problem 5</h3>
+<p>Find the reliability factors based on the t-distribution for the following confidence
+intervals for the population mean (df = degrees of freedom, n = sample
+size):</p>
+<ul>
+<li>A A 99 percent confidence interval, df = 20.</li>
+<li>B A 90 percent confidence interval, df = 20.</li>
+<li>C A 95 percent confidence interval, n = 25.</li>
+<li>D A 95 percent confidence interval, n = 16</li>
+</ul>
+<pre class="r"><code># As we did in Problem 4
+# we will use the t() functions
+
+# 99% with df = 20
+
+level &lt;- (1 - 0.99)/2
+df &lt;- 20
+
+f1 &lt;- qt(level, df = df, lower.tail = F)
+
+cat(&quot;A 99 percent confidence interval, df = 20 is&quot;, f1)</code></pre>
+<pre><code>## A 99 percent confidence interval, df = 20 is 2.84534</code></pre>
+<p>A - A 99 percent confidence interval, df = 20 is 2.84534</p>
+<pre class="r"><code># 90% with df = 20
+
+level &lt;- (1 - 0.90)/2
+df &lt;- 20
+
+f1 &lt;- qt(level, df = df, lower.tail = F)
+
+cat(&quot;A 90 percent confidence interval, df = 20 is&quot;, f1)</code></pre>
+<pre><code>## A 90 percent confidence interval, df = 20 is 1.724718</code></pre>
+<p>B - A 90 percent confidence interval, df = 20 is 1.724718</p>
+<pre class="r"><code># 95% with n = 25
+# df = n - 1
+
+n = 25
+df &lt;- n - 1
+
+level &lt;- (1 - 0.95)/2
+
+f1 &lt;- qt(level, df = df, lower.tail = F)
+
+cat(&quot;A 95 percent confidence interval, n = 25 is&quot;, f1)</code></pre>
+<pre><code>## A 95 percent confidence interval, n = 25 is 2.063899</code></pre>
+<p>C - A 95 percent confidence interval, df = 25 is 2.063899</p>
+<pre class="r"><code># 95% with n = 16
+# df = n - 1
+
+n = 16
+df &lt;- n - 1
+
+level &lt;- (1 - 0.95)/2
+
+f1 &lt;- qt(level, df = df, lower.tail = F)
+
+cat(&quot;A 95 percent confidence interval, n = 16 is&quot;, f1)</code></pre>
+<pre><code>## A 95 percent confidence interval, n = 16 is 2.13145</code></pre>
+<p>D - A 95 percent confidence interval, n = 16 is 2.13145</p>
+</div>
+<div id="problem-6" class="section level3">
+<h3>Problem 6</h3>
+<p>Assume that monthly returns are normally distributed with a mean of 1 percent
+and a sample standard deviation of 4 percent. The population standard deviation
+is unknown. Construct a 95 percent confidence interval for the sample
+mean of monthly returns if the sample size is 24.</p>
+<pre class="r"><code># pop mean
+m &lt;- 1/100
+# sd
+s &lt;- 4/100
+
+# sample
+n &lt;- 24
+df &lt;- n - 1
+
+# 95% conf interval
+
+level &lt;- (1 - 0.95) / 2
+
+# Calculate the se
+
+error &lt;- qt(level, df = df, lower.tail = F) * (s / sqrt(n))
+
+upper &lt;- m + error
+lower &lt;- m - error
+
+cat(&quot;A 95 percent confidence interval will fall between&quot;, lower, &quot;and&quot;, upper)</code></pre>
+<pre><code>## A 95 percent confidence interval will fall between -0.006890519 and 0.02689052</code></pre>
+<p>A 95% confidence interval will fall between -0.006890519 and 0.02689052</p>
+</div>
+<div id="problem-7" class="section level3">
+<h3>Problem 7</h3>
+<p>Ten analysts have given the following fiscal year earnings forecasts for a stock:</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Forecast
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Number of Analysts
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1.40
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.43
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.44
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.45
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.47
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.48
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1.50
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Because the sample is a small fraction of the number of analysts who follow
+this stock, assume that we can ignore the finite population correction factor.
+Assume that the analyst forecasts are normally distributed.</p>
+<ul>
+<li>A What are the mean forecast and standard deviation of forecasts?</li>
+<li>B Provide a 95 percent confidence interval for the population mean of the
+forecasts.</li>
+</ul>
+<pre class="r"><code># Forecast
+f &lt;- c(1.4,1.43,1.44,1.45,1.47,1.48,1.5)
+
+# number of analysts
+n &lt;- c(1,1,3,2,1,1,1)
+
+# total analyst
+num &lt;- sum(n)
+
+# calculate weights
+w &lt;- n / sum(n)
+
+# Weighted Mean
+m &lt;- weighted.mean(f, w)
+
+cat(&quot;Mean Forecast is&quot;, m)</code></pre>
+<pre><code>## Mean Forecast is 1.45</code></pre>
+<pre class="r"><code>cat(&quot;\n&quot;)</code></pre>
+<pre class="r"><code># Standard Deviation
+
+v &lt;- sum(n * (f - m) ** 2) / (num - 1)
+s &lt;- sqrt(v)
+cat(&quot;Standard Deviation is&quot;, s)</code></pre>
+<pre><code>## Standard Deviation is 0.02788867</code></pre>
+<p>A - Mean Forecast is 1.45 and the Standard Deviation is 0.02788867</p>
+<pre class="r"><code># 95% confidence Interval
+
+level &lt;- (1 - 0.95) / 2
+df &lt;- num - 1
+
+
+error &lt;- qt(level,df = df,
+            lower.tail = F) * (s/sqrt(10))
+
+upper &lt;- m + error
+lower &lt;- m - error
+
+cat(&quot;Upper and Lower limits are&quot;, upper,&#39;\n&#39;, lower)</code></pre>
+<pre><code>## Upper and Lower limits are 1.46995 
+##  1.43005</code></pre>
+<p>Upper and Lower limits are 1.46995 and 1.43005</p>
+</div>
+<div id="problem-8" class="section level3">
+<h3>Problem 8</h3>
+<p>Thirteen analysts have given the following fiscal-year
+earnings forecasts for a stock</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Forecast
+</th>
+<th style="text-align:right;">
+Number of Analyst
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.72
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.74
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.82
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Because the sample is a small fraction of the number of analysts who follow this
+stock, assume that we can ignore the finite population correction factor.</p>
+<ul>
+<li>A What are the mean forecast and standard deviation of forecasts?</li>
+<li>B What aspect of the data makes us uncomfortable about using t-tables to
+construct confidence intervals for the population mean forecast?</li>
+</ul>
+<pre class="r"><code># Forecasts
+f &lt;- c(0.7,0.72,0.74, 0.75,0.76,0.77,0.82)
+
+# number of analyst
+n &lt;- c(2,4,1,3,1,1,1)
+
+# Total analyst
+num &lt;- sum(n)
+
+# weights of each forecast
+w &lt;- n / sum(n)
+
+# Calculate the weighted mean
+m &lt;- weighted.mean(f,w)
+
+# Calculate the SD
+# variance
+v &lt;- sum(((f - m)^2) * n) / (num - 1)
+
+# SD
+
+s &lt;- sqrt(v)
+
+
+cat(&quot;The mean forecast is,&quot;, m, &quot;and the standard deviation of forecast is,&quot;,s)</code></pre>
+<pre><code>## The mean forecast is, 0.74 and the standard deviation of forecast is, 0.03265986</code></pre>
+<p>A - The mean forecast is, 0.74 and the standard deviation of forecast is, 0.03265986</p>
+<pre class="r"><code># Get the forecast from all analysts
+x &lt;- rep(f,n)
+
+# plot the histogram of the forecast
+
+ggplot(aes(x = x), data = NULL) +
+  geom_histogram(bins = 50)</code></pre>
+<p><img src="/post/2020-05-02-investment-analysis-chapter6_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>B - The sample is small, and the distribution of the forecast appear to be bimodal, and we cannot compute the confidence intervals as the distribution appears to be not normal.</p>
+</div>
+<div id="problem-9" class="section level3">
+<h3>Problem 9</h3>
+<p>Explain the differences between constructing a confidence interval when sampling
+from a normal population with a known population variance and sampling
+from a normal population with an unknown variance</p>
+<p>For a known standard deviation: we use the formula <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/444d7dcc9754f1a624090b0a71068ff914176eb3" /></p>
+<p>For an unknown standard deviation we use the formula <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/953450702f09946ea8f70bc38628be8e3a39f6ae" /></p>
+</div>
+<div id="problem-10" class="section level3">
+<h3>Problem 10</h3>
+<p>An exchange rate has a given expected future value and standard deviation.</p>
+<ul>
+<li>A Assuming that the exchange rate is normally distributed, what are the probabilities
+that the exchange rate will be at least 2 or 3 standard deviations
+away from its mean?</li>
+<li>B Assume that you do not know the distribution of exchange rates. Use
+Chebyshev’s inequality (that at least 1 − 1/k2 proportion of the observations
+will be within k standard deviations of the mean for any positive integer k
+greater than 1) to calculate the maximum probabilities that the exchange
+rate will be at least 2 or 3 standard deviations away from its mean.</li>
+</ul>
+<pre class="r"><code># We know the z value
+
+# When z is 2
+
+z_2 &lt;- (1 - pnorm(2)) * 2
+
+# When z is 3
+
+z_3 &lt;- (1 - pnorm(3)) * 2
+
+cat(&quot;The probability that the exchange rate will be at least 2 standard deviations away from the mean is&quot;, z_2, &quot;and 3 standard deviations away from the mean is&quot;, z_3)</code></pre>
+<pre><code>## The probability that the exchange rate will be at least 2 standard deviations away from the mean is 0.04550026 and 3 standard deviations away from the mean is 0.002699796</code></pre>
+<p>A - The probability that the exchange rate will be at least 2 standard deviations away from the mean is 0.04550026 and 3 standard deviations away from the mean is 0.002699796</p>
+<pre class="r"><code># Since the distribution is unknown and using Chevychev&#39;s theorem
+
+# when k = 2
+
+k_2 &lt;- (1 - (1/2)^2)
+
+# when k = 3
+k_3 &lt;- (1 - (1/3)^2)
+
+cat(&quot;The maximum probabilities that the exchange
+rate will be at least 2 standard deviations away from its mean is&quot;, 1 - k_2, 
+&quot;or 3 standard deviations away from its mean is&quot;, 1- k_3)</code></pre>
+<pre><code>## The maximum probabilities that the exchange
+## rate will be at least 2 standard deviations away from its mean is 0.25 or 3 standard deviations away from its mean is 0.1111111</code></pre>
+<p>We can see that when the distribution is unknown and using Chebychev’s theorem, the probabilities of getting extreme data increases.</p>
+</div>
+<div id="problem-11" class="section level3">
+<h3>Problem 11</h3>
+<p>Although he knows security returns are not independent, a colleague makes
+the claim that because of the central limit theorem, if we diversify across a
+large number of investments, the portfolio standard deviation will eventually
+approach zero as n becomes large. Is he correct?</p>
+<p>As we increase the number of securities, the standard deviation will get lower but not approach zero. This has nothing to do with the central limit theorem, but due to correlation of different assets.</p>
+</div>
+<div id="problem-12" class="section level3">
+<h3>Problem 12</h3>
+<p>Why is the central limit theorem important?</p>
+<p>Please watch these excellent videos</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=JNm3M9cqWyc" frameborder="0" allowfullscreen>
+</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=NYd6wzYkQIM" frameborder="0" allowfullscreen>
+</iframe>
+<p>Links for the video(in case they don’t show up in your browser)</p>
+<p><a href="https://www.youtube.com/watch?v=JNm3M9cqWyc" class="uri">https://www.youtube.com/watch?v=JNm3M9cqWyc</a></p>
+<p><a href="https://www.youtube.com/watch?v=NYd6wzYkQIM" class="uri">https://www.youtube.com/watch?v=NYd6wzYkQIM</a></p>
+</div>
+<div id="problem-13" class="section level3">
+<h3>Problem 13</h3>
+<p>What is wrong with the following statement of the central limit theorem?</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch6_sampling/prob_13.png" /></p>
+<ul>
+<li>First the sample size <code>n</code> has to be large (above 30)</li>
+<li>The distribution will have a mean approximately equal to population mean</li>
+</ul>
+</div>
+<div id="problem-14" class="section level3">
+<h3>Problem 14</h3>
+<p>Suppose we take a random sample of 30 companies in an industry with 200
+companies. We calculate the sample mean of the ratio of cash flow to total debt
+for the prior year. We find that this ratio is 23 percent. Subsequently, we learn
+that the population cash flow to total debt ratio (taking account of all 200 companies)
+is 26 percent. What is the explanation for the discrepancy between the
+sample mean of 23 percent and the population mean of 26 percent?</p>
+<ul>
+<li>A Sampling error.</li>
+<li>B Bias.</li>
+<li>C A lack of consistency.</li>
+</ul>
+<p>A Sampling error</p>
+</div>
+<div id="problem-15" class="section level3">
+<h3>Problem 15</h3>
+<p>Alcorn Mutual Funds is placing large advertisements in several financial publications.
+The advertisements prominently display the returns of 5 of Alcorn’s
+30 funds for the past 1-, 3-, 5-, and 10-year
+periods. The results are indeed
+impressive, with all of the funds beating the major market indexes and a few
+beating them by a large margin. Is the Alcorn family of funds superior to its
+competitors?</p>
+<p>Selecting only 5 out of 30 funds may indicate selection bias. We will have to analyze the performance of all the funds to come to a conclusion if Alcorn family of funds is superior to its competitors.</p>
+</div>
+<div id="problem-16" class="section level3">
+<h3>Problem 16</h3>
+<p>Julius Spence has tested several predictive models in order to identify undervalued
+stocks. Spence used about 30 company-specific
+variables and 10
+market-related
+variables to predict returns for about 5,000 North American
+and European stocks. He found that a final model using eight variables applied
+to telecommunications and computer stocks yields spectacular results. Spence
+wants you to use the model to select investments. Should you? What steps
+would you take to evaluate the model?</p>
+<p>If you test so many variables, there is a high probability that some variables will be statistically significant. It would have been surprising, if there were no varibales that yielded spectacular results.</p>
+<p>To test the model we should question the models and make sure it makes economic sense. We should also split the data and test the model on an out of sample data.</p>
+</div>
+<div id="probllem-17" class="section level3">
+<h3>Probllem 17</h3>
+<p>The best approach for creating a stratified random sample of a population
+involves:</p>
+<ul>
+<li>A drawing an equal number of simple random samples from each
+subpopulation.</li>
+<li>B selecting every kth member of the population until the desired sample size
+is reached.</li>
+<li>C drawing simple random samples from each subpopulation in sizes proportional
+to the relative size of each subpopulation</li>
+</ul>
+<p>C drawing simple random samples from each subpopulation in sizes proportional
+to the relative size of each subpopulation</p>
+</div>
+<div id="problem-18" class="section level3">
+<h3>Problem 18</h3>
+<p>A population has a non-normal
+distribution with mean μ and variance σ2. The
+sampling distribution of the sample mean computed from samples of large size
+from that population will have:</p>
+<ul>
+<li>A the same distribution as the population distribution.</li>
+<li>B its mean approximately equal to the population mean.</li>
+<li>C its variance approximately equal to the population variance.</li>
+</ul>
+<p>B its mean approximately equal to the population mean.</p>
+</div>
+<div id="problem-19" class="section level3">
+<h3>Problem 19</h3>
+<p>A sample mean is computed from a population with a variance of 2.45. The
+sample size is 40. The standard error of the sample mean is closest to:</p>
+<ul>
+<li>A 0.039.</li>
+<li>B 0.247.</li>
+<li>C 0.387.</li>
+</ul>
+<pre class="r"><code># pop variance
+v &lt;- 2.45
+s &lt;- sqrt(v)
+
+# size = 40
+size &lt;- 40
+
+# se = standard error
+
+se &lt;- s / sqrt(size)
+
+cat(&#39;The standard error of the sample mean is closest to:&#39;, se)</code></pre>
+<pre><code>## The standard error of the sample mean is closest to: 0.2474874</code></pre>
+<p>B 0.247</p>
+</div>
+<div id="problem-20" class="section level3">
+<h3>Problem 20</h3>
+<p>An estimator with an expected value equal to the parameter that it is intended
+to estimate is described as:</p>
+<ul>
+<li>A efficient.</li>
+<li>B unbiased.</li>
+<li>C consistent.</li>
+</ul>
+<p>B unbiased</p>
+<p>An unbiased estimator is one for which the expected value equals the parameter it is intended to estimate</p>
+</div>
+<div id="problem-21" class="section level3">
+<h3>Problem 21</h3>
+<p>If an estimator is consistent, an increase in sample size will increase the:</p>
+<ul>
+<li>A accuracy of estimates.</li>
+<li>B efficiency of the estimator.</li>
+<li>C unbiasedness of the estimator</li>
+</ul>
+<p>A accuracy of estimates.</p>
+</div>
+<div id="problem-22" class="section level3">
+<h3>Problem 22</h3>
+<p>For a two-sided
+confidence interval, an increase in the degree of confidence will
+result in:</p>
+<ul>
+<li>A a wider confidence interval.</li>
+<li>B a narrower confidence interval.</li>
+<li>C no change in the width of the confidence interval.</li>
+</ul>
+<p>A a wider confidence interval.</p>
+</div>
+<div id="problem-23" class="section level3">
+<h3>Problem 23</h3>
+<p>As the t-distribution’s degrees of freedom decrease, the t-distribution most
+likely:</p>
+<ul>
+<li>A exhibits tails that become fatter.</li>
+<li>B approaches a standard normal distribution.</li>
+<li>C becomes asymmetrically distributed around its mean value.</li>
+</ul>
+<p>A exhibits tails that become fatter.</p>
+</div>
+<div id="problem-24" class="section level3">
+<h3>Problem 24</h3>
+<p>For a sample size of 17, with a mean of 116.23 and a variance of 245.55, the
+width of a 90% confidence interval using the appropriate t-distribution is closest
+to:</p>
+<ul>
+<li>A 13.23.</li>
+<li>B 13.27.</li>
+<li>C 13.68.</li>
+</ul>
+<pre class="r"><code># mean 
+m &lt;- 116.23
+
+# variance 
+v &lt;- 245.55
+
+# sd
+s &lt;- sqrt(v)
+
+# size 
+size &lt;- 17
+
+# alpha 0.1
+a &lt;- 0.1
+
+# at 90% confidence interval and
+# df = size - 1
+t_a &lt;- qt(a/2, df = size - 1, lower.tail = F)
+
+error &lt;- t_a * (s / sqrt(size))
+
+upper &lt;- m + error
+lower &lt;- m - error
+
+interval &lt;- upper - lower
+
+cat(&quot;the width of a 90% confidence interval using the appropriate t-distribution is closest
+to:&quot;, interval)</code></pre>
+<pre><code>## the width of a 90% confidence interval using the appropriate t-distribution is closest
+## to: 13.27061</code></pre>
+<p>B 13.27</p>
+</div>
+<div id="problem-25" class="section level3">
+<h3>Problem 25</h3>
+<p>For a sample size of 65 with a mean of 31 taken from a normally distributed
+population with a variance of 529, a 99% confidence interval for the population
+mean will have a lower limit closest to:</p>
+<ul>
+<li>A 23.64.</li>
+<li>B 25.41.</li>
+<li>C 30.09.</li>
+</ul>
+<pre class="r"><code># Normal Distribution
+# size 
+size &lt;- 65
+
+# mean 
+m &lt;- 31
+
+# variance
+v &lt;- 529
+
+# sd 
+s &lt;- sqrt(v)
+
+# alpha 0.01
+a &lt;- 0.01
+
+# at 99% confidence interval and
+# df of size - 1
+
+t_a &lt;- qnorm(a/2)
+
+error &lt;- t_a * (s / sqrt(size))
+
+lower &lt;- m + error
+cat(&quot;A 99% confidence interval for the population
+mean will have a lower limit closest to:&quot;, lower)</code></pre>
+<pre><code>## A 99% confidence interval for the population
+## mean will have a lower limit closest to: 23.65168</code></pre>
+<p>A 23.65</p>
+</div>
+<div id="problem-26" class="section level3">
+<h3>Problem 26</h3>
+<p>An increase in sample size is most likely to result in a:</p>
+<ul>
+<li>A wider confidence interval.</li>
+<li>B decrease in the standard error of the sample mean.</li>
+<li>C lower likelihood of sampling from more than one population.</li>
+</ul>
+<p>B decrease in the standard error of the sample mean.</p>
+</div>
+<div id="problem-27" class="section level3">
+<h3>Problem 27</h3>
+<p>A report on long-term
+stock returns focused exclusively on all currently publicly
+traded firms in an industry is most likely susceptible to:</p>
+<ul>
+<li>A look-ahead
+bias.</li>
+<li>B survivorship bias.</li>
+<li>C intergenerational data mining.</li>
+</ul>
+<p>B survivorship bias.</p>
+</div>
+<div id="problem-28" class="section level3">
+<h3>Problem 28</h3>
+<p>Which sampling bias is most likely investigated with an out-of-
+sample
+test?</p>
+<ul>
+<li>A Look-ahead
+bias</li>
+<li>B Data-mining
+bias</li>
+<li>C Sample selection bias</li>
+</ul>
+<p>C Sample selection bias</p>
+</div>
+<div id="problem-29" class="section level3">
+<h3>Problem 29</h3>
+<p>Which of the following characteristics of an investment study most likely indicates
+time-period
+bias?</p>
+<ul>
+<li>A The study is based on a short time-series.</li>
+<li>B Information not available on the test date is used.</li>
+<li>C A structural change occurred prior to the start of the study’s time series.</li>
+</ul>
+<p>A The study is based on a short time-series.</p>
 </div>
