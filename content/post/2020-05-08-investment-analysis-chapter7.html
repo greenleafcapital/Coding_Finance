@@ -1,0 +1,1058 @@
+---
+title: "Quantitative Investment Analysis - Chapter 7"
+author: "DD"
+date: "2020-05-08"
+description: "Chapter 7: Hypothesis Testing"
+output:
+  html_document:
+    highlight: tango
+---
+
+
+
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+library(kableExtra)</code></pre>
+<p>In this post we will solve the end of the chapter practice problems from chapter 7 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
+<div id="problem-1" class="section level3">
+<h3>Problem 1</h3>
+<p>Which of the following statements about hypothesis testing is correct?</p>
+<ul>
+<li>A The null hypothesis is the condition a researcher hopes to support.</li>
+<li>B The alternative hypothesis is the proposition considered true without conclusive
+evidence to the contrary.</li>
+<li><p>C The alternative hypothesis exhausts all potential parameter values not
+accounted for by the null hypothesis.</p></li>
+<li><p>C The alternative hypothesis exhausts all potential parameter values not
+accounted for by the null hypothesis.</p></li>
+</ul>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_2.png" /></p>
+<p>A - We conduct the t-test with (15 - 1) = 14 degrees of freedom.</p>
+<p>B - We conduct the t-test with (40 - 1) = 39 degrees of freedom.</p>
+<p>C - We conduct the z-statistic test since the sample comes from a normal distribution</p>
+<p>D - We conduct the chi-square test with (50 -1) = 49 degress of freedom</p>
+<p>E - We conduct the F-statistic test</p>
+<p>F - We conduct the t-statistic test for a paired observation</p>
+<p>G - We conduct a t-statistic test using a pooled estimate of population variance and (25 + 30 - 2) = 53 degrees of freedom</p>
+</div>
+<div id="problem-3" class="section level3">
+<h3>Problem 3</h3>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_3.png" /></p>
+<pre class="r"><code>size &lt;- 26
+
+df &lt;- size - 1
+
+# alpha
+
+a &lt;- 0.05
+
+upper &lt;- qt(a/2,df = df, lower.tail = F)
+lower &lt;- qt(a/2,df = df)
+
+cat(&quot;For significant level of&quot;, a, &quot;the rejection values are greater than&quot;, upper, &quot;and less than&quot;, lower)</code></pre>
+<pre><code>## For significant level of 0.05 the rejection values are greater than 2.059539 and less than -2.059539</code></pre>
+<p>A - For significant level of 0.05 the rejection values are greater than 2.059539 and less than -2.059539</p>
+<pre class="r"><code>size &lt;- 40
+
+df &lt;- size - 1
+
+# alpha
+
+a &lt;- 0.01
+
+upper &lt;- qt(a/2,df = df, lower.tail = F)
+lower &lt;- qt(a/2,df = df)
+
+cat(&quot;For significant level of&quot;, a, &quot;the rejection values are greater than&quot;, upper, &quot;and less than&quot;, lower)</code></pre>
+<pre><code>## For significant level of 0.01 the rejection values are greater than 2.707913 and less than -2.707913</code></pre>
+<p>B - For significant level of 0.01 the rejection values are greater than 2.707913 and less than -2.707913</p>
+<pre class="r"><code>size &lt;- 40
+
+df &lt;- size - 1
+
+# alpha
+
+a &lt;- 0.01
+
+upper &lt;- qt(a,df = df, lower.tail = F)
+
+cat(&quot;For significant level of&quot;, a, &quot;the rejection values are greater than&quot;, upper)</code></pre>
+<pre><code>## For significant level of 0.01 the rejection values are greater than 2.425841</code></pre>
+<p>C - For significant level of 0.01 the rejection values are greater than 2.425841</p>
+<pre class="r"><code>size &lt;- 21
+
+df &lt;- size - 1
+
+# alpha
+
+a &lt;- 0.05
+
+upper &lt;- qt(a,df = df, lower.tail = F)
+
+cat(&quot;For significant level of&quot;, a, &quot;the rejection values are greater than&quot;, upper)</code></pre>
+<pre><code>## For significant level of 0.05 the rejection values are greater than 1.724718</code></pre>
+<p>D - For significant level of 0.05 the rejection values are greater than 1.724718</p>
+<pre class="r"><code>size &lt;- 19
+
+df &lt;- size - 1
+
+# alpha
+
+a &lt;- 0.1
+
+lower &lt;- qt(a,df = df)
+
+cat(&quot;For significant level of&quot;, a, &quot;the rejection values are less than&quot;, lower)</code></pre>
+<pre><code>## For significant level of 0.1 the rejection values are less than -1.330391</code></pre>
+<p>E - For significant level of 0.1 the rejection values are less than -1.330391</p>
+<pre class="r"><code>size &lt;- 50
+
+df &lt;- size - 1
+
+# alpha
+
+a &lt;- 0.05
+
+lower &lt;- qt(a,df = df)
+
+cat(&quot;For significant level of&quot;, a, &quot;the rejection values are less than&quot;, lower)</code></pre>
+<pre><code>## For significant level of 0.05 the rejection values are less than -1.676551</code></pre>
+<p>For significant level of 0.05 the rejection values are less than -1.676551</p>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_4.png" /></p>
+<pre class="r"><code># alpha 
+a &lt;- 0.01
+
+upper &lt;- qnorm(a/2, lower.tail = F)
+lower &lt;- qnorm(a/2)
+
+cat(&quot;The rejection areas are greater than&quot;, upper, &quot;and less than&quot;, lower)</code></pre>
+<pre><code>## The rejection areas are greater than 2.575829 and less than -2.575829</code></pre>
+<p>A - The rejection areas are greater than 2.575829 and less than -2.575829</p>
+<pre class="r"><code># alpha 
+a &lt;- 0.05
+
+upper &lt;- qnorm(a/2, lower.tail = F)
+lower &lt;- qnorm(a/2)
+
+cat(&quot;The rejection areas are greater than&quot;, upper, &quot;and less than&quot;, lower)</code></pre>
+<pre><code>## The rejection areas are greater than 1.959964 and less than -1.959964</code></pre>
+<p>B - The rejection areas are greater than 1.959964 and less than -1.959964</p>
+<pre class="r"><code># alpha 
+a &lt;- 0.1
+
+upper &lt;- qnorm(a/2, lower.tail = F)
+lower &lt;- qnorm(a/2)
+
+cat(&quot;The rejection areas are greater than&quot;, upper, &quot;and less than&quot;, lower)</code></pre>
+<pre><code>## The rejection areas are greater than 1.644854 and less than -1.644854</code></pre>
+<p>C - The rejection areas are greater than 1.644854 and less than -1.644854</p>
+<pre class="r"><code># alpha 
+a &lt;- 0.05
+
+upper &lt;- qnorm(a, lower.tail = F)
+
+
+cat(&quot;The rejection areas are greater than&quot;, upper)</code></pre>
+<pre><code>## The rejection areas are greater than 1.644854</code></pre>
+<p>D - The rejection areas are greater than 1.644854</p>
+</div>
+<div id="problem-5" class="section level3">
+<h3>Problem 5</h3>
+<p>Willco is a manufacturer in a mature cyclical industry. During the most recent
+industry cycle, its net income averaged $30 million per year with a standard
+deviation of $10 million (n = 6 observations). Management claims that Willco’s
+performance during the most recent cycle results from new approaches and
+that we can dismiss profitability expectations based on its average or normalized
+earnings of $24 million per year in prior cycles.</p>
+<ul>
+<li>A With μ as the population value of mean annual net income, formulate null
+and alternative hypotheses consistent with testing Willco management’s
+claim.</li>
+<li>B Assuming that Willco’s net income is at least approximately normally distributed,
+identify the appropriate test statistic.</li>
+<li>C Identify the rejection point or points at the 0.05 level of significance for the
+hypothesis tested in Part A.</li>
+<li>D Determine whether or not to reject the null hypothesis at the 0.05 significance
+level.</li>
+</ul>
+<p>Answer A</p>
+<p>Null hypothesis is mean earnings &lt;= 24<br>
+Alternative hypothesis is mean earnings &gt; 24</p>
+<p>Answer B</p>
+<p>We will conduct a t-statistic test with (6 - 1) = 5, degress of freedom.</p>
+<pre class="r"><code># alpha 
+a &lt;- 0.05
+
+size &lt;- 6
+
+df &lt;- size - 1
+
+upper &lt;- qt(a, df = df, lower.tail = F)
+
+cat(&quot;Reject the Null hypothesis if value is above&quot;, upper)</code></pre>
+<pre><code>## Reject the Null hypothesis if value is above 2.015048</code></pre>
+<p>Answer C</p>
+<p>Reject the Null hypothesis if value is above 2.015048</p>
+<pre class="r"><code># new mean
+
+m &lt;- 30
+
+# pop mean
+
+mu &lt;- 24
+
+
+# sd
+
+s &lt;- 10
+
+n &lt;- 6
+
+# standard Error se
+se &lt;- s/sqrt(n)
+
+# test
+
+t &lt;- (m - mu) / se
+
+if (t &gt; upper) {
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is greater than&quot;, upper)
+} else {
+  
+  cat(&quot;We do not reject the null hypothesis since test statistic&quot;, t,&quot;is not greater than&quot;, upper)
+}</code></pre>
+<pre><code>## We do not reject the null hypothesis since test statistic 1.469694 is not greater than 2.015048</code></pre>
+<p>Answer D</p>
+<p>Since this value is less that 2.015, we do not reject the null hypothesis.</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_6.png" /></p>
+</div>
+<div id="problem-6" class="section level3">
+<h3>Problem 6</h3>
+<p>Investment analysts often use earnings per share (EPS) forecasts. One test of
+forecasting quality is the zero-mean
+test, which states that optimal forecasts
+should have a mean forecasting error of 0. (Forecasting error = Predicted value
+of variable − Actual value of variable.)
+You have collected data (shown in the table above) for two analysts who cover
+two different industries: Analyst A covers the telecom industry; Analyst B covers
+automotive parts and suppliers.</p>
+<ul>
+<li>A With μ as the population mean forecasting error, formulate null and alternative
+hypotheses for a zero-mean
+test of forecasting quality.</li>
+<li>B For Analyst A, using both a t-test and a z-test, determine whether to reject
+the null at the 0.05 and 0.01 levels of significance.</li>
+<li>C For Analyst B, using both a t-test and a z-test, determine whether to reject
+the null at the 0.05 and 0.01 levels of significance</li>
+</ul>
+<p>Answer A</p>
+<p>Null hypothesis is mean = 0<br>
+Alternative hypothesis is mean not equal to 0</p>
+<p>Answer B</p>
+<pre class="r"><code>size &lt;- 101
+
+# mean
+m &lt;- 0.05
+
+# sd
+s &lt;- 0.1
+se &lt;- s / sqrt(size)
+
+# Levels for 0.05 significance
+
+# alpha 0.05
+a_5 &lt;- 0.05
+
+upper_5 &lt;- qt(a_5/2, df = size - 1, lower.tail = F)
+lower_5 &lt;- qt(a_5/2, df = size - 1)
+
+cat(&quot;At 0.05 significance level the upper and lover levels are&quot;, upper_5, &#39;and&#39;, lower_5)</code></pre>
+<pre><code>## At 0.05 significance level the upper and lover levels are 1.983972 and -1.983972</code></pre>
+<pre class="r"><code>cat(&quot;\n&quot;)</code></pre>
+<pre class="r"><code># Levels for 0.01 significance
+
+# alpha 0.05
+a_1 &lt;- 0.01
+
+upper_1 &lt;- qt(a_1/2, df = size - 1, lower.tail = F)
+lower_1 &lt;- qt(a_1/2, df = size - 1)
+
+cat(&quot;At 0.01 significance level the upper and lover levels are&quot;, upper_1, &#39;and&#39;, lower_1)</code></pre>
+<pre><code>## At 0.01 significance level the upper and lover levels are 2.625891 and -2.625891</code></pre>
+<pre class="r"><code>cat(&quot;\n&quot;)</code></pre>
+<pre class="r"><code># Test at 0.05 signi
+
+t &lt;- (m - 0) / se
+
+cat(&quot;The test statistic is&quot;, t)</code></pre>
+<pre><code>## The test statistic is 5.024938</code></pre>
+<p>Since the test statistic is greater than 5.02, we can reject the null hypothesis at both 0.05 and 0.01 level.</p>
+<p>Answer C</p>
+<pre class="r"><code>size &lt;- 121
+
+# mean
+m &lt;- 0.02
+
+# sd
+s &lt;- 0.09
+se &lt;- s / sqrt(size)
+
+# Levels for 0.05 significance
+
+# alpha 0.05
+a_5 &lt;- 0.05
+
+upper_5 &lt;- qt(a_5/2, df = size - 1, lower.tail = F)
+lower_5 &lt;- qt(a_5/2, df = size - 1)
+
+cat(&quot;At 0.05 significance level the upper and lover levels are&quot;, upper_5, &#39;and&#39;, lower_5)</code></pre>
+<pre><code>## At 0.05 significance level the upper and lover levels are 1.97993 and -1.97993</code></pre>
+<pre class="r"><code>cat(&quot;\n&quot;)</code></pre>
+<pre class="r"><code># Levels for 0.01 significance
+
+# alpha 0.05
+a_1 &lt;- 0.01
+
+upper_1 &lt;- qt(a_1/2, df = size - 1, lower.tail = F)
+lower_1 &lt;- qt(a_1/2, df = size - 1)
+
+cat(&quot;At 0.01 significance level the upper and lover levels are&quot;, upper_1, &#39;and&#39;, lower_1)</code></pre>
+<pre><code>## At 0.01 significance level the upper and lover levels are 2.617421 and -2.617421</code></pre>
+<pre class="r"><code>cat(&quot;\n&quot;)</code></pre>
+<pre class="r"><code># Test at 0.05 signi
+
+t &lt;- (m - 0) / se
+
+cat(&quot;The test statistic is&quot;, t)</code></pre>
+<pre><code>## The test statistic is 2.444444</code></pre>
+<p>Since the test statistic is 2.44, we can reject the null hypothesis at 0.05 level. But 2.44 is less than 2.61, hence we cannot reject the null hypothesis at the 0.01 level of significance.</p>
+</div>
+<div id="problem-7" class="section level3">
+<h3>Problem 7</h3>
+<p>Reviewing the EPS forecasting performance data for Analysts A and B, you
+want to investigate whether the larger average forecast errors of Analyst A are
+due to chance or to a higher underlying mean value for Analyst A. Assume that
+the forecast errors of both analysts are normally distributed and that the samples
+are independent.</p>
+<ul>
+<li>A Formulate null and alternative hypotheses consistent with determining
+whether the population mean value of Analyst A’s forecast errors (μ1) are
+larger than Analyst B’s (μ2).</li>
+<li>B Identify the test statistic for conducting a test of the null hypothesis formulated
+in Part A.</li>
+<li>C Identify the rejection point or points for the hypothesis tested in Part A, at
+the 0.05 level of significance.</li>
+<li>D Determine whether or not to reject the null hypothesis at the 0.05 level of
+significance.</li>
+</ul>
+<p>Answer A</p>
+<p>μ1 = the population mean value of Analyst A’s forecast errors <br>
+μ2 = the population mean value of Analyst B’s forecast errors</p>
+<p>Null Hypothesis μ1 - μ2 &lt;= 0<br>
+Alternative Hypothesis μ1 - μ2 &gt; 0</p>
+<p>Answer B</p>
+<p>Appropriate test is t-statistics using a pooled estimate of common variance and (101 + 121 - 2) = 220 degrees of freedom.</p>
+<p>Answer C</p>
+<pre class="r"><code># alpha
+a &lt;- 0.05
+
+df = 220
+
+t &lt;- qt(a, df = df, lower.tail = F)
+cat(&quot;We will reject the null hypothesis if the value is above&quot;, t)</code></pre>
+<pre><code>## We will reject the null hypothesis if the value is above 1.651809</code></pre>
+<p>Answer D</p>
+<p>Using the formula for pooled variance</p>
+<p><img src="https://media.cheggcdn.com/study/346/3469010f-331f-401c-96be-89174e01d391/CL-589V1.png" /></p>
+<p>We find out the pooled estimate of variance</p>
+<pre class="r"><code># pooled variance
+v &lt;- (((101 - 1) * (0.1) ^ 2) + ((121 - 1) * (0.09) ^ 2)) / (101 + 121 - 2)
+v</code></pre>
+<pre><code>## [1] 0.008963636</code></pre>
+<p>The t test is</p>
+<p><img src="http://www.stat.yale.edu/Courses/1997-98/101/tstat2.gif" /></p>
+<pre class="r"><code>a &lt;- 0.05
+df &lt;- 220
+
+t_1 &lt;- qt(a, df = df, lower.tail = F)
+
+t &lt;- ((0.05 - 0.02) - 0) / ((v / 101 + v / 121) ^ (1/2))
+
+if (t &gt; t_1) {
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is greater than&quot;, t_1)
+} else {
+  
+  cat(&quot;We do not reject the null hypothesis since test statistic&quot;, t,&quot;is not greater than&quot;, t_1)
+}</code></pre>
+<pre><code>## We reject the null hypothesis since test statistic 2.351018  is greater than 1.651809</code></pre>
+</div>
+<div id="problem-8" class="section level3">
+<h3>Problem 8</h3>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_8.png" /></p>
+<ul>
+<li>A Formulate null and alternative hypotheses consistent with testing whether
+any difference exists between the mean returns on the S&amp;P 500 and small-cap
+stocks.</li>
+<li>B Determine whether or not to reject the null hypothesis at the 0.05 significance
+level for the entire sample period.</li>
+<li>C Determine whether or not to reject the null hypothesis at the 0.05 significance
+level for the first subperiod.</li>
+<li>D Determine whether or not to reject the null hypothesis at the 0.05 significance
+level for the second subperiod.</li>
+</ul>
+<p>Answer A</p>
+<p>Let μd stand for the population mean value of difference between S&amp;P 500
+returns and small-cap stock returns.</p>
+<p>Null hypothesis is μd = 0<br>
+Alternative hypothesis is μd != 0</p>
+<p>Answer B</p>
+<pre class="r"><code># alpha 
+a &lt;- 0.05
+n &lt;- 480
+df &lt;- n - 1
+
+upper &lt;- qt(a/2, df = df, lower.tail = F)
+lower &lt;- qt(a/2, df = df, lower.tail = T)
+
+cat(&quot;We will reject the null hypothesis if the test value is greater than&quot;, upper, &quot;or less than&quot;, lower, &quot;\n&quot;)</code></pre>
+<pre><code>## We will reject the null hypothesis if the test value is greater than 1.964929 or less than -1.964929</code></pre>
+<pre class="r"><code># mean difference
+m &lt;- -0.258
+s &lt;- 3.752
+
+t &lt;- (m - 0) / (s / sqrt(n))
+
+if (t &gt; upper) {
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is greater than&quot;, upper)
+} else if (t &lt; lower) {
+  
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is less than&quot;, lower)
+} else {
+  cat(&quot;We do not reject the null hypothesis since test statistic&quot;, t,&quot;is not greater than&quot;, upper, &quot;or less than&quot;, lower)
+}</code></pre>
+<pre><code>## We do not reject the null hypothesis since test statistic -1.506529 is not greater than 1.964929 or less than -1.964929</code></pre>
+<p>At 0.05 significan level we do not reject the null hypothesis.</p>
+<p>Answer C</p>
+<pre class="r"><code># alpha 
+a &lt;- 0.05
+
+# first sub period
+n &lt;- 240
+df &lt;- n - 1
+
+upper &lt;- qt(a/2, df = df, lower.tail = F)
+lower &lt;- qt(a/2, df = df, lower.tail = T)
+
+cat(&quot;We will reject the null hypothesis if the test value is greater than&quot;, upper, &quot;or less than&quot;, lower, &quot;\n&quot;)</code></pre>
+<pre><code>## We will reject the null hypothesis if the test value is greater than 1.969939 or less than -1.969939</code></pre>
+<pre class="r"><code># mean difference
+m &lt;- -0.640
+s &lt;- 4.096
+
+t &lt;- (m - 0) / (s / sqrt(n))
+
+if (t &gt; upper) {
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is greater than&quot;, upper)
+} else if (t &lt; lower) {
+  
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is less than&quot;, lower)
+} else {
+  cat(&quot;We do not reject the null hypothesis since test statistic&quot;, t,&quot;is not greater than&quot;, upper, &quot;or less than&quot;, lower)
+}</code></pre>
+<pre><code>## We reject the null hypothesis since test statistic -2.420615  is less than -1.969939</code></pre>
+<p>At a 0.05 level of significance, we reject the null hypothesis. During this period small cap stocks significantly outperformed S&amp;P 500 stocks.</p>
+<p>Answer D</p>
+<pre class="r"><code># alpha 
+a &lt;- 0.05
+
+# secod sub period
+n &lt;- 240
+df &lt;- n - 1
+
+upper &lt;- qt(a/2, df = df, lower.tail = F)
+lower &lt;- qt(a/2, df = df, lower.tail = T)
+
+cat(&quot;We will reject the null hypothesis if the test value is greater than&quot;, upper, &quot;or less than&quot;, lower, &quot;\n&quot;)</code></pre>
+<pre><code>## We will reject the null hypothesis if the test value is greater than 1.969939 or less than -1.969939</code></pre>
+<pre class="r"><code># mean difference
+m &lt;- 0.125
+s &lt;- 3.339
+
+t &lt;- (m - 0) / (s / sqrt(n))
+
+if (t &gt; upper) {
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is greater than&quot;, upper)
+} else if (t &lt; lower) {
+  
+  cat(&quot;We reject the null hypothesis since test statistic&quot;, t,&quot; is less than&quot;, lower)
+} else {
+  cat(&quot;We do not reject the null hypothesis since test statistic&quot;, t,&quot;is not greater than&quot;, upper, &quot;or less than&quot;, lower)
+}</code></pre>
+<pre><code>## We do not reject the null hypothesis since test statistic 0.5799616 is not greater than 1.969939 or less than -1.969939</code></pre>
+<p>At 0.05 significan level, we do not reject the null hypothesis.</p>
+</div>
+<div id="problem-9" class="section level3">
+<h3>Problem 9</h3>
+<p>During a 10-year
+period, the standard deviation of annual returns on a portfolio
+you are analyzing was 15 percent a year. You want to see whether this record
+is sufficient evidence to support the conclusion that the portfolio’s underlying
+variance of return was less than 400, the return variance of the portfolio’s
+benchmark.</p>
+<ul>
+<li>A Formulate null and alternative hypotheses consistent with the verbal
+description of your objective.</li>
+<li>B Identify the test statistic for conducting a test of the hypotheses in Part A.</li>
+<li>C Identify the rejection point or points at the 0.05 significance level for the
+hypothesis tested in Part A.</li>
+<li>D Determine whether the null hypothesis is rejected or not rejected at the 0.05
+level of significance.</li>
+</ul>
+<p>Answer A</p>
+<p>Null hypothesis is portfolio variance is greater than or equal to 400<br>
+Alternative hypothesis is portfolio variance is less than 400</p>
+<p>Answer B</p>
+<p>The test statistic is chi-square test with (10 - 1) = 9 degrees of freedom</p>
+<p>Answer C</p>
+<pre class="r"><code># alpha
+a &lt;- 0.05
+
+df &lt;- 10 - 1
+
+level &lt;- qchisq(a,df)
+
+cat(&quot;We will reject the null hypothesis if test statistic is less than&quot;, level)</code></pre>
+<pre><code>## We will reject the null hypothesis if test statistic is less than 3.325113</code></pre>
+<p>Answer D</p>
+<p><img src="https://www.empirical-methods.hslu.ch/files/2017/02/calculating-the-chi-square-test-statistic-for-variance.png" /></p>
+<pre class="r"><code>t &lt;- ((10 - 1) * 15**2) / (400)
+
+if (t &lt; level) {
+  
+  cat(&quot;Reject the null hypothesis since&quot;, t, &quot;is less than&quot;, level)
+  
+} else {
+  
+  cat(&quot;Do not reject the null hypothesis since&quot;, t, &quot;is not less than&quot;, level)
+  
+}</code></pre>
+<pre><code>## Do not reject the null hypothesis since 5.0625 is not less than 3.325113</code></pre>
+</div>
+<div id="problem-10" class="section level3">
+<h3>Problem 10</h3>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_10.png" /></p>
+<p>Answer A</p>
+<p>We are investigating whether population variance of the index has changed subsequent to the October 1987 crash.</p>
+<p>Null hypothesis is variance before is equal to variance after<br>
+Alternative hypothesis is variance before is not equal to variance afterwards</p>
+<p>Answer B</p>
+<p>To test the hypothesis, we use the F-test</p>
+<p><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/ca4dd5fb08a60b6a2000d07569e42eb324c2fbf6" /></p>
+<p>Answer C</p>
+<pre class="r"><code># alpha
+a &lt;- 0.05
+df1 &lt;- 119
+df2 &lt;- 119
+critical_value &lt;- qf(1 - a/2, df1 = df1, df2 = df2)
+
+var_before &lt;- 22.367
+var_after &lt;- 15.795
+
+f_stat &lt;- var_before / var_after
+
+if (f_stat &gt; critical_value) {
+  
+  cat(&quot;We reject the Null hypothesis, since&quot;, f_stat, &quot;is greater than&quot;, critical_value)
+} else {
+  
+  cat(&quot;We do not reject the Null hypothesis, since&quot;, f_stat, &quot;is less than&quot;, critical_value)
+  
+}</code></pre>
+<pre><code>## We do not reject the Null hypothesis, since 1.416081 is less than 1.434859</code></pre>
+<p>Since 1.416081 is less than 1.434859, we do not reject the null hypothesis that the before and after variances are equal.</p>
+</div>
+<div id="problem-11" class="section level3">
+<h3>Problem 11</h3>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_11.png" /></p>
+<p>Instead of testing all the correlation, we will start with the smallest value. We will first test correlation between fund 3 and fund 4</p>
+<p>We will use the following formula</p>
+<p><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e0810a6f2000a63525adbbd2f5e79db1f554057e" /></p>
+<pre class="r"><code># Correlation of fund 3 and 4
+c_3_4 &lt;- 0.3102
+
+# t test
+# alpha
+a &lt;- 0.05
+df &lt;- 36 - 2
+
+critical_value &lt;- qt(a/2, df = df, lower.tail = F)
+
+
+t &lt;- c_3_4 * sqrt(df - 2 / (1 - c_3_4))
+
+if (t &gt; critical_value) {
+  
+  cat(&quot;We reject the null hypothesis since&quot;, t, &quot;is greater than&quot;, critical_value)
+  
+} else {
+  
+  cat(&quot;We do not reject the null hypothesis since&quot;, t, &quot;is less than&quot;, critical_value)
+}</code></pre>
+<pre><code>## We do not reject the null hypothesis since 1.729921 is less than 2.032245</code></pre>
+<p>We can now try the next smallest correlation. Its the correlation between Fund 3 and Fund 2.</p>
+<pre class="r"><code># Correlation of fund 3 and 4
+c_3_4 &lt;- 0.4156
+
+# t test
+# alpha
+a &lt;- 0.05
+df &lt;- 36 - 2
+
+critical_value &lt;- qt(a/2, df = df, lower.tail = F)
+
+
+t &lt;- c_3_4 * sqrt(df - 2 / (1 - c_3_4))
+
+if (t &gt; critical_value) {
+  
+  cat(&quot;We reject the null hypothesis since&quot;, t, &quot;is greater than&quot;, critical_value)
+  
+} else {
+  
+  cat(&quot;We do not reject the null hypothesis since&quot;, t, &quot;is less than&quot;, critical_value)
+
+}</code></pre>
+<pre><code>## We reject the null hypothesis since 2.298147 is greater than 2.032245</code></pre>
+<p>At a 0.05 level we can reject the null hypothesis. Since all other correlation are larger than this, we can assume they are all statistically significant.</p>
+</div>
+<div id="problem-12" class="section level3">
+<h3>Problem 12</h3>
+<p>In the step “stating a decision rule” in testing a hypothesis, which of the following
+elements must be specified?</p>
+<ul>
+<li>A Critical value</li>
+<li>B Power of a test</li>
+<li>C Value of a test statistic</li>
+</ul>
+<p>A - Critical Value</p>
+</div>
+<div id="problem-13" class="section level3">
+<h3>Problem 13</h3>
+<p>Which of the following statements is correct with respect to the null
+hypothesis?</p>
+<ul>
+<li>A It is considered to be true unless the sample provides evidence showing it is
+false.</li>
+<li>B It can be stated as “not equal to” provided the alternative hypothesis is
+stated as “equal to.”</li>
+<li>C In a two-tailed
+test, it is rejected when evidence supports equality between
+the hypothesized value and population parameter.</li>
+</ul>
+<p>A - It is considered to be true unless the sample provides evidence showing it is
+false.</p>
+</div>
+<div id="problem-14" class="section level3">
+<h3>Problem 14</h3>
+<p>An analyst is examining a large sample with an unknown population variance.
+To test the hypothesis that the historical average return on an index is less than
+or equal to 6%, which of the following is the most appropriate test?</p>
+<ul>
+<li>A One-tailed
+z-test</li>
+<li>B Two-tailed
+z-test</li>
+<li>C One-tailed
+F-test</li>
+</ul>
+<p>A - One-tailed
+z-test</p>
+</div>
+<div id="problem-15" class="section level3">
+<h3>Problem 15</h3>
+<p>A hypothesis test for a normally-distributed
+population at a 0.05 significance
+level implies a:</p>
+<ul>
+<li>A 95% probability of rejecting a true null hypothesis.</li>
+<li>B 95% probability of a Type I error for a two-tailed
+test.</li>
+<li>C 5% critical value rejection region in a tail of the distribution for a one-tailed
+test.</li>
+</ul>
+<p>C - 5% critical value rejection region in a tail of the distribution for a one-tailed
+test.</p>
+</div>
+<div id="problem-16" class="section level3">
+<h3>Problem 16</h3>
+<p>Which of the following statements regarding a one-tailed
+hypothesis test is
+correct?</p>
+<ul>
+<li>A The rejection region increases in size as the level of significance becomes
+smaller.</li>
+<li>B A one-tailed
+test more strongly reflects the beliefs of the researcher than a
+two-tailed
+test.</li>
+<li>C The absolute value of the rejection point is larger than that of a two-tailed
+test at the same level of significance.</li>
+</ul>
+<p>B - A one-tailed
+test more strongly reflects the beliefs of the researcher than a
+two-tailed
+test.</p>
+</div>
+<div id="problem-17" class="section level3">
+<h3>Problem 17</h3>
+<p>The value of a test statistic is best described as the basis for deciding whether to:</p>
+<ul>
+<li>A reject the null hypothesis.</li>
+<li>B accept the null hypothesis.</li>
+<li>C reject the alternative hypothesis.</li>
+</ul>
+<p>A - reject the null hypothesis.</p>
+</div>
+<div id="problem-18" class="section level3">
+<h3>Problem 18</h3>
+<p>Which of the following is a Type I error?</p>
+<ul>
+<li>A Rejecting a true null hypothesis</li>
+<li>B Rejecting a false null hypothesis</li>
+<li>C Failing to reject a false null hypothesis</li>
+</ul>
+<p>A - Rejecting a true null hypothesis</p>
+</div>
+<div id="problem-19" class="section level3">
+<h3>Problem 19</h3>
+<p>A Type II error is best described as:</p>
+<ul>
+<li>A rejecting a true null hypothesis.</li>
+<li>B failing to reject a false null hypothesis.</li>
+<li>C failing to reject a false alternative hypothesis.</li>
+</ul>
+<p>B - failing to reject a false null hypothesis.</p>
+</div>
+<div id="problem-20" class="section level3">
+<h3>Problem 20</h3>
+<p>The level of significance of a hypothesis test is best used to:</p>
+<ul>
+<li>A calculate the test statistic.</li>
+<li>B define the test’s rejection points.</li>
+<li>C specify the probability of a Type II error.</li>
+</ul>
+<p>B - define the test’s rejection points.</p>
+</div>
+<div id="problem-22" class="section level3">
+<h3>Problem 22</h3>
+<p>All else equal, is specifying a smaller significance level in a hypothesis test likely
+to increase the probability of a:</p>
+<pre class="r"><code>tabl &lt;- &quot;  # Problem 22
+ Type I Error  | Type II Error |
+|---------------|:-------------:|
+|A| No            | No            |
+|B| No            | Yes           |
+|C| Yes           | No            |
+&quot;
+
+cat(tabl)</code></pre>
+<pre><code>##   # Problem 22
+##  Type I Error  | Type II Error |
+## |---------------|:-------------:|
+## |A| No            | No            |
+## |B| No            | Yes           |
+## |C| Yes           | No            |</code></pre>
+<p>B - Specifying a small significance level increases the chance of Type to error and not Type I error.</p>
+</div>
+<div id="problem-23" class="section level3">
+<h3>Problem 23</h3>
+<p>The probability of correctly rejecting the null hypothesis is the:</p>
+<ul>
+<li>A p-value.</li>
+<li>B power of a test.</li>
+<li>C level of significance.</li>
+</ul>
+<p>B - power of a test</p>
+</div>
+<div id="problem-24" class="section level3">
+<h3>Problem 24</h3>
+<p>The power of a hypothesis test is:</p>
+<ul>
+<li>A equivalent to the level of significance.</li>
+<li>B the probability of not making a Type II error.</li>
+<li>C unchanged by increasing a small sample size.</li>
+</ul>
+<p>B - the probability of not making a Type II error.</p>
+</div>
+<div id="problem-25" class="section level3">
+<h3>Problem 25</h3>
+<p>When making a decision in investments involving a statistically significant
+result, the:</p>
+<ul>
+<li>A economic result should be presumed meaningful.</li>
+<li>B statistical result should take priority over economic considerations.</li>
+<li>C economic logic for the future relevance of the result should be further
+explored.</li>
+</ul>
+<p>C - economic logic for the future relevance of the result should be further
+explored.</p>
+</div>
+<div id="problem-26" class="section level3">
+<h3>Problem 26</h3>
+<p>An analyst tests the profitability of a trading strategy with the null hypothesis
+being that the average abnormal return before trading costs equals zero. The
+calculated t-statistic is 2.802, with critical values of ± 2.756 at significance level
+α = 0.01. After considering trading costs, the strategy’s return is near zero. The
+results are most likely:</p>
+<ul>
+<li>A statistically but not economically significant.</li>
+<li>B economically but not statistically significant.</li>
+<li>C neither statistically nor economically significant.</li>
+</ul>
+<p>A - statistically but not economically significant.</p>
+</div>
+<div id="problem-27" class="section level3">
+<h3>Problem 27</h3>
+<p>Which of the following statements is correct with respect to the p-value?</p>
+<ul>
+<li>A It is a less precise measure of test evidence than rejection points.</li>
+<li>B It is the largest level of significance at which the null hypothesis is rejected.</li>
+<li>C It can be compared directly with the level of significance in reaching test
+conclusions.</li>
+</ul>
+<p>C - It can be compared directly with the level of significance in reaching test
+conclusions.</p>
+</div>
+<div id="problem-28" class="section level3">
+<h3>Problem 28</h3>
+<p>Which of the following represents a correct statement about the p-value?</p>
+<ul>
+<li>A The p-value offers less precise information than does the rejection points
+approach.</li>
+<li>B A larger p-value provides stronger evidence in support of the alternative
+hypothesis.</li>
+<li>C A p-value less than the specified level of significance leads to rejection of the
+null hypothesis.</li>
+</ul>
+<p>C - A p-value less than the specified level of significance leads to rejection of the
+null hypothesis.</p>
+</div>
+<div id="problem-29" class="section level3">
+<h3>Problem 29</h3>
+<p>Which of the following statements on p-value is correct?</p>
+<ul>
+<li>A The p-value is the smallest level of significance at which H0 can be rejected.</li>
+<li>B The p-value indicates the probability of making a Type II error.</li>
+<li>C The lower the p-value, the weaker the evidence for rejecting the H0.</li>
+</ul>
+<p>A - The p-value is the smallest level of significance at which H0 can be rejected.</p>
+</div>
+<div id="problem-30" class="section level3">
+<h3>Problem 30</h3>
+<p>The following table shows the significance level (α) and the p-value for three
+hypothesis tests.</p>
+<pre class="r"><code>tabl &lt;- &quot;  # Problem 30 Table
+| Test        | alpha| p-value|
+|-------------|:----:|-------:|
+| Test 1      | 0.05 | 0.10 |
+| Test 2      | 0.10 | 0.08 |
+| Test 3      | 0.10 | 0.05 |
+&quot;
+cat(tabl)</code></pre>
+<pre><code>##   # Problem 30 Table
+## | Test        | alpha| p-value|
+## |-------------|:----:|-------:|
+## | Test 1      | 0.05 | 0.10 |
+## | Test 2      | 0.10 | 0.08 |
+## | Test 3      | 0.10 | 0.05 |</code></pre>
+<p>The evidence for rejecting H0 is strongest for:</p>
+<ul>
+<li>A Test 1.</li>
+<li>B Test 2.</li>
+<li>C Test 3.</li>
+</ul>
+<p>C - Test 3</p>
+</div>
+<div id="problem-31" class="section level3">
+<h3>Problem 31</h3>
+<p>Which of the following tests of a hypothesis concerning the population mean is
+most appropriate?</p>
+<ul>
+<li>A A z-test if the population variance is unknown and the sample is small</li>
+<li>B A z-test if the population is normally distributed with a known variance</li>
+<li>C A t-test if the population is non-normally distributed with unknown variance and a small sample</li>
+</ul>
+<p>B - A z-test if the population is normally distributed with a known variance</p>
+</div>
+<div id="problem-32" class="section level3">
+<h3>Problem 32</h3>
+<p>For a small sample with unknown variance, which of the following tests of a
+hypothesis concerning the population mean is most appropriate?</p>
+<ul>
+<li>A A t-test if the population is normally distributed</li>
+<li>B A t-test if the population is non-normally
+distributed</li>
+<li>C A z-test regardless of the normality of the population distribution</li>
+</ul>
+<p>A - A t-test if the population is normally distributed</p>
+</div>
+<div id="problem-33" class="section level3">
+<h3>Problem 33</h3>
+<p>For a small sample from a normally distributed population with unknown variance,
+the most appropriate test statistic for the mean is the:</p>
+<ul>
+<li>A z-statistic.</li>
+<li>B t-statistic.</li>
+<li>C χ2 statistic.</li>
+</ul>
+<p>B - t-statistic.</p>
+</div>
+<div id="problem-34" class="section level3">
+<h3>Problem 34</h3>
+<p>An investment consultant conducts two independent random samples of 5-year
+performance data for US and European absolute return hedge funds. Noting
+a 50 basis point return advantage for US managers, the consultant decides
+to test whether the two means are statistically different from one another at
+a 0.05 level of significance. The two populations are assumed to be normally
+distributed with unknown but equal variances. Results of the hypothesis test are
+contained in the tables below.</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch7_Hyp_testing/prob_32.png" /></p>
+<p>A - null hypothesis is not rejected.</p>
+</div>
+<div id="problem-35" class="section level3">
+<h3>Problem 35</h3>
+<p>A pooled estimator is used when testing a hypothesis concerning the:</p>
+<ul>
+<li>A equality of the variances of two normally distributed populations.</li>
+<li>B difference between the means of two at least approximately normally distributed
+populations with unknown but assumed equal variances.</li>
+<li>C difference between the means of two at least approximately normally distributed
+populations with unknown and assumed unequal variances.</li>
+</ul>
+<p>B - difference between the means of two at least approximately normally distributed
+populations with unknown but assumed equal variances.</p>
+</div>
+<div id="problem-36" class="section level3">
+<h3>Problem 36</h3>
+<p>When evaluating mean differences between two dependent samples, the most
+appropriate test is a:</p>
+<ul>
+<li>A chi-square
+test.</li>
+<li>B paired comparisons test.</li>
+<li>C z-test.</li>
+</ul>
+<p>B - paired comparisons test.</p>
+</div>
+<div id="problem-37" class="section level3">
+<h3>Problem 37</h3>
+<p>A fund manager reported a 2% mean quarterly return over the past ten years for
+its entire base of 250 client accounts that all follow the same investment strategy.
+A consultant employing the manager for 45 client accounts notes that their
+mean quarterly returns were 0.25% less over the same period. The consultant
+tests the hypothesis that the return disparity between the returns of his clients
+and the reported returns of the fund manager’s 250 client accounts are significantly
+different from zero.
+Assuming normally distributed populations with unknown population variances,
+the most appropriate test statistic is:</p>
+<ul>
+<li>A a paired comparisons t-test.</li>
+<li>B a t-test of the difference between the two population means.</li>
+<li>C an approximate t-test of mean differences between the two populations.</li>
+</ul>
+<p>A - a paired comparisons t-test.</p>
+</div>
+<div id="problem-38" class="section level3">
+<h3>Problem 38</h3>
+<p>A chi-square
+test is most appropriate for tests concerning:</p>
+<ul>
+<li>A a single variance.</li>
+<li>B differences between two population means with variances assumed to be
+equal.</li>
+<li>C differences between two population means with variances assumed to not
+be equal.</li>
+</ul>
+<p>A - a single variance.</p>
+</div>
+<div id="problem-39" class="section level3">
+<h3>Problem 39</h3>
+<p>Which of the following should be used to test the difference between the variances
+of two normally distributed populations?</p>
+<ul>
+<li>A t-test</li>
+<li>B F-test</li>
+<li>C Paired comparisons test</li>
+</ul>
+<p>B - F-test</p>
+</div>
+<div id="problem-40" class="section level3">
+<h3>Problem 40</h3>
+<p>Jill Batten is analyzing how the returns on the stock of Stellar Energy Corp. are
+related with the previous month’s percent change in the US Consumer Price
+Index for Energy (CPIENG). Based on 248 observations, she has computed the
+sample correlation between the Stellar and CPIENG variables to be −0.1452.
+She also wants to determine whether the sample correlation is statistically
+significant. The critical value for the test statistic at the 0.05 level of significance
+is approximately 1.96. Batten should conclude that the statistical relationship
+between Stellar and CPIENG is:</p>
+<ul>
+<li>A significant, because the calculated test statistic has a lower absolute value
+than the critical value for the test statistic.</li>
+<li>B significant, because the calculated test statistic has a higher absolute value
+than the critical value for the test statistic.</li>
+<li>C not significant, because the calculated test statistic has a higher absolute
+value than the critical value for the test statistic.</li>
+</ul>
+<pre class="r"><code># Correlation
+r &lt;- -0.1452
+
+n &lt;- 248
+
+# Test staistic
+t &lt;- r * sqrt((n - 2) / (1 - r**2))
+
+
+# Critical value is
+critical_value &lt;- 1.96
+
+if (abs(critical_value) &gt; t) {
+  
+  cat(&quot;The correlation coefficient is statistically significant since&quot;, abs(t), &quot;greater than&quot;, critical_value)
+}</code></pre>
+<pre><code>## The correlation coefficient is statistically significant since 2.301766 greater than 1.96</code></pre>
+<p>B - significant, because the calculated test statistic has a higher absolute value
+than the critical value for the test statistic.</p>
+</div>
+<div id="problem-41" class="section level3">
+<h3>Problem 41</h3>
+<p>In which of the following situations would a non-parametric
+test of a hypothesis
+most likely be used?</p>
+<ul>
+<li>A The sample data are ranked according to magnitude.</li>
+<li>B The sample data come from a normally distributed population.</li>
+<li>C The test validity depends on many assumptions about the nature of the
+population.</li>
+</ul>
+<p>A - The sample data are ranked according to magnitude.</p>
+</div>
+<div id="problem-42" class="section level3">
+<h3>Problem 42</h3>
+<p>An analyst is examining the monthly returns for two funds over one year. Both
+funds’ returns are non-normally
+distributed. To test whether the mean return of
+one fund is greater than the mean return of the other fund, the analyst can use:</p>
+<ul>
+<li>A a parametric test only.</li>
+<li>B a nonparametric test only.</li>
+<li>C both parametric and nonparametric tests.</li>
+</ul>
+<p>B - a nonparametric test only.</p>
+</div>

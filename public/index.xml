@@ -6,10 +6,21 @@
     <description>Recent content on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 08 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quantitative Investment Analysis - Chapter 7</title>
+      <link>/post/2020-05-08-investment-analysis-chapter7/</link>
+      <pubDate>Fri, 08 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-05-08-investment-analysis-chapter7/</guid>
+      <description>library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 7 of the book.
+Problem 1 Which of the following statements about hypothesis testing is correct?
+ A The null hypothesis is the condition a researcher hopes to support. B The alternative hypothesis is the proposition considered true without conclusive evidence to the contrary. C The alternative hypothesis exhausts all potential parameter values not accounted for by the null hypothesis.</description>
+    </item>
     
     <item>
       <title>Quantitative Investment Analysis - Chapter 6</title>
