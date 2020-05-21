@@ -6,10 +6,20 @@
     <description>Recent content on Coding Finance</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quantitative Investment Analysis - Chapter 8</title>
+      <link>/post/2020-05-12-investment-analysis-chapter8/</link>
+      <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020-05-12-investment-analysis-chapter8/</guid>
+      <description>library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 7 of the book.
+Problem 1 Julie Moon is an energy analyst examining electricity, oil, and natural gas consumption in different regions over different seasons. She ran a regression explaining the variation in energy consumption as a function of temperature. The total variation of the dependent variable was 140.58, the explained variation was 60.</description>
+    </item>
     
     <item>
       <title>Quantitative Investment Analysis - Chapter 7</title>

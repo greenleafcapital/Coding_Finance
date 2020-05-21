@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Quantitative Investment Analysis - Chapter 8 :: Coding Finance</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="robots" content="noodp"/>
+<link rel="canonical" href="/post/2020-05-12-investment-analysis-chapter8/" />
+
+
+<link rel="stylesheet" href="/assets/style.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/style.css">
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="img/favicon.png">
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Quantitative Investment Analysis - Chapter 8 :: Coding Finance — " />
+<meta name="twitter:description" content="library(tidyverse) library(knitr) library(kableExtra) In this post we will solve the end of the chapter practice problems from chapter 7 of the book.
+Problem 1 Julie Moon is an energy analyst examining electricity, oil, and natural gas consumption in different regions over different seasons. She ran a regression explaining the variation in energy consumption as a function of temperature. The total variation of the dependent variable was 140.58, the explained variation was 60." />
+<meta name="twitter:site" content="" />
+<meta name="twitter:creator" content="" />
+<meta name="twitter:image" content="/img/default.jpg">
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Quantitative Investment Analysis - Chapter 8 :: Coding Finance — ">
+<meta property="og:description" content="" />
+<meta property="og:url" content="/post/2020-05-12-investment-analysis-chapter8/" />
+<meta property="og:site_name" content="Quantitative Investment Analysis - Chapter 8" />
+<meta property="og:image" content="/img/default.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+<meta property="article:published_time" content="2020-05-12 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="container">
+  <header class="header">
+  <span class="header__inner">
+    <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner">
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/code">Code</a></li>
+    
+  </ul>
+</nav>
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>        
+        </span>
+      
+      <span class="theme-toggle">
+        <svg class="bulb-off" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" transform="translate(5 2)" fill="black"/>
+</svg>
+
+<svg class="bulb-on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24"/>
+  <path class="bulb-on__base" d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19Z" transform="translate(5 2)" fill="#a9a9b3" />
+  <path class="bulb-on__glass" d="M0 7C0 3.14 3.14 0 7 0C10.86 0 14 3.14 14 7C14 9.38 12.81 11.47 11 12.74V15C11 15.55 10.55 16 10 16H4C3.45 16 3 15.55 3 15V12.74C1.19 11.47 0 9.38 0 7Z" transform="translate(5 2)" fill="#a9a9b3" />
+</svg>
+  
+      </span>
+    </span>
+  </span>
+</header>
+
+
+  <div class="content">
+    
+  <div class="post">
+    <h2 class="post-title"><a href="/post/2020-05-12-investment-analysis-chapter8/">Quantitative Investment Analysis - Chapter 8</a></h2>
+    <div class="post-meta">
+      <span class="post-date">
+        5/12/2020
+      </span>
+      <span class="post-author">Written by DD</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+
+
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+library(kableExtra)</code></pre>
+<p>In this post we will solve the end of the chapter practice problems from chapter 7 of the <a href="https://www.amazon.com/Quantitative-Investment-Analysis-CFA-Institute/dp/111910422X">book</a>.</p>
+<div id="problem-1" class="section level3">
+<h3>Problem 1</h3>
+<p>Julie Moon is an energy analyst examining electricity, oil, and natural gas
+consumption in different regions over different seasons. She ran a regression
+explaining the variation in energy consumption as a function of temperature.
+The total variation of the dependent variable was 140.58, the explained variation
+was 60.16, and the unexplained variation was 80.42. She had 60 monthly
+observations.</p>
+<ul>
+<li>A Compute the coefficient of determination.</li>
+<li>B What was the sample correlation between energy consumption and
+temperature?</li>
+<li>C Compute the standard error of the estimate of Moon’s regression model.</li>
+<li>D Compute the sample standard deviation of monthly energy consumption.</li>
+</ul>
+<pre class="r"><code># total variation
+t_v &lt;- 140.58
+
+# explained variation
+e_v &lt;- 60.16
+
+# unexplained variation
+ue_v &lt;- 80.42
+
+# Coef of determination
+coef_d &lt;- e_v / t_v
+
+cat(&quot;The coefficient of determination is&quot;, coef_d)</code></pre>
+<pre><code>## The coefficient of determination is 0.4279414</code></pre>
+<p>A - The coefficient of determination is 0.4279414</p>
+<pre class="r"><code>corr &lt;- sqrt(coef_d)
+cat(&quot;The sample correlation between energy consumption and temperature is&quot;, corr)</code></pre>
+<pre><code>## The sample correlation between energy consumption and temperature is 0.6541723</code></pre>
+<p>B - The sample correlation between energy consumption and temperature is 0.6541723</p>
+<pre class="r"><code># The standard error of the estimate is the square root of the
+# coefficient of non-determination divided by it&#39;s degrees of freedom
+
+# number of observations
+n &lt;- 60
+
+# se
+se &lt;- sqrt(ue_v / (n - 2))
+
+cat(&quot;The standard error of the estimate of Moon’s regression model is&quot;, se)</code></pre>
+<pre><code>## The standard error of the estimate of Moon’s regression model is 1.177519</code></pre>
+<p>C- The standard error of the estimate of Moon’s regression model is 1.177519</p>
+<pre class="r"><code># The sample variance of the dependent variable is
+
+sv &lt;- t_v / (n - 1)
+
+# sample standard deviation is
+
+s &lt;- sqrt(sv)
+
+cat(&quot;The sample standard deviation of monthly energy consumption is&quot;, s)</code></pre>
+<pre><code>## The sample standard deviation of monthly energy consumption is 1.543604</code></pre>
+<p>D - The sample standard deviation of monthly energy consumption is 1.543604</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_4.png" /></p>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<p>What is the value of the coefficient of determination?</p>
+<ul>
+<li>A 0.8261.</li>
+<li>B 0.7436.</li>
+<li>C 0.8623.</li>
+</ul>
+<p>B - 0.7436</p>
+</div>
+<div id="problem-5" class="section level3">
+<h3>Problem 5</h3>
+<p>Suppose that you deleted several of the observations that had small residual
+values. If you re-estimated
+the regression equation using this reduced sample,
+what would likely happen to the standard error of the estimate and the
+R-squared?</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_5.png" /></p>
+<p>C - Deleting observations with small residual values will increase standard error and decrease R-Squared</p>
+</div>
+<div id="problem-6" class="section level3">
+<h3>Problem 6</h3>
+<p>What is the correlation between X and Y?</p>
+<ul>
+<li>A −0.7436.</li>
+<li>B 0.7436.</li>
+<li>C 0.8623.</li>
+</ul>
+<pre class="r"><code># Coef of Determination aka R-squared
+coef_d &lt;- 0.7436
+
+corr &lt;- sqrt(coef_d)
+corr</code></pre>
+<pre><code>## [1] 0.8623224</code></pre>
+<p>C - 0.8623</p>
+</div>
+<div id="problem-7" class="section level3">
+<h3>Problem 7</h3>
+<p>Where did the F-value in the ANOVA table come from?</p>
+<ul>
+<li>A You look up the F-value in a table. The F depends on the numerator and
+denominator degrees of freedom.</li>
+<li>B Divide the “Mean Square” for the regression by the “Mean Square” of the
+residuals.</li>
+<li>C The F-value is equal to the reciprocal of the t-value for the slope coefficient.</li>
+</ul>
+<p>B - Divide the “Mean Square” for the regression by the “Mean Square” of the
+residuals.</p>
+</div>
+<div id="problem-8" class="section level3">
+<h3>Problem 8</h3>
+<p>If the ratio of net income to sales for a restaurant is 5 percent, what is the predicted
+ratio of cash flow from operations to sales?</p>
+<ul>
+<li>A 0.007 + 0.103(5.0) = 0.524.</li>
+<li>B 0.077 − 0.826(5.0) = −4.054.</li>
+<li>C 0.077 + 0.826(5.0) = 4.207.</li>
+</ul>
+<p>C - 0.077 + 0.826(5.0) = 4.207.</p>
+</div>
+<div id="problem-9" class="section level3">
+<h3>Problem 9</h3>
+<p>Is the relationship between the ratio of cash flow to operations and the ratio of
+net income to sales significant at the 5 percent level?</p>
+<ul>
+<li>A No, because the R-squared is greater than 0.05.</li>
+<li>B No, because the p-values of the intercept and slope are less than 0.05.</li>
+<li>C Yes, because the p-values for F and t for the slope coefficient are less than
+0.05.</li>
+</ul>
+<p>C - Yes, because the p-values for F and t for the slope coefficient are less than
+0.05.</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_10.1.png" />
+<img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_10.2.png" /></p>
+</div>
+<div id="problem-10" class="section level3">
+<h3>Problem 10</h3>
+<p>Did Batten’s regression analyze cross-sectional or time-series
+data, and what was the expected value of the error term from that regression?</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_10.3.png" /></p>
+<p>A - The data are time-series and the expected value of the error term is 0</p>
+</div>
+<div id="problem-11" class="section level3">
+<h3>Problem 11</h3>
+<p>Based on the regression, which used data in decimal form, if the CPIENG
+decreases by 1.0 percent, what is the expected return on Stellar common stock
+during the next period?</p>
+<ul>
+<li>A 0.0073 (0.73 percent).</li>
+<li>B 0.0138 (1.38 percent).</li>
+<li>C 0.0203 (2.03 percent).</li>
+</ul>
+<pre class="r"><code># beta 
+b &lt;- -0.6486
+# alpha
+a &lt;- 0.0138
+
+exp_ret &lt;- a + b * (-0.01)
+exp_ret</code></pre>
+<pre><code>## [1] 0.020286</code></pre>
+<p>C - 0.0203</p>
+</div>
+<div id="problem-12" class="section level3">
+<h3>Problem 12</h3>
+<p>Based on Batten’s regression model, the coefficient of determination indicates
+that:</p>
+<ul>
+<li>A Stellar’s returns explain 2.11 percent of the variability in CPIENG.</li>
+<li>B Stellar’s returns explain 14.52 percent of the variability in CPIENG.</li>
+<li>C Changes in CPIENG explain 2.11 percent of the variability in Stellar’s
+returns.</li>
+</ul>
+<p>C - Changes in CPIENG explain 2.11 percent of the variability in Stellar’s
+returns.</p>
+</div>
+<div id="problem-13" class="section level3">
+<h3>Problem 13</h3>
+<p>For Batten’s regression model, the standard error of the estimate shows that the
+standard deviation of:</p>
+<ul>
+<li>A the residuals from the regression is 0.0710.</li>
+<li>B values estimated from the regression is 0.0710.</li>
+<li>C Stellar’s observed common stock returns is 0.0710.</li>
+</ul>
+<p>A - The residuals from the regression is 0.0710.</p>
+</div>
+<div id="problem-14" class="section level3">
+<h3>Problem 14</h3>
+<p>For the analysis run by Batten, which of the following is an incorrect conclusion
+from the regression output?</p>
+<ul>
+<li>A The estimated intercept coefficient from Batten’s regression is statistically
+significant at the 0.05 level.</li>
+<li>B In the month after the CPIENG declines, Stellar’s common stock is expected
+to exhibit a positive return.</li>
+<li>C Viewed in combination, the slope and intercept coefficients from Batten’s
+regression are not statistically significant at the 0.05 level</li>
+</ul>
+<p>C - Viewed in combination, the slope and intercept coefficients from Batten’s
+regression are not statistically significant at the 0.05 level</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_15.png" />
+<img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_15.1.png" /></p>
+</div>
+<div id="problem-15" class="section level3">
+<h3>Problem 15</h3>
+<p>Based on Exhibits 1 and 2, if Liu were to graph the 50 observations, the scatterplot
+summarizing this relation would be best described as:</p>
+<ul>
+<li>A horizontal.</li>
+<li>B upward sloping.</li>
+<li>C downward sloping.</li>
+</ul>
+<p>C - downward sloping.</p>
+</div>
+<div id="problem-16" class="section level3">
+<h3>Problem 16</h3>
+<p>Based on Exhibit 1, the sample covariance is closest to:</p>
+<ul>
+<li>A −9.2430.</li>
+<li>B −0.1886.</li>
+<li>C 8.4123.</li>
+</ul>
+<pre class="r"><code># Its sum of cross product
+# of deviations from the mean
+# divided by n - 1
+
+sum_cp &lt;- -9.2430
+
+n &lt;- 50
+
+sum_cp / (n - 1)</code></pre>
+<pre><code>## [1] -0.1886327</code></pre>
+<p>B - -0.1886327</p>
+</div>
+<div id="problem-17" class="section level3">
+<h3>Problem 17</h3>
+<p>Based on Exhibit 1, the correlation between the debt ratio and the short interest
+ratio is closest to:</p>
+<ul>
+<li>A −0.3054.</li>
+<li>B 0.0933.</li>
+<li>C 0.3054.</li>
+</ul>
+<pre class="r"><code># R-squared
+
+r2 &lt;- 0.0933
+
+# corr
+
+corr &lt;- sqrt(r2)
+
+# Since the coefficient sign is negative
+# our correlation is also negative
+
+-corr</code></pre>
+<pre><code>## [1] -0.3054505</code></pre>
+<p>A - -0.3054</p>
+</div>
+<div id="problem-18" class="section level3">
+<h3>Problem 18</h3>
+<p>Which of the interpretations best describes Liu’s findings for her report?</p>
+<ul>
+<li>A Interpretation 1</li>
+<li>B Interpretation 2</li>
+<li>C Interpretation 3</li>
+</ul>
+<p>C - Interpretation 3</p>
+</div>
+<div id="problem-19" class="section level3">
+<h3>Problem 19</h3>
+<p>The dependent variable in Liu’s regression analysis is the:</p>
+<ul>
+<li>A intercept.</li>
+<li>B debt ratio.</li>
+<li>C short interest ratio.</li>
+</ul>
+<p>C - short interest ratio.</p>
+</div>
+<div id="problem-20" class="section level3">
+<h3>Problem 20</h3>
+<p>Based on Exhibit 2, the degrees of freedom for the t-test of the slope coefficient
+in this regression are:</p>
+<ul>
+<li>A 48.</li>
+<li>B 49.</li>
+<li>C 50.</li>
+</ul>
+<p>A - 48</p>
+</div>
+<div id="problem-21" class="section level3">
+<h3>Problem 21</h3>
+<p>The upper bound for the 95% confidence interval for the coefficient on the debt
+ratio in the regression is closest to:</p>
+<ul>
+<li>A −1.0199.</li>
+<li>B −0.3947.</li>
+<li>C 1.4528.</li>
+</ul>
+<pre class="r"><code># Critical value at 95% level
+# Two tail
+
+# alpha 
+a &lt;- 0.05
+
+# critical level
+critical &lt;- qt(a / 2, df = 48, lower.tail = F)
+
+upper &lt;- -4.1589 + (critical * 1.8717)
+
+upper</code></pre>
+<pre><code>## [1] -0.3955949</code></pre>
+<p>B - -0.395</p>
+</div>
+<div id="problem-22" class="section level3">
+<h3>Problem 22</h3>
+<p>Which of the following should Liu conclude from these results shown in
+Exhibit 2?</p>
+<ul>
+<li>A The average short interest ratio is 5.4975.</li>
+<li>B The estimated slope coefficient is statistically significant at the 0.05 level.</li>
+<li>C The debt ratio explains 30.54% of the variation in the short interest ratio.</li>
+</ul>
+<p>B - The estimated slope coefficient is statistically significant at the 0.05 level.</p>
+</div>
+<div id="problem-23" class="section level3">
+<h3>Problem 23</h3>
+<p>Based on Exhibit 2, the short interest ratio expected for MQD Corporation is
+closest to:</p>
+<ul>
+<li>A 3.8339.</li>
+<li>B 5.4975.</li>
+<li>C 6.2462.</li>
+</ul>
+<pre class="r"><code>5.4975 + (-4.1589 * 0.4)</code></pre>
+<pre><code>## [1] 3.83394</code></pre>
+<p>A - 3.8339</p>
+</div>
+<div id="problem-24" class="section level3">
+<h3>Problem 24</h3>
+<p>Based on Liu’s regression results in Exhibit 2, the F-statistic for testing whether
+the slope coefficient is equal to zero is closest to:</p>
+<ul>
+<li>A −2.2219.</li>
+<li>B 3.5036.</li>
+<li>C 4.9367.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_24.png" /></p>
+<pre class="r"><code>F = 38.4404 / 7.7867
+F</code></pre>
+<pre><code>## [1] 4.936674</code></pre>
+<p>C - 4.9367</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_25.1.png" />
+<img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_25.2.png" /></p>
+</div>
+<div id="problem-25" class="section level3">
+<h3>Problem 25</h3>
+<p>Which of Vasileva’s assumptions regarding regression analysis is incorrect?</p>
+<ul>
+<li>A Assumption 1</li>
+<li>B Assumption 2</li>
+<li>C Assumption 3</li>
+</ul>
+<p>C - Assumption 3</p>
+</div>
+<div id="problem-26" class="section level3">
+<h3>Problem 26</h3>
+<p>Based on Exhibit 1, the standard error of the estimate is closest to:</p>
+<ul>
+<li>A 0.044558.</li>
+<li>B 0.045850.</li>
+<li>C 0.050176.</li>
+</ul>
+<pre class="r"><code># from the table
+# sum of squared residual
+
+ssr &lt;- 0.071475
+
+# observations 36
+n = 36
+sse &lt;- sqrt(ssr/(n - 2))
+
+sse</code></pre>
+<pre><code>## [1] 0.04584982</code></pre>
+<p>B - 0.045850</p>
+</div>
+<div id="problem-27" class="section level3">
+<h3>Problem 27</h3>
+<p>Based on Exhibit 2, Vasileva should reject the null hypothesis that:</p>
+<ul>
+<li>A the slope is less than or equal to 0.15.</li>
+<li>B the intercept is less than or equal to 0.</li>
+<li>C crude oil returns do not explain Amtex share returns.</li>
+</ul>
+<p>C - crude oil returns do not explain Amtex share returns.</p>
+</div>
+<div id="problem-28" class="section level3">
+<h3>Problem 28</h3>
+<p>Based on Exhibit 2, Vasileva should compute the:</p>
+<ul>
+<li>A coefficient of determination to be 0.4689.</li>
+<li>B 95% confidence interval for the intercept to be –0.0037 to 0.0227.</li>
+<li>C 95% confidence interval for the slope coefficient to be 0.0810 to 0.3898.</li>
+</ul>
+<pre class="r"><code># alpha 0.05
+
+a &lt;- 0.05
+df &lt;- 36 -2
+
+critical &lt;- qt(a / 2,df = df, lower.tail = F)
+
+upper  &lt;- 0.2354 + (critical * 0.076)
+lower  &lt;- 0.2354 - (critical * 0.076)
+
+cat(&quot;Range is&quot;, lower, &quot;and&quot;, upper)</code></pre>
+<pre><code>## Range is 0.3898506 and 0.08094942</code></pre>
+<p>C - 95% confidence interval for the slope coefficient to be 0.0810 to 0.3898.</p>
+</div>
+<div id="problem-29" class="section level3">
+<h3>Problem 29</h3>
+<p>Based on Exhibit 2 and Vasileva’s prediction of the crude oil return for month
+37, the estimate of Amtex share return for month 37 is closest to:</p>
+<ul>
+<li>A –0.0024.</li>
+<li>B 0.0071.</li>
+<li>C 0.0119.</li>
+</ul>
+<pre class="r"><code>0.0095 + (0.2354 * -0.01)</code></pre>
+<pre><code>## [1] 0.007146</code></pre>
+<p>B - 0.0071.</p>
+</div>
+<div id="problem-30" class="section level3">
+<h3>Problem 30</h3>
+<p>Using information from Exhibit 2, Vasileva should compute the 95% prediction
+interval for Amtex share return for month 37 to be:</p>
+<ul>
+<li>A –0.0882 to 0.1025.</li>
+<li>B –0.0835 to 0.1072.</li>
+<li>C 0.0027 to 0.0116.</li>
+</ul>
+<pre class="r"><code># variance
+v &lt;- 0.0022
+# sd 
+s &lt;- sqrt(v)
+
+# predicted value
+
+p &lt;- 0.0095 + (0.2354 * -0.01)
+
+# We know the critical value from above
+
+# Lower limit for prediction
+lower &lt;- p - (critical * s)
+upper &lt;- p + (critical * s)
+
+cat(&quot;Prediction range is&quot;, lower, &quot;and&quot;, upper)</code></pre>
+<pre><code>## Prediction range is 0.1024667 and -0.08817472</code></pre>
+<p>A –0.0882 to 0.1025.</p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_31.1.png" /></p>
+<p><img src="https://raw.githubusercontent.com/greenleafcapital/cf_images/master/ch8_regression/prob_31.2.png" /></p>
+</div>
+<div id="problem-31" class="section level3">
+<h3>Problem 31</h3>
+<p>Based on Exhibit 1, Olabudo should:</p>
+<ul>
+<li>A conclude that the inflation predictions are unbiased.</li>
+<li>B reject the null hypothesis that the slope coefficient equals 1.</li>
+<li>C reject the null hypothesis that the intercept coefficient equals 0.</li>
+</ul>
+<p>A - conclude that the inflation predictions are unbiased.</p>
+</div>
+<div id="problem-33" class="section level3">
+<h3>Problem 33</h3>
+<p>Which of Olabudo’s noted limitations of regression analysis is correct?
+A Only Limitation 1
+B Only Limitation 2
+C Both Limitation 1 and Limitation 2</p>
+<p>C - Both Limitation 1 and Limitation 2</p>
+</div>
+
+    </div>
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h">Read other posts</span>
+          <hr />
+        </div>
+        <div class="pagination__buttons">
+          
+          
+            <a class="btn previous" href="/post/2020-05-08-investment-analysis-chapter7/">Quantitative Investment Analysis - Chapter 7 →</a>
+           
+        </div>
+      </div>
+    
+  </div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <a href="/" style="text-decoration: none;">
+  <div class="logo">
+    
+      <span class="logo__mark">></span>
+      <span class="logo__text">coding finance</span>
+      <span class="logo__cursor"></span>
+    
+  </div>
+</a>
+      
+    
+  </div>
+</footer>
+
+
+  <script src="/assets/main.js"></script>
+
+  <script src="/assets/prism.js"></script>
+
+
+
+  
+</div>
+
+</body>
+</html>
