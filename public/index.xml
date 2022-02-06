@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>Quantitative Investment Analysis - Chapter 9</title>
+      <link>/post/2022-02-05-investment-analysis-chapter9/</link>
+      <pubDate>Sat, 05 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2022-02-05-investment-analysis-chapter9/</guid>
+      <description>Placeholder for Chapter 9 - Multiple Regression</description>
+    </item>
+    
+    <item>
       <title>Quantitative Investment Analysis - Chapter 8</title>
       <link>/post/2020-05-12-investment-analysis-chapter8/</link>
       <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
@@ -565,15 +574,6 @@ import pandas as pd import numpy as np import matplotlib.pyplot as plt Creating 
       <guid>/post/2018-03-18-tvm/</guid>
       <description>In this article we will perform basic financial calculations in R.
 Calculating the Net Present Value (NPV) Financial problems such as valuing an asset can be solved by calculating its net present value. The underlying principle in the calculation is that a dollar today is worth more than a dollar a year from now. This principle was well known to our ancestors thousands of year ago.</description>
-    </item>
-    
-    <item>
-      <title>Quantitative Investment Analysis - Chapter 9</title>
-      <link>/post/2022-02-05-investment-analysis-chapter9/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2022-02-05-investment-analysis-chapter9/</guid>
-      <description>Placeholder for Chapter 9 - Multiple Regression</description>
     </item>
     
   </channel>
