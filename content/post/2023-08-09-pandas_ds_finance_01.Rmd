@@ -1,0 +1,149 @@
+---
+title: "Financial Data Analysis using Pandas module in {python} - Basic operations."
+author: "DD"
+date: "2023-08-09"
+description: "Using Pandas module in {python} to perform basic financial data analysis operations."
+output:
+  html_document:
+    highlight: tango
+---
+
+`pandas` module is a widely used library for performing data analysis operations in {python}. In this article we will perform the most basic operations using the `pandas` library. We will do the following.
+
+- Load the data 
+- Look at columns, rows and cells
+- Subset rows and columns
+- Grouped Aggregate Calculations
+
+Load the `pandas` library and the gapminder data from github.
+https://raw.githubusercontent.com/jennybc/gapminder/main/inst/extdata/gapminder.tsv
+
+
+```{python}
+import pandas as pd
+```
+
+
+```{python}
+df = pd.read_csv("data/portfolio_position.csv")
+```
+
+
+```{python}
+df.head()
+```
+
+
+```{python}
+df.shape
+```
+
+
+```{python}
+df.dtypes
+```
+
+
+```{python}
+df.info()
+```
+
+
+```{python}
+df.columns
+```
+
+### Subsetting columns
+
+
+```{python}
+df['symbol']
+```
+
+
+```{python}
+df[['symbol', 'unrealized_gains_loss']]
+```
+
+
+```{python}
+df['symbol']
+```
+
+
+```{python}
+df[['symbol']]
+```
+
+### Subsetting rows 
+
+
+```{python}
+df.loc[7] # using row name
+```
+
+
+```{python}
+df.iloc[7] # using row index number
+```
+
+
+```{python}
+df.loc[2:4] # since using row names we get rows 2, 3 and 4
+```
+
+
+```{python}
+df.iloc[2:4] # since using row index we get rows 2 and 3 and not 4
+```
+
+Getting the last row
+
+
+```{python}
+df.loc[df.shape[0] - 1]  # gets the last row
+```
+
+
+```{python}
+df.iloc[-1] # gets the last row
+```
+
+
+```{python}
+df.tail(1)
+```
+
+Subsetting Multiple rows
+
+
+```{python}
+df.loc[[0,3,5]] # Getting rows 0,3,5
+```
+
+Mixing it up. Selecting subset of rows and columns
+
+Get Costo, Google, SalesForce(CRM) and  symbol qty, avg_price_paid and unrealized_gains_loss
+
+
+```{python}
+df.loc[[3,4,7], ['symbol', 'qty', 'avg_price_paid', 'unrealized_gains_loss']]
+```
+
+
+```{python}
+df.iloc[[3,4,7], [0,1,2,6]]
+```
+
+
+```{python}
+df.iloc[:, :6:2]
+```
+
+
+```{python}
+df.iloc[:, ::2]
+```
+
+
+

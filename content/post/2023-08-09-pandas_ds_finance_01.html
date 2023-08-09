@@ -1,0 +1,247 @@
+---
+title: "Financial Data Analysis using Pandas module in {python} - Basic operations."
+author: "DD"
+date: "2023-08-09"
+description: "Using Pandas module in {python} to perform basic financial data analysis operations."
+output:
+  html_document:
+    highlight: tango
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p><code>pandas</code> module is a widely used library for performing data analysis operations in {python}. In this article we will perform the most basic operations using the <code>pandas</code> library. We will do the following.</p>
+<ul>
+<li>Load the data</li>
+<li>Look at columns, rows and cells</li>
+<li>Subset rows and columns</li>
+<li>Grouped Aggregate Calculations</li>
+</ul>
+<p>Load the <code>pandas</code> library and the gapminder data from github.
+<a href="https://raw.githubusercontent.com/jennybc/gapminder/main/inst/extdata/gapminder.tsv" class="uri">https://raw.githubusercontent.com/jennybc/gapminder/main/inst/extdata/gapminder.tsv</a></p>
+<pre class="python"><code>import pandas as pd</code></pre>
+<pre class="python"><code>df = pd.read_csv(&quot;data/portfolio_position.csv&quot;)</code></pre>
+<pre class="python"><code>df.head()</code></pre>
+<pre><code>##    symbol       qty  ...  unrealized_gains_loss  unrealized_percent_gains_loss
+## 0     ACN  100.0000  ...            -806.000000                      -0.024670
+## 1      BA  300.0000  ...             843.000000                       0.011856
+## 2  BTCUSD    0.9975  ...           -1220.148901                      -0.039783
+## 3    COST   50.0000  ...            1979.000000                       0.075187
+## 4     CRM  200.0000  ...            3260.000000                       0.078159
+## 
+## [5 rows x 8 columns]</code></pre>
+<pre class="python"><code>df.shape</code></pre>
+<pre><code>## (14, 8)</code></pre>
+<pre class="python"><code>df.dtypes</code></pre>
+<pre><code>## symbol                            object
+## qty                              float64
+## avg_price_paid                   float64
+## current_price                    float64
+## cost_basis                       float64
+## market_value                     float64
+## unrealized_gains_loss            float64
+## unrealized_percent_gains_loss    float64
+## dtype: object</code></pre>
+<pre class="python"><code>df.info()</code></pre>
+<pre><code>## &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+## RangeIndex: 14 entries, 0 to 13
+## Data columns (total 8 columns):
+##  #   Column                         Non-Null Count  Dtype  
+## ---  ------                         --------------  -----  
+##  0   symbol                         14 non-null     object 
+##  1   qty                            14 non-null     float64
+##  2   avg_price_paid                 14 non-null     float64
+##  3   current_price                  14 non-null     float64
+##  4   cost_basis                     14 non-null     float64
+##  5   market_value                   14 non-null     float64
+##  6   unrealized_gains_loss          14 non-null     float64
+##  7   unrealized_percent_gains_loss  14 non-null     float64
+## dtypes: float64(7), object(1)
+## memory usage: 1.0+ KB</code></pre>
+<pre class="python"><code>df.columns</code></pre>
+<pre><code>## Index([&#39;symbol&#39;, &#39;qty&#39;, &#39;avg_price_paid&#39;, &#39;current_price&#39;, &#39;cost_basis&#39;,
+##        &#39;market_value&#39;, &#39;unrealized_gains_loss&#39;,
+##        &#39;unrealized_percent_gains_loss&#39;],
+##       dtype=&#39;object&#39;)</code></pre>
+<div id="subsetting-columns" class="section level3">
+<h3>Subsetting columns</h3>
+<pre class="python"><code>df[&#39;symbol&#39;]</code></pre>
+<pre><code>## 0        ACN
+## 1         BA
+## 2     BTCUSD
+## 3       COST
+## 4        CRM
+## 5       CRWD
+## 6          F
+## 7      GOOGL
+## 8       GRMN
+## 9        IAC
+## 10      PYPL
+## 11      RIVN
+## 12      TSLA
+## 13        VZ
+## Name: symbol, dtype: object</code></pre>
+<pre class="python"><code>df[[&#39;symbol&#39;, &#39;unrealized_gains_loss&#39;]]</code></pre>
+<pre><code>##     symbol  unrealized_gains_loss
+## 0      ACN            -806.000000
+## 1       BA             843.000000
+## 2   BTCUSD           -1220.148901
+## 3     COST            1979.000000
+## 4      CRM            3260.000000
+## 5     CRWD            1635.000000
+## 6        F           -1800.000000
+## 7    GOOGL            5826.150000
+## 8     GRMN             -34.500000
+## 9      IAC            1180.000000
+## 10    PYPL            1597.500000
+## 11    RIVN            -189.240000
+## 12    TSLA             946.000000
+## 13      VZ           -2930.000000</code></pre>
+<pre class="python"><code>df[&#39;symbol&#39;]</code></pre>
+<pre><code>## 0        ACN
+## 1         BA
+## 2     BTCUSD
+## 3       COST
+## 4        CRM
+## 5       CRWD
+## 6          F
+## 7      GOOGL
+## 8       GRMN
+## 9        IAC
+## 10      PYPL
+## 11      RIVN
+## 12      TSLA
+## 13        VZ
+## Name: symbol, dtype: object</code></pre>
+<pre class="python"><code>df[[&#39;symbol&#39;]]</code></pre>
+<pre><code>##     symbol
+## 0      ACN
+## 1       BA
+## 2   BTCUSD
+## 3     COST
+## 4      CRM
+## 5     CRWD
+## 6        F
+## 7    GOOGL
+## 8     GRMN
+## 9      IAC
+## 10    PYPL
+## 11    RIVN
+## 12    TSLA
+## 13      VZ</code></pre>
+</div>
+<div id="subsetting-rows" class="section level3">
+<h3>Subsetting rows</h3>
+<pre class="python"><code>df.loc[7] # using row name</code></pre>
+<pre><code>## symbol                              GOOGL
+## qty                                 500.0
+## avg_price_paid                     120.95
+## current_price                    132.6023
+## cost_basis                        60475.0
+## market_value                     66301.15
+## unrealized_gains_loss             5826.15
+## unrealized_percent_gains_loss     0.09634
+## Name: 7, dtype: object</code></pre>
+<pre class="python"><code>df.iloc[7] # using row index number</code></pre>
+<pre><code>## symbol                              GOOGL
+## qty                                 500.0
+## avg_price_paid                     120.95
+## current_price                    132.6023
+## cost_basis                        60475.0
+## market_value                     66301.15
+## unrealized_gains_loss             5826.15
+## unrealized_percent_gains_loss     0.09634
+## Name: 7, dtype: object</code></pre>
+<pre class="python"><code>df.loc[2:4] # since using row names we get rows 2, 3 and 4</code></pre>
+<pre><code>##    symbol       qty  ...  unrealized_gains_loss  unrealized_percent_gains_loss
+## 2  BTCUSD    0.9975  ...           -1220.148901                      -0.039783
+## 3    COST   50.0000  ...            1979.000000                       0.075187
+## 4     CRM  200.0000  ...            3260.000000                       0.078159
+## 
+## [3 rows x 8 columns]</code></pre>
+<pre class="python"><code>df.iloc[2:4] # since using row index we get rows 2 and 3 and not 4</code></pre>
+<pre><code>##    symbol      qty  ...  unrealized_gains_loss  unrealized_percent_gains_loss
+## 2  BTCUSD   0.9975  ...           -1220.148901                      -0.039783
+## 3    COST  50.0000  ...            1979.000000                       0.075187
+## 
+## [2 rows x 8 columns]</code></pre>
+<p>Getting the last row</p>
+<pre class="python"><code>df.loc[df.shape[0] - 1]  # gets the last row</code></pre>
+<pre><code>## symbol                                 VZ
+## qty                                1000.0
+## avg_price_paid                      36.87
+## current_price                       33.94
+## cost_basis                        36870.0
+## market_value                      33940.0
+## unrealized_gains_loss             -2930.0
+## unrealized_percent_gains_loss   -0.079468
+## Name: 13, dtype: object</code></pre>
+<pre class="python"><code>df.iloc[-1] # gets the last row</code></pre>
+<pre><code>## symbol                                 VZ
+## qty                                1000.0
+## avg_price_paid                      36.87
+## current_price                       33.94
+## cost_basis                        36870.0
+## market_value                      33940.0
+## unrealized_gains_loss             -2930.0
+## unrealized_percent_gains_loss   -0.079468
+## Name: 13, dtype: object</code></pre>
+<pre class="python"><code>df.tail(1)</code></pre>
+<pre><code>##    symbol     qty  ...  unrealized_gains_loss  unrealized_percent_gains_loss
+## 13     VZ  1000.0  ...                -2930.0                      -0.079468
+## 
+## [1 rows x 8 columns]</code></pre>
+<p>Subsetting Multiple rows</p>
+<pre class="python"><code>df.loc[[0,3,5]] # Getting rows 0,3,5</code></pre>
+<pre><code>##   symbol    qty  ...  unrealized_gains_loss  unrealized_percent_gains_loss
+## 0    ACN  100.0  ...                 -806.0                      -0.024670
+## 3   COST   50.0  ...                 1979.0                       0.075187
+## 5   CRWD  200.0  ...                 1635.0                       0.056051
+## 
+## [3 rows x 8 columns]</code></pre>
+<p>Mixing it up. Selecting subset of rows and columns</p>
+<p>Get Costo, Google, SalesForce(CRM) and symbol qty, avg_price_paid and unrealized_gains_loss</p>
+<pre class="python"><code>df.loc[[3,4,7], [&#39;symbol&#39;, &#39;qty&#39;, &#39;avg_price_paid&#39;, &#39;unrealized_gains_loss&#39;]]</code></pre>
+<pre><code>##   symbol    qty  avg_price_paid  unrealized_gains_loss
+## 3   COST   50.0          526.42                1979.00
+## 4    CRM  200.0          208.55                3260.00
+## 7  GOOGL  500.0          120.95                5826.15</code></pre>
+<pre class="python"><code>df.iloc[[3,4,7], [0,1,2,6]]</code></pre>
+<pre><code>##   symbol    qty  avg_price_paid  unrealized_gains_loss
+## 3   COST   50.0          526.42                1979.00
+## 4    CRM  200.0          208.55                3260.00
+## 7  GOOGL  500.0          120.95                5826.15</code></pre>
+<pre class="python"><code>df.iloc[:, :6:2]</code></pre>
+<pre><code>##     symbol  avg_price_paid    cost_basis
+## 0      ACN      326.710000  32671.000000
+## 1       BA      237.010000  71103.000000
+## 2   BTCUSD    30746.646921  30669.780242
+## 3     COST      526.420000  26321.000000
+## 4      CRM      208.550000  41710.000000
+## 5     CRWD      145.850000  29170.000000
+## 6        F       14.950000  14950.000000
+## 7    GOOGL      120.950000  60475.000000
+## 8     GRMN      105.070000  31521.000000
+## 9      IAC       63.590000  25436.000000
+## 10    PYPL       70.520000  35260.000000
+## 11    RIVN       27.330000  10932.000000
+## 12    TSLA      256.230000  51246.000000
+## 13      VZ       36.870000  36870.000000</code></pre>
+<pre class="python"><code>df.iloc[:, ::2]</code></pre>
+<pre><code>##     symbol  avg_price_paid    cost_basis  unrealized_gains_loss
+## 0      ACN      326.710000  32671.000000            -806.000000
+## 1       BA      237.010000  71103.000000             843.000000
+## 2   BTCUSD    30746.646921  30669.780242           -1220.148901
+## 3     COST      526.420000  26321.000000            1979.000000
+## 4      CRM      208.550000  41710.000000            3260.000000
+## 5     CRWD      145.850000  29170.000000            1635.000000
+## 6        F       14.950000  14950.000000           -1800.000000
+## 7    GOOGL      120.950000  60475.000000            5826.150000
+## 8     GRMN      105.070000  31521.000000             -34.500000
+## 9      IAC       63.590000  25436.000000            1180.000000
+## 10    PYPL       70.520000  35260.000000            1597.500000
+## 11    RIVN       27.330000  10932.000000            -189.240000
+## 12    TSLA      256.230000  51246.000000             946.000000
+## 13      VZ       36.870000  36870.000000           -2930.000000</code></pre>
+</div>
