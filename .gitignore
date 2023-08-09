@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 F-F_Research_Data_Factors.CSV
+*.DS_Store
+/.DS_Store
+.hugo*
